@@ -1,0 +1,16 @@
+
+/vendor/
+/.ftpquota
+/config
+/HEAD
+/.phpstorm.meta.php
+/_ide_helper.php
+/artisan
+/CONTRIBUTING.md
+/.gitattributes
+/hooks/
+/logs/
+/refs/
+/branches/
+/objects/
+/public/packages/

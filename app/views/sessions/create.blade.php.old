@@ -1,0 +1,31 @@
+@extends('login')
+
+@section('content')
+
+    <style>
+        body {
+            background: #f2f2f2 !important;
+        }
+
+    </style>
+
+    {{ Form::open(['route' => 'sessions.store','class'=>'form-signin'])  }}
+    <h2 class="form-signin-heading"> Protected Area</h2>
+    <div class="login-wrap">
+        <div class="user-login-info">
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                <input type="text" class="form-control" name="username" placeholder="username" required="true"
+                       autofocus=""/>
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
+            </div>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block btn-login" type="submit">Login</button>
+
+    </div>
+    {{ Form::close() }}
+@stop

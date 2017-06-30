@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="metiz.alista.com.ua">
+    <serverData>
+      <paths name="metiz.alista.com.ua">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath path="/vendor" />
+            <excludedPath path="/bootstrap" />
+            <excludedPath path="/_ide_helper.php" />
+            <excludedPath path="/.phpstorm.meta.php" />
+            <excludedPath path="/composer.json" />
+            <excludedPath path="/composer.lock" />
+            <excludedPath path="/composer.phar" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

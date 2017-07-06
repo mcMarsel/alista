@@ -5,14 +5,14 @@ require(__DIR__ . '/../Admin/PdfOrders.php');
 class SettingController extends BaseController
 {
 
-    public function ot()//($DocID)
+	public function ot()//($DocID)
     {
         $DocID = 30573;//Input::get('appID');
         $order = \Orders::where('DocID', '=', $DocID)
             ->get()->toArray();
         $DocDate = explode(' ', $order[0]['created_at']);
-        $arrDate = explode('-', $DocDate[0]);
-        $strDate = $arrDate[2] . '.' . $arrDate[1] . '.' . $arrDate[0];
+		$arrDate = explode('-', $DocDate[0]);
+		$strDate = $arrDate[2] . '.' . $arrDate[1] . '.' . $arrDate[0];
         $CompID = $order[0]['CompID'];
         $CompName = $order[0]['CompName'];
         $comp = \Comps::where('CompID', '=', $CompID)->get()->last();
@@ -23,10 +23,9 @@ class SettingController extends BaseController
         $TSum_nt = '';
         $TQty = '';
         $pdf = new \Admin\PdfOrders();
-        if (\Comps::where('comps.CompID', '=', $CompID)
-            ->join('CompAdd', 'CompAdd.CompID', '=', 'comps.CompID')
-            ->get()->toArray()
-        ) {
+		if (\Comps::where('comps.CompID', '=', $CompID)
+            ->join('CompAdd', 'CompAdd.CompID', '=', 'comps.CompID')->get()->toArray()
+		) {
             $comp = \Comps::where('CompID', '=', $CompID)
                 ->get()->last()->toArray();
             $compAdd = \CompAdd::where('CompID', '=', $CompID)
@@ -36,17 +35,17 @@ class SettingController extends BaseController
                 ->get()->last()->toArray();
             $compAdd = ['CompAdd' => ''];
         }
-        $CompAdd = $compAdd['CompAdd'];
+		$CompAdd = $compAdd['CompAdd'];
         /*echo "<pre>";
         print_r($order);
         echo "</pre>";
         die();*/
-        foreach ($order as $key => $value) {
+		foreach ($order as $key => $value) {
             $TSum_wt += $value['SumPrice'];
-            $TSum_nt += $value['SumPrice'] / 1.2;
+			$TSum_nt += $value['SumPrice'] / 1.2;
             $TQty += $value['Qty'];
         }
-        $TPrice_wt = str_replace('.', ',', round($TSum_wt, 2));
+		$TPrice_wt = str_replace('.', ',', round($TSum_wt, 2));
         $numberChar = $pdf->num2text_ua($TSum_wt);
         //die();
         $html = View::make('order-template', compact(
@@ -87,18 +86,18 @@ class SettingController extends BaseController
         ));
     }
 
-    public function testv()
+	public function testv()
     {
         $appID = 21108470;//Input::get('appID');
         $appArr = \Approved::where('AppID', '=', $appID)
             ->get()->last();
         $orderID = $appArr->DocID;
-        $dateShipping = explode(' ', $appArr->dateShipping);
-        $arrDate = explode('-', $dateShipping[0]);
-        $strDate = $arrDate[2] . '.' . $arrDate[1] . '.' . $arrDate[0];
+		$dateShipping = explode(' ', $appArr->dateShipping);
+		$arrDate = explode('-', $dateShipping[0]);
+		$strDate = $arrDate[2] . '.' . $arrDate[1] . '.' . $arrDate[0];
         $date = explode(' ', $appArr->created_at);
         $dateArr = explode('-', $date[0]);
-        $strCDate = $dateArr[2] . '.' . $dateArr[1] . '.' . $dateArr[0];
+		$strCDate = $dateArr[2] . '.' . $dateArr[1] . '.' . $dateArr[0];
         $order = \Orders::where('DocID', '=', $orderID)
             ->where('status', '=', 3)
             ->get()->last();
@@ -113,7 +112,7 @@ class SettingController extends BaseController
         $StockID = $order->StockID;
         $TWeight = '';
         $strTransporter = $transporter->transporterName;
-        foreach ($orders as $key => $value) {
+		foreach ($orders as $key => $value) {
             $prod = \Prods::where('ProdID', '=', $value['ProdID'])
                 ->get(['Weight'])->last();
             $Weight = $prod->Weight * $value['Qty'];
@@ -121,18 +120,18 @@ class SettingController extends BaseController
         }
         $prodBody = [];
         $TQty = '';
-        foreach ($orders as $key => $value) {
-            $rem = '';
+		foreach ($orders as $key => $value) {
+			$rem = '';
             $TQty += $value['Qty'];
             $prodBody[$key][] = $value['ProdID'];
             $prodBody[$key][] = $value['ProdName'];
             $prodBody[$key][] = $value['UM'];
-            $prodBody[$key][] = round($value['Qty'], 1);
+			$prodBody[$key][] = round($value['Qty'], 1);
             $prodBody[$key][] = $value['UM'];
-            $prodBody[$key][] = round($value['Qty'], 1);
+			$prodBody[$key][] = round($value['Qty'], 1);
             $arrRem = \Rem::where('StockID', '=', $order->StockID)
                 ->where('ProdID', '=', $value['ProdID'])->get()->toArray();
-            foreach ($arrRem as $k => $val) {
+			foreach ($arrRem as $k => $val) {
                 $rem += $val['RemCash'];
                 $rem += $val['RemUncash'];
             }
@@ -155,67 +154,65 @@ class SettingController extends BaseController
             $TWeight,
             $TQty
         );
-        return View::make('testv', compact(['appID', 'strCDate', 'strDate', 'strTransporter', 'city', 'specialNotes', 'compName', 'StockID', 'orders', 'TWeight', 'TQty']));
+		return View::make('testv', compact(['appID', 'strCDate', 'strDate', 'strTransporter', 'city', 'specialNotes', 'compName', 'StockID', 'orders', 'TWeight', 'TQty']));
     }
 
-    public function trer($AppID, $StrCDate, $StrDate, $StrTransporter, $City, $SpecialNotes, $CompName, $stockID, $Orders, $tWeight, $tQty)
+	public function trer($AppID, $StrCDate, $StrDate, $StrTransporter, $City, $SpecialNotes, $CompName, $stockID, $Orders, $tWeight, $tQty)
     {
-        $appID = $AppID;
-        $strCDate = $StrCDate;
-        $strDate = $StrDate;
-        $strTransporter = $StrTransporter;
-        $city = $City;
-        $specialNotes = $SpecialNotes;
-        $compName = $CompName;
-        $StockID = $stockID;
-        $orders = $Orders;
-        $TWeight = $tWeight;
-        $TQty = $tQty;
+		$appID = $AppID;
+		$strCDate = $StrCDate;
+		$strDate = $StrDate;
+		$strTransporter = $StrTransporter;
+		$city = $City;
+		$specialNotes = $SpecialNotes;
+		$compName = $CompName;
+		$StockID = $stockID;
+		$orders = $Orders;
+		$TWeight = $tWeight;
+		$TQty = $tQty;
         $bpdf = new BPDF();
         $fileName = 'Заявка на відбір товару.pdf';
-        $html = View::make('testv', compact(['appID', 'strCDate', 'strDate', 'strTransporter', 'city', 'specialNotes', 'compName', 'StockID', 'orders', 'TWeight', 'TQty']))
-            ->render();
+		$html = View::make('testv', compact(['appID', 'strCDate', 'strDate', 'strTransporter', 'city', 'specialNotes', 'compName', 'StockID', 'orders', 'TWeight', 'TQty']))->render();
         $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
         $bpdf = BPDF::loadHTML($html, 'UTF-8');
         $bpdf->setPaper('a4')->setOrientation('portrait')->setWarnings(false)->save('Заявка на відбір товару.pdf')->stream('bpdf.pdf');
         return $fileName;
     }
 
-    public function index($latitude, $longitude, $trackid)
-    {
+	public function index($latitude, $longitude, $trackid)
+	{
         echo "<pre>";
         print_r(Input::all());
         print_r($latitude);
         print_r($longitude);
         print_r($trackid);
         echo "</pre>";
-        return View::make('track');
-    }
+		return View::make('track');
+	}
 
-    public function main()
-    {
-        if (Auth::user()->status == 0) {
+	public function main()
+	{
+		if (Auth::user()->status == 0) {
             return View::make('default');
         } else {
             $pgr3Obj = \ProdGr3::orderBy('PGrName3', 'asc')
                 ->get(['PGrID3', 'PGrName3', 'status'])->toArray();
-            $users = \User::join('Emps', 'Emps.EmpID', '=', 'users.EmpID')
-                ->get(['users.id', 'users.username', 'users.EmpID', 'Emps.EmpName', 'users.status', 'users.EMail', 'Emps.UAEmpName'])->toArray();
+            $users = \User::join('Emps', 'Emps.EmpID', '=', 'users.EmpID')->get(['users.id', 'users.username', 'users.EmpID', 'Emps.EmpName', 'users.status', 'users.EMail', 'Emps.UAEmpName'])->toArray();
             $head = \Head::get()->toArray();
             $hName = [];
             $hID = [];
-            foreach ($head as $key => $value) {
+			foreach ($head as $key => $value) {
                 array_push($hName, $value['EmpName']);
                 array_push($hID, $value['HeadID']);
             }
             $heads = array_combine($hID, $hName);
-            $emp = \Emps::whereNotIn('EmpID', function ($e) {
+			$emp = \Emps::whereNotIn('EmpID', function ($e) {
                 $e->select(['EmpID'])->from('HeadBranch');
                 return $e;
             })->get()->toArray();
             $empName = [];
             $empID = [];
-            foreach ($emp as $key => $value) {
+			foreach ($emp as $key => $value) {
                 array_push($empName, $value['EmpName']);
                 array_push($empID, $value['EmpID']);
             }
@@ -225,8 +222,8 @@ class SettingController extends BaseController
         }
     }
 
-    public function degrade_head()
-    {
+	public function degrade_head()
+	{
         $id = Input::get('id');
         \Head::where('id', '=', $id)
             ->delete();
@@ -266,7 +263,7 @@ class SettingController extends BaseController
         print_r(Input::get('cash'));
         print_r(Input::get('uncash'));
         echo "</pre>";*/
-        if (Input::get('cash') && Input::get('uncash')) {
+		if (Input::get('cash') && Input::get('uncash')) {
             $cash = Input::get('cash');
             $uncash = Input::get('uncash');
             \Currency::where('appointment', '=', 4)
@@ -274,7 +271,7 @@ class SettingController extends BaseController
             \Currency::where('appointment', '=', 1)
                 ->update(['value' => $cash]);
             return ['status' => 1];
-        } else if (Input::get('uncash') && !Input::get('cash')) {
+		} else if (Input::get('uncash') && !Input::get('cash')) {
             $cashObj = \Currency::where('s_name', '=', 1)->get()->last();
             $cash = $cashObj->value;
             $uncash = Input::get('uncash');
@@ -283,7 +280,7 @@ class SettingController extends BaseController
             \Currency::where('appointment', '=', 1)
                 ->update(['value' => $cash]);
             return ['status' => 1];
-        } else if (!Input::get('uncash') && Input::get('cash')) {
+		} else if (!Input::get('uncash') && Input::get('cash')) {
             $uncashObj = \Currency::where('s_name', '=', 102)->get()->last();
             $uncash = $uncashObj->value;
             $cash = Input::get('cash');
@@ -292,7 +289,7 @@ class SettingController extends BaseController
             \Currency::where('appointment', '=', 1)
                 ->update(['value' => $cash]);
             return ['status' => 1];
-        } else {
+		} else {
             return ['status' => 0];
         }
     }
@@ -322,7 +319,7 @@ class SettingController extends BaseController
     {
         $obj = Input::get('obj');
         $userOld = \User::where('id', '=', $obj['id'])->get()->last();
-        if (!empty($obj['password'])) {
+		if (!empty($obj['password'])) {
             \User::where('id', '=', $obj['id'])
                 ->update(['password' => $obj['password']]);
         }
@@ -347,7 +344,7 @@ class SettingController extends BaseController
     public function new_user()
     {
         $userObj = Input::get('obj');
-        $userName = explode('@', $userObj['EMail']);
+		$userName = explode('@', $userObj['EMail']);
         $e = \Emps::create(
             [
                 'EmpID' => $userObj['EmpID'],
@@ -392,7 +389,7 @@ class SettingController extends BaseController
         $emp = \Emps::where('EmpID', '=', $selEmp)
             ->get()->last();
         $last = \Head::orderBy('HeadID', 'asc')->get(['HeadID'])->last();
-        $h = \Head::create(['EmpName' => $emp->EmpName, 'EmpID' => $emp->EmpID, 'HeadID' => $last->HeadID + 1]);
+		$h = \Head::create(['EmpName' => $emp->EmpName, 'EmpID' => $emp->EmpID, 'HeadID' => $last->HeadID + 1]);
         $h->save();
         return ['status' => 1];
     }

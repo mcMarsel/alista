@@ -76,37 +76,37 @@ class ClientController extends BaseController
         return View::make('client.bookmarks', compact(['address', 'contact', 'compID', 'compName']));
     }
 
-    public function index()
-    {
+	public function index()
+	{
         return View::make('client/new-client');
-    }
+	}
 
     public function getCity()
     {
         $city = \City::where('regionID', '=', Input::get('id'))->get()->toArray();
         $cityID = [];
-        foreach ($city as $key => $value) {
+		foreach ($city as $key => $value) {
             array_push($cityID, $value['cityID']);
         }
         return $cityID;
     }
 
-    public function ListClient()
-    {
-        if (Auth::getUser()->status == 0) {
+	public function ListClient()
+	{
+		if (Auth::getUser()->status == 0) {
             $EmpID = Auth::getUser()->EmpID;
             $comps = \Comps::where('EmpID', '=', $EmpID)->get()->toArray();
-        } elseif (Auth::getUser()->status == 1) {
+		} elseif (Auth::getUser()->status == 1) {
             $comps = \Comps::get()->toArray();
         }
         return View::make('client.list', compact(['comps']));
-    }
+	}
 
-    public function newClient()
-    {
+	public function newClient()
+	{
         $city = \City::where('cityID', '=', Input::get('city'))->get()->last();
         $comp = \Comps::orderBy('id', 'desc')->get()->first()->toArray();
-        $id = $comp['id'] + 1;
+		$id = $comp['id'] + 1;
         \CompAdd::insert(
             [
                 'id' => $id,
@@ -118,8 +118,7 @@ class ClientController extends BaseController
             [
                 'id' => $id,
                 'PhoneWork' => Input::get('phone'),
-                'Contact' => Input::get('fullName'),
-                'ContactAll' => Input::get('fullName') . ' ' . Input::get('phone'),
+                'Contact' => Input::get('fullName'), 'ContactAll' => Input::get('fullName') . ' ' . Input::get('phone'),
                 'eMail' => Input::get('email')
             ]
         );
@@ -163,34 +162,34 @@ class ClientController extends BaseController
         return View::make('msg', compact(['msg']));
     }
 
-    /*public function newClient()
-    {
-        $clientName = Input::get('clientName');
-        $region = Input::get('region');
-        $city = Input::get('city');
-        $fullName = Input::get('fullName');
-        $timeWork = Input::get('timeWork');
-        $phone = Input::get('phone');
-        $email = Input::get('email');
-        $EmpName = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get(['UAEmpName'])->toArray();
-        $message = "\r\n".'Добрый день, прошу добавить нового клиента.'."\r\n".
-        'От служащего: '.$EmpName[0]['UAEmpName'].".\r\n".
-        'Код служащего: '.Auth::getUser()->EmpID.".\r\n".
-        'Название предприятия: '.$clientName.".\r\n".
-        'Область: '.$region.".\r\n".
-        'Город: '.$city.".\r\n".
-        'Контактное лицо: '.$fullName.".\r\n".
-        'Время работы '.$timeWork.".\r\n".
-        'Контактный email: '.$email.".\r\n".
-        'Контактный номер телефон: '.$phone.'.';
-        $to      = 'kurasova@alista.com.ua';
-        $subject = '=?UTF-8?B?'.base64_encode('Добавление нового клиент').'?=';
-        $headers = 'From: tsipa@const.dp.ua'."\r\n".
-            'Cc: krutijk@alista.com.ua' . "\r\n".
-                //'Reply-To: krutijk@alista.org.ua' . "\r\n" .
-                'X-Mailer: PHP/' . phpversion();
-        mail($to, $subject, $message, $headers);
-        return View::make('client.email', compact(['clientName', 'region', 'city', 'fullName', 'timeWork', 'phone']));
-    }*/
+	/*public function newClient()
+	{
+		$clientName = Input::get('clientName');
+		$region = Input::get('region');
+		$city = Input::get('city');
+		$fullName = Input::get('fullName');
+		$timeWork = Input::get('timeWork');
+		$phone = Input::get('phone');
+		$email = Input::get('email');
+		$EmpName = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get(['UAEmpName'])->toArray();
+		$message = "\r\n".'Добрый день, прошу добавить нового клиента.'."\r\n".
+		'От служащего: '.$EmpName[0]['UAEmpName'].".\r\n".
+		'Код служащего: '.Auth::getUser()->EmpID.".\r\n".
+		'Название предприятия: '.$clientName.".\r\n".
+		'Область: '.$region.".\r\n".
+		'Город: '.$city.".\r\n".
+		'Контактное лицо: '.$fullName.".\r\n".
+		'Время работы '.$timeWork.".\r\n".
+		'Контактный email: '.$email.".\r\n".
+		'Контактный номер телефон: '.$phone.'.';
+		$to      = 'kurasova@alista.com.ua';
+		$subject = '=?UTF-8?B?'.base64_encode('Добавление нового клиент').'?=';
+		$headers = 'From: webmaster@metiz.alista.org.ua'."\r\n".
+			'Cc: krutijk@alista.com.ua' . "\r\n".
+    			//'Reply-To: krutijk@alista.org.ua' . "\r\n" .
+    			'X-Mailer: PHP/' . phpversion();
+		mail($to, $subject, $message, $headers);
+		return View::make('client.email', compact(['clientName', 'region', 'city', 'fullName', 'timeWork', 'phone']));
+	}*/
 
 }

@@ -3,32 +3,28 @@
 class DebitController extends BaseController
 {
 
-    public function index()
-    {
-        //if(Auth::getUser()->status == 0)
-        //{
-        //$Receivables = \Receivables::where('EmpID', '=', Auth::getUser()->EmpID)->get();
-        //return View::make('debit', compact(['Receivables']));
-        //} else {
-        /*$Receivables = \Receivables::where('EmpID', '=', '1967')->get()->take(5);
-        foreach($Receivables as $key => $value)
-        {
-            echo "<pre>";
-            print_r(str_replace(' 00:00:00', '', $value->DocDate));
-            echo "</pre>";
-        }*/
-        return View::make('debit');
-        //}
-    }
+	public function index()
+	{
+		//if(Auth::getUser()->status == 0)
+		//{
+		//$Receivables = \Receivables::where('EmpID', '=', Auth::getUser()->EmpID)->get();
+		//return View::make('debit', compact(['Receivables']));
+		//} else {
+		/*$Receivables = \Receivables::where('EmpID', '=', '1967')->get()->take(5);
+		foreach($Receivables as $key => $value)
+		{
+			echo "<pre>";
+			print_r(str_replace(' 00:00:00', '', $value->DocDate));
+			echo "</pre>";
+		}*/
+		return View::make('debit');
+		//}
+	}
 
     public function getColumns()
     {
         $res =
-            [
-                0 => ["name" => "status", "title" => "Статус", "breakpoints" => "xs", "type" => "number", "style" => ["width" => 80, "maxWidth" => 80]],
-                1 => ["name" => "iddoc", "title" => "ИД документа", "breakpoints" => "xs", "style" => ["width" => 80, "maxWidth" => 80]],
-                2 => ["name" => "empid", "title" => "ИД служащего", "breakpoints" => "xs", "type" => "number", "style" => ["width" => 80, "maxWidth" => 80]],
-                3 => ["name" => "empName", "title" => "Имя служащего", "breakpoints" => "xs", "style" => ["width" => 80, "maxWidth" => 80]],
+            [0 => ["name" => "status", "title" => "Статус", "breakpoints" => "xs", "type" => "number", "style" => ["width" => 80, "maxWidth" => 80]], 1 => ["name" => "iddoc", "title" => "ИД документа", "breakpoints" => "xs", "style" => ["width" => 80, "maxWidth" => 80]], 2 => ["name" => "empid", "title" => "ИД служащего", "breakpoints" => "xs", "type" => "number", "style" => ["width" => 80, "maxWidth" => 80]], 3 => ["name" => "empName", "title" => "Имя служащего", "breakpoints" => "xs", "style" => ["width" => 80, "maxWidth" => 80]],
                 //2 => ["name"=>"DocID","title"=>"ИД РД"],
                 //3 => ["name"=>"DocDate","title"=>"Дата РД"],
                 /*4 => ["name"=>"TSumCC","title"=>"Сумма РД, грн","data-breakpoints"=>"xs"],
@@ -52,14 +48,14 @@ class DebitController extends BaseController
         //{"id":1,"firstName":"Annemarie","lastName":"Bruening","something":1381105566987,"jobTitle":"Cloak Room Attendant","started":1367700388909,"dob":122365714987,"status":"Suspended"},
         $res = [];
         $Receivables = \Orders::orderBy('DocID', 'desc')->get();
-        foreach ($Receivables as $key => $value) {
+		foreach ($Receivables as $key => $value) {
             /*echo "<pre>";
             print_r($value);
             echo "</pre>";*/
             $res[$key]['status'] = $value->status;
             $res[$key]['iddoc'] = $value->DocID;
             $res[$key]['empid'] = $value->EmpID;
-            $res[$key]['empName'] = $value->CompName;
+			$res[$key]['empName'] = $value->CompName;
             //$res[$key]['DocID'] = $value->DocID;
             //$res[$key]['DocDate'] = $value->DocDate;
         }

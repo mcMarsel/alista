@@ -1,0 +1,33 @@
+<div class="form-group">
+    <label for="fileToUpload">Выберите файл</label>
+    <br/>
+    <input class="btn btn-primary" type="file" ng-model-instant id="fileToUpload"
+           onchange="angular.element(this).scope().setFiles(this)"/>
+</div>
+<div>
+    <div ng-show="progressVisible">
+        <div class="percent">{{progress}}%</div>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
+</div>
+<div class="progress" ng-show="files.length && progressVisible">
+    <div class="progress-bar" role="progressbar" ng-style="{'width': progress+'%'}">
+        {{ progress }}%
+    </div>
+</div>
+<div ng-if="uploaded">
+    <select class="form-control" style="width:150px;display: inline-block;" ng-model="columnName.letter"
+            ng-repeat="columnName in columnNames">
+        <option value="" selected disabled>{{ columnName.title }}</option>
+        <option ng-repeat="letter in letters" ng-disabled="letter.taken">{{ letter.column }}</option>
+    </select>
+</div>
+<div style="height:300px;" ng-if="uploaded" id="grid1" ui-grid="gridOptions" class="grid"></div>
+<br/>
+<form action="{{ proceedUrl }}" method="post">
+    <input type="hidden" name="columnNames[{{ columnName.value }}]" value="{{ columnName.letter }}"
+           ng-repeat="columnName in columnNames">
+    <button type="submit" class="btn btn-lg btn-success" ng-if="uploaded" ng-click="proceed()">Продолжить</button>
+</form>

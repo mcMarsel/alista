@@ -1,0 +1,14 @@
+.ui-grid-header-cell .ui-grid-cell-contents {
+    height: 22px;
+    white-space: normal;
+    -ms-text-overflow: clip;
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    overflow: visible;
+}
+
+div.scroll {
+    height: 40px;
+    overflow-x: scroll;
+    white-space: nowrap;
+}

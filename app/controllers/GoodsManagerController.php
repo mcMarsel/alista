@@ -10,47 +10,47 @@ class GoodsManagerController extends \BaseController
         return round($currency['value'], 2);
     }
 
-    public function managerOrder()
-    {
-        error_reporting(E_ALL | E_STRICT);
-        ini_set('display_errors', 1);
-        set_time_limit(0);
-        //ignore_user_abort(1);
-        $res = Input::get('res');
-        $EmpID = Auth::user()->EmpID;
+	public function managerOrder()
+	{
+		//error_reporting( E_ALL | E_STRICT );
+		//ini_set( 'display_errors', 1 );
+		set_time_limit(0);
+		ignore_user_abort(1);
+		$res = Input::get('res');
+		$EmpID = Auth::user()->EmpID;
         //$newOrd = \Orders::orderBy('orderID', 'desc')->get()->first()->toArray();
         $newOrd = DB::select('SELECT * FROM  orders ORDER BY orderID DESC LIMIT 1');
         $result = json_decode(json_encode($newOrd), true);
-        $newOrder = $result[0]['orderID'] + 1;
+		$newOrder = $result[0]['orderID'] + 1;
 
-        if (empty($res)) {
-            return ['message' => ['error' => 'Нет позиций в счете']];
-        }
-        $pos = 1;
-        $goodsArr = [];
+		if (empty($res)) {
+			return ['message' => ['error' => 'Нет позиций в счете']];
+		}
+		$pos = 1;
+		$goodsArr = [];
         $result = [];
-        foreach ($res as $key => $value) {
-            $goods = \Prods::where('ProdName', '=', $value['name'])->get()->first()->toArray();
-            if (empty($goods)) {
-                return ['message' => ['error' => 'Нет товара']];
-            }
-            $comp = \Comps::where('CompID', '=', $value['CompID'])->get()->first()->toArray();
-            if (empty($comp)) {
-                return ['message' => ['error' => 'Нет предприятия']];
-            }
-            $rem = \Rem::where('ProdID', '=', $goods['ProdID'])->get()->first()->toArray();
-            if (empty($rem)) {
-                return ['message' => ['error' => 'Нет остатков']];
-            }
-            $price = \ProdMP::where('ProdID', '=', $goods['ProdID'])->where('PLID', '=', $value['pl'])->get(['PriceMC'])->first()->toArray();
-            if (empty($price)) {
-                return ['message' => ['error' => 'Нет цены']];
-            }
-            if ($value['CodeID3'] == 1) {
-                $currency = \Currency::where('appointment', '=', 1)->get(['value'])->first()->value;
-            } else {
-                $currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
-            }
+		foreach ($res as $key => $value) {
+			$goods = \Prods::where('ProdName', '=', $value['name'])->get()->first()->toArray();
+			if (empty($goods)) {
+				return ['message' => ['error' => 'Нет товара']];
+			}
+			$comp = \Comps::where('CompID', '=', $value['CompID'])->get()->first()->toArray();
+			if (empty($comp)) {
+				return ['message' => ['error' => 'Нет предприятия']];
+			}
+			$rem = \Rem::where('ProdID', '=', $goods['ProdID'])->get()->first()->toArray();
+			if (empty($rem)) {
+				return ['message' => ['error' => 'Нет остатков']];
+			}
+			$price = \ProdMP::where('ProdID', '=', $goods['ProdID'])->where('PLID', '=', $value['pl'])->get(['PriceMC'])->first()->toArray();
+			if (empty($price)) {
+				return ['message' => ['error' => 'Нет цены']];
+			}
+			if ($value['CodeID3'] == 1) {
+				$currency = \Currency::where('appointment', '=', 1)->get(['value'])->first()->value;
+			} else {
+				$currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
+			}
             \Orders::create([
                 'status' => 0,
                 'orderID' => $newOrder,
@@ -90,72 +90,57 @@ class GoodsManagerController extends \BaseController
                     'Kurs' => $currency
                 ];
             $result[$key] = ['state' => 'success', 'prod' => $prod];
-        }
+		}
         return $result;
-    }
+	}
 
-    public function accr()
-    {
+	public function accr()
+	{
         set_time_limit(0);
         ignore_user_abort(1);
         $bpdf = new BPDF();
-        if (Auth::check()) {
-            if (Auth::getUser()->status == 0) {
-                $EmpID = Auth::getUser()->EmpID;
-                $lastmonth = date('Y-m-d 00:00:00', mktime(0, 0, 0, date('m') - 1, date('d'), date('Y')));
-                $ordersObj = DB::select("SELECT o.Qty, o.PriceMC, o.SumPrice, o.orderID, o.DocID, o.StockID, o.CodeID3, "
-                    . "o.CompID, o.CompName, o.Kurs, o.created_at, e.EmpID, e.EmpName, i.statusType, i.statusName, "
-                    . "SUM(o.SumPrice) as totalPriceCC FROM  orders o"
-                    . " JOIN status_inv i ON o.status = i.statusType"
-                    . " JOIN Emps e ON e.EmpID = o.EmpID"
-                    . " WHERE o.EmpID = " . $EmpID
-                    . " AND (o.created_at BETWEEN '" . $lastmonth . "' AND '" . date('Y-m-d 00:00:00') . "') "
-                    . " GROUP BY o.DocID, o.orderID"
-                    . " ORDER BY o.orderID DESC");
-                foreach ($ordersObj as $key => $value) {
-                    if ($value->statusType == 10) {
+		if (Auth::check()) {
+			if (Auth::getUser()->status == 0) {
+				$EmpID = Auth::getUser()->EmpID;
+				$lastmonth = date('Y-m-d 00:00:00', mktime(0, 0, 0, date('m') - 1, date('d'), date('Y')));
+                $ordersObj = DB::select("SELECT o.Qty, o.PriceMC, o.SumPrice, o.orderID, o.DocID, o.StockID, o.CodeID3, " . "o.CompID, o.CompName, o.Kurs, o.created_at, e.EmpID, e.EmpName, i.statusType, i.statusName, " . "SUM(o.SumPrice) as totalPriceCC FROM  orders o" . " JOIN status_inv i ON o.status = i.statusType" . " JOIN Emps e ON e.EmpID = o.EmpID" . " WHERE o.EmpID = " . $EmpID . " AND (o.created_at BETWEEN '" . $lastmonth . "' AND '" . date('Y-m-d 00:00:00') . "') " . " GROUP BY o.DocID, o.orderID" . " ORDER BY o.orderID DESC");
+				foreach ($ordersObj as $key => $value) {
+					if ($value->statusType == 10) {
                         $ordersObj[$key]->color = '#EE8F48';
-                    } else if ($value->statusType == 5) {
+					} else if ($value->statusType == 5) {
                         $ordersObj[$key]->color = '#FF4500';
                     } else {
                         $ordersObj[$key]->color = '';
                     }
                     $totalPrice = '';
-                    if ($value->orderID == NULL) {
+					if ($value->orderID == NULL) {
                         $orderID = $value->DocID;
                         $orderType = 'DocID';
                     } else {
                         $orderID = $value->orderID;
                         $orderType = 'orderID';
                     }
-                    if ($value->Kurs != 0) {
+					if ($value->Kurs != 0) {
                         $ordersObj[$key]->totalPriceMC = $value->totalPriceCC / $value->Kurs;
-                    } else if ($value->totalPriceCC == 0) {
+					} else if ($value->totalPriceCC == 0) {
                         $ordersObj[$key]->totalPriceMC = 'Цена равна НУЛЮ!';
                     } else {
                         $ordersObj[$key]->totalPriceMC = 'Курс равен НУЛЮ!';
                     }
                 }
-            } else {
-                $lastmonth = date('Y-m-d 00:00:00', mktime(0, 0, 0, date('m') - 1, date('d'), date('Y')));
-                $ordersObj = DB::select("SELECT o.Qty, o.PriceMC, o.SumPrice, o.orderID, o.DocID, o.StockID, o.CodeID3, o.CompID, "
-                    . "o.CompName, o.Kurs, o.created_at, e.EmpID, e.EmpName, i.statusType, i.statusName, "
-                    . "SUM(o.SumPrice) as totalPriceCC FROM  orders o"
-                    . " JOIN status_inv i ON o.status = i.statusType"
-                    . " JOIN Emps e ON e.EmpID = o.EmpID"
-                    . " WHERE (o.created_at BETWEEN '" . $lastmonth . "' AND '" . date('Y-m-d 00:00:00') . "') "
-                    . " GROUP BY o.DocID, o.orderID"
-                    . " ORDER BY o.orderID DESC");
-                foreach ($ordersObj as $key => $value) {
-                    if ($value->statusType == 10) {
+			} else {
+				$lastmonth = date('Y-m-d 00:00:00', mktime(0, 0, 0, date('m') - 1, date('d'), date('Y')));
+                $ordersObj = DB::select("SELECT o.Qty, o.PriceMC, o.SumPrice, o.orderID, o.DocID, o.StockID, o.CodeID3, o.CompID, " . "o.CompName, o.Kurs, o.created_at, e.EmpID, e.EmpName, i.statusType, i.statusName, " . "SUM(o.SumPrice) as totalPriceCC FROM  orders o" . " JOIN status_inv i ON o.status = i.statusType" . " JOIN Emps e ON e.EmpID = o.EmpID" . " WHERE (o.created_at BETWEEN '" . $lastmonth . "' AND '" . date('Y-m-d 00:00:00') . "') " . " GROUP BY o.DocID, o.orderID" . " ORDER BY o.orderID DESC");
+				foreach ($ordersObj as $key => $value) {
+					if ($value->statusType == 10) {
                         $ordersObj[$key]->color = '#EE8F48';
-                    } else if ($value->statusType == 5) {
+					} else if ($value->statusType == 5) {
                         $ordersObj[$key]->color = '#FF4500';
                     } else {
                         $ordersObj[$key]->color = '';
                     }
                     $totalPrice = '';
-                    if ($value->orderID == NULL) {
+					if ($value->orderID == NULL) {
                         $orderID = $value->DocID;
                         $orderType = 'DocID';
                     } else {
@@ -164,10 +149,10 @@ class GoodsManagerController extends \BaseController
                     }
                     $ordersObj[$key]->totalPriceMC = $value->totalPriceCC / $value->Kurs;
                 }
-            }
+			}
             $order = [];
-            foreach ($ordersObj as $key => $value) {
-                $order[$key] = (array)$value;
+			foreach ($ordersObj as $key => $value) {
+				$order[$key] = (array)$value;
             }
             unset($ordersObj);
             $ordersObj = $order;
@@ -176,27 +161,27 @@ class GoodsManagerController extends \BaseController
             echo "</pre>";
             die();*/
             return View::make('accr', compact('ordersObj'));
-        } else {
-            return Redirect::guest('login');
-        }
-    }
+		} else {
+			return Redirect::guest('login');
+		}
+	}
 
-    public function comps()
-    {
-        $empID = Input::get('emp');
-        $comps = \Comps::orderBy('CompName', 'asc')->get(['CompName', 'CompID'])->toArray();
-        //$comps = \Comps::where('EmpID', $empID)->orderBy('CompName', 'asc')->get(['CompName', 'CompID'])->toArray();
+	public function comps()
+	{
+		$empID = Input::get('emp');
+		$comps = \Comps::orderBy('CompName', 'asc')->get(['CompName', 'CompID'])->toArray();
+		//$comps = \Comps::where('EmpID', $empID)->orderBy('CompName', 'asc')->get(['CompName', 'CompID'])->toArray();
         $compsName = [];
-        $compsID = [];
-        foreach ($comps as $key => $value) {
-            array_push($compsName, $value['CompName']);
-            array_push($compsID, $value['CompID']);
-        }
-        unset($comps);
-        $comps = array_combine($compsID, $compsName);
+		$compsID = [];
+		foreach ($comps as $key => $value) {
+			array_push($compsName, $value['CompName']);
+			array_push($compsID, $value['CompID']);
+		}
+		unset($comps);
+		$comps = array_combine($compsID, $compsName);
         asort($comps, SORT_STRING);
         return $comps;
-    }
+	}
 
     public function categ()
     {
@@ -205,12 +190,12 @@ class GoodsManagerController extends \BaseController
         $subgr = \Prods::where('PGrID2', '=', $cat['PGrID2'])->groupBy('PGrID3')->get(['PGrID3'])->toArray();
         $subgroup = [];
         $sub = [];
-        foreach ($subgr as $key => $value) {
-            array_push($sub, \ProdGr3::where('PGrID3', '=', $value['PGrID3'])->get(['PGrName3'])->toArray());
+		foreach ($subgr as $key => $value) {
+			array_push($sub, \ProdGr3::where('PGrID3', '=', $value['PGrID3'])->get(['PGrName3'])->toArray());
         }
-        for ($i = 0; $i < count($sub); $i++) {
-            for ($j = 0; $j < count($sub[$i]); $j++) {
-                array_push($subgroup, $sub[$i][$j]['PGrName3']);
+		for ($i = 0; $i < count($sub); $i++) {
+			for ($j = 0; $j < count($sub[$i]); $j++) {
+				array_push($subgroup, $sub[$i][$j]['PGrName3']);
             }
         }
         /*foreach($subgr as $key => $value)
@@ -242,13 +227,13 @@ class GoodsManagerController extends \BaseController
             ->orderBy('ShortProdName', 'asc')
             ->get(['ProdID', 'ProdName', 'ShortProdName', 'UM'])->toArray();
         $goods = [];
-        foreach ($prods as $key => $value) {
+		foreach ($prods as $key => $value) {
             $good = [];
             $pl = \ProdMP::where('ProdID', '=', $value['ProdID'])
                 ->where('PLID', '!=', 100)
                 ->orderBy('PLID', 'asc')->get(['PLID', 'PriceMC', 'MinPLID'])->toArray();
             $rem = \Rem::where('ProdID', '=', $value['ProdID'])->where('StockID', '=', $stock)->groupBy('ProdID')->get(['RemCash', 'ResCash', 'RemUncash', 'ResUncash'])->toArray();
-            if (!empty($rem) || !empty($pl)) {
+			if (!empty($rem) || !empty($pl)) {
                 array_push($good, $value, $pl, $rem);
                 array_push($goods, $good);
             } else {
@@ -260,64 +245,64 @@ class GoodsManagerController extends \BaseController
         print_r($goods);
         echo "</pre>";
         die();*/
-        foreach ($goods as $key => $value) {
-            if (empty($value[2]) || empty($value[1])) {
+		foreach ($goods as $key => $value) {
+			if (empty($value[2]) || empty($value[1])) {
                 continue;
-            } else {
-                $html .= '<tr><th><div class="shortName">' . $value[0]['ShortProdName'] . '</div></th>';
-                $html .= '<th><div class="name">' . $value[0]['ProdName'] . '</div></th>';
+			} else {
+				$html .= '<tr><th><div class="shortName">' . $value[0]['ShortProdName'] . '</div></th>';
+				$html .= '<th><div class="name">' . $value[0]['ProdName'] . '</div></th>';
                 $html .= '<th><input class="quantity" type="number" autocorrect="off" pattern="\d*" novalidate></th>';
-                $html .= '<th><div class="UM">' . $value[0]['UM'] . '</div></th>';
-                $html .= '<th><span style="width: 100%; height: 100%" goodid="' . $value[0]['ProdID'] . '" class="btn price" name="price' . $key . '" id="price' . $key . '"></span></th>';
-                $html .= '<th><div class="remains_cashless" name="residue' . $key . '" >' . round(($value[2][0]['RemUncash'] - $value[2][0]['ResUncash']), 2) . '</div></th>';
-                $html .= '<th><div class="remains_cash" name="residue' . $key . '" >' . round(($value[2][0]['RemCash'] - $value[2][0]['ResCash']), 2) . '</div></th>';
-                if (count($value[1]) == 10) {
-                    $html .= '<th hidden="hidden" class="p0" plid="' . $value[1][0]['PLID'] . '" minpl="' . $value[1][0]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][0]['PriceMC'] * $currency))*/
-                        ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p1" plid="' . $value[1][1]['PLID'] . '" minpl="' . $value[1][1]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][1]['PriceMC'] * $currency))*/
-                        ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p2" plid="' . $value[1][2]['PLID'] . '" minpl="' . $value[1][2]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][2]['PriceMC'] * $currency))*/
-                        ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p3" plid="' . $value[1][3]['PLID'] . '" minpl="' . $value[1][3]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][3]['PriceMC'] * $currency))*/
-                        ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p4" plid="' . $value[1][4]['PLID'] . '" minpl="' . $value[1][4]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][4]['PriceMC'] * $currency))*/
-                        ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p5" plid="' . $value[1][5]['PLID'] . '" minpl="' . $value[1][5]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][5]['PriceMC'] * $currency))*/
-                        ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p6" plid="' . $value[1][6]['PLID'] . '" minpl="' . $value[1][6]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][6]['PriceMC'] * $currency))*/
-                        ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p7" plid="' . $value[1][7]['PLID'] . '" minpl="' . $value[1][7]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][7]['PriceMC'] * $currency))*/
-                        ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p8" plid="' . $value[1][8]['PLID'] . '" minpl="' . $value[1][8]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][8]['PriceMC'] * $currency))*/
-                        ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p9" plid="' . $value[1][9]['PLID'] . '" minpl="' . $value[1][9]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][9]['PriceMC'] * $currency))*/
-                        ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th><div class="UM">' . $value[0]['UM'] . '</div></th>';
+				$html .= '<th><span style="width: 100%; height: 100%" goodid="' . $value[0]['ProdID'] . '" class="btn price" name="price' . $key . '" id="price' . $key . '"></span></th>';
+				$html .= '<th><div class="remains_cashless" name="residue' . $key . '" >' . round(($value[2][0]['RemUncash'] - $value[2][0]['ResUncash']), 2) . '</div></th>';
+				$html .= '<th><div class="remains_cash" name="residue' . $key . '" >' . round(($value[2][0]['RemCash'] - $value[2][0]['ResCash']), 2) . '</div></th>';
+				if (count($value[1]) == 10) {
+					$html .= '<th hidden="hidden" class="p0" plid="' . $value[1][0]['PLID'] . '" minpl="' . $value[1][0]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][0]['PriceMC'] * $currency))*/
+						ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p1" plid="' . $value[1][1]['PLID'] . '" minpl="' . $value[1][1]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][1]['PriceMC'] * $currency))*/
+						ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p2" plid="' . $value[1][2]['PLID'] . '" minpl="' . $value[1][2]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][2]['PriceMC'] * $currency))*/
+						ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p3" plid="' . $value[1][3]['PLID'] . '" minpl="' . $value[1][3]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][3]['PriceMC'] * $currency))*/
+						ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p4" plid="' . $value[1][4]['PLID'] . '" minpl="' . $value[1][4]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][4]['PriceMC'] * $currency))*/
+						ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p5" plid="' . $value[1][5]['PLID'] . '" minpl="' . $value[1][5]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][5]['PriceMC'] * $currency))*/
+						ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p6" plid="' . $value[1][6]['PLID'] . '" minpl="' . $value[1][6]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][6]['PriceMC'] * $currency))*/
+						ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p7" plid="' . $value[1][7]['PLID'] . '" minpl="' . $value[1][7]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][7]['PriceMC'] * $currency))*/
+						ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p8" plid="' . $value[1][8]['PLID'] . '" minpl="' . $value[1][8]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][8]['PriceMC'] * $currency))*/
+						ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p9" plid="' . $value[1][9]['PLID'] . '" minpl="' . $value[1][9]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][9]['PriceMC'] * $currency))*/
+						ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
                     $html .= '<th hidden="hidden" class="p10"> - </th>';
-                } elseif (count($value[1]) == 11) {
-                    $html .= '<th hidden="hidden" class="p0" plid="' . $value[1][0]['PLID'] . '" minpl="' . $value[1][0]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][0]['PriceMC'] * $currency))*/
-                        ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p1" plid="' . $value[1][1]['PLID'] . '" minpl="' . $value[1][1]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][1]['PriceMC'] * $currency))*/
-                        ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p2" plid="' . $value[1][2]['PLID'] . '" minpl="' . $value[1][2]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][2]['PriceMC'] * $currency))*/
-                        ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p3" plid="' . $value[1][3]['PLID'] . '" minpl="' . $value[1][3]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][3]['PriceMC'] * $currency))*/
-                        ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p4" plid="' . $value[1][4]['PLID'] . '" minpl="' . $value[1][4]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][4]['PriceMC'] * $currency))*/
-                        ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p5" plid="' . $value[1][5]['PLID'] . '" minpl="' . $value[1][5]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][5]['PriceMC'] * $currency))*/
-                        ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p6" plid="' . $value[1][6]['PLID'] . '" minpl="' . $value[1][6]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][6]['PriceMC'] * $currency))*/
-                        ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p7" plid="' . $value[1][7]['PLID'] . '" minpl="' . $value[1][7]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][7]['PriceMC'] * $currency))*/
-                        ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p8" plid="' . $value[1][8]['PLID'] . '" minpl="' . $value[1][8]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][8]['PriceMC'] * $currency))*/
-                        ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p9" plid="' . $value[1][9]['PLID'] . '" minpl="' . $value[1][9]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][9]['PriceMC'] * $currency))*/
-                        ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                    $html .= '<th hidden="hidden" class="p10" plid="' . $value[1][10]['PLID'] . '" minpl="' . $value[1][10]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][10]['PriceMC'] * $currency))*/
-                        ceil(($value[1][10]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				} elseif (count($value[1]) == 11) {
+					$html .= '<th hidden="hidden" class="p0" plid="' . $value[1][0]['PLID'] . '" minpl="' . $value[1][0]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][0]['PriceMC'] * $currency))*/
+						ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p1" plid="' . $value[1][1]['PLID'] . '" minpl="' . $value[1][1]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][1]['PriceMC'] * $currency))*/
+						ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p2" plid="' . $value[1][2]['PLID'] . '" minpl="' . $value[1][2]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][2]['PriceMC'] * $currency))*/
+						ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p3" plid="' . $value[1][3]['PLID'] . '" minpl="' . $value[1][3]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][3]['PriceMC'] * $currency))*/
+						ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p4" plid="' . $value[1][4]['PLID'] . '" minpl="' . $value[1][4]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][4]['PriceMC'] * $currency))*/
+						ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p5" plid="' . $value[1][5]['PLID'] . '" minpl="' . $value[1][5]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][5]['PriceMC'] * $currency))*/
+						ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p6" plid="' . $value[1][6]['PLID'] . '" minpl="' . $value[1][6]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][6]['PriceMC'] * $currency))*/
+						ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p7" plid="' . $value[1][7]['PLID'] . '" minpl="' . $value[1][7]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][7]['PriceMC'] * $currency))*/
+						ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p8" plid="' . $value[1][8]['PLID'] . '" minpl="' . $value[1][8]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][8]['PriceMC'] * $currency))*/
+						ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p9" plid="' . $value[1][9]['PLID'] . '" minpl="' . $value[1][9]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][9]['PriceMC'] * $currency))*/
+						ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+					$html .= '<th hidden="hidden" class="p10" plid="' . $value[1][10]['PLID'] . '" minpl="' . $value[1][10]['MinPLID'] . '">' . /*sprintf("%.2f", ($value[1][10]['PriceMC'] * $currency))*/
+						ceil(($value[1][10]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
                 }
-                $html .= '<th><input type="button" id="' . $value[0]['ProdID'] . '" class="addGood btn btn-primary" value="Добавить"></th></tr>';
+				$html .= '<th><input type="button" id="' . $value[0]['ProdID'] . '" class="addGood btn btn-primary" value="Добавить"></th></tr>';
             }
         }
         return $html;
@@ -327,14 +312,14 @@ class GoodsManagerController extends \BaseController
     {
         ini_set('memory_limit', '-1');
         $file = Input::file('file');
-        $objPHPExcel = PHPExcel_IOFactory::load($file);
+		$objPHPExcel = PHPExcel_IOFactory::load($file);
         $objPHPExcel->setActiveSheetIndex(0);
         $aSheet = $objPHPExcel->getActiveSheet();
         $data = array();
-        foreach ($aSheet->getRowIterator() as $row) {
+		foreach ($aSheet->getRowIterator() as $row) {
             $cellIterator = $row->getCellIterator();
             $item = array();
-            foreach ($cellIterator as $cell) {
+			foreach ($cellIterator as $cell) {
                 if (!empty($cell) && ($cell != null) && ($cell != '') && ($cell != '&#9')) {
                     array_push($item, $cell->getCalculatedValue());
 
@@ -504,42 +489,42 @@ class GoodsManagerController extends \BaseController
         //$html2pdf->Output($tempfile, 'F');
     }
 
-    public function orders()
-    {
-        $res = Input::get('res');
+	public function orders()
+	{
+		$res = Input::get('res');
 
-        $newOrd = DB::select('SELECT * FROM  orders ORDER BY orderID DESC LIMIT 1');
+		$newOrd = DB::select('SELECT * FROM  orders ORDER BY orderID DESC LIMIT 1');
         $result = json_decode(json_encode($newOrd), true);
-        $newOrder = $result[0]['orderID'] + 1;
+		$newOrder = $result[0]['orderID'] + 1;
 
-        if (empty($res)) {
-            return ['message' => ['error' => 'Нет позиций в счете']];
-        }
-        $pos = 1;
-        $goodsArr = [];
+		if (empty($res)) {
+			return ['message' => ['error' => 'Нет позиций в счете']];
+		}
+		$pos = 1;
+		$goodsArr = [];
         $result = [];
-        foreach ($res as $key => $value) {
-            $goods = \Prods::where('ProdName', '=', $value['name'])->get()->first()->toArray();
-            if (empty($goods)) {
-                return ['message' => ['error' => 'Нет товара']];
-            }
-            $comp = \Comps::where('CompID', '=', $value['CompID'])->get()->first()->toArray();
-            if (empty($comp)) {
-                return ['message' => ['error' => 'Нет предприятия']];
-            }
-            $rem = \Rem::where('ProdID', '=', $goods['ProdID'])->get()->first()->toArray();
-            if (empty($rem)) {
-                return ['message' => ['error' => 'Нет остатков']];
-            }
-            $price = \ProdMP::where('ProdID', '=', $goods['ProdID'])->where('PLID', '=', $value['pl'])->get(['PriceMC'])->first()->toArray();
-            if (empty($price)) {
-                return ['message' => ['error' => 'Нет цены']];
-            }
-            if ($value['CodeID3'] == 1) {
-                $currency = \Currency::where('appointment', '=', 1)->get(['value'])->first()->value;
-            } else {
-                $currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
-            }
+		foreach ($res as $key => $value) {
+			$goods = \Prods::where('ProdName', '=', $value['name'])->get()->first()->toArray();
+			if (empty($goods)) {
+				return ['message' => ['error' => 'Нет товара']];
+			}
+			$comp = \Comps::where('CompID', '=', $value['CompID'])->get()->first()->toArray();
+			if (empty($comp)) {
+				return ['message' => ['error' => 'Нет предприятия']];
+			}
+			$rem = \Rem::where('ProdID', '=', $goods['ProdID'])->get()->first()->toArray();
+			if (empty($rem)) {
+				return ['message' => ['error' => 'Нет остатков']];
+			}
+			$price = \ProdMP::where('ProdID', '=', $goods['ProdID'])->where('PLID', '=', $value['pl'])->get(['PriceMC'])->first()->toArray();
+			if (empty($price)) {
+				return ['message' => ['error' => 'Нет цены']];
+			}
+			if ($value['CodeID3'] == 1) {
+				$currency = \Currency::where('appointment', '=', 1)->get(['value'])->first()->value;
+			} else {
+				$currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
+			}
             \Orders::create([
                 'status' => 0,
                 'orderID' => $newOrder,
@@ -579,8 +564,8 @@ class GoodsManagerController extends \BaseController
                     'Kurs' => $currency
                 ];
             $result[$key] = ['state' => 'success', 'prod' => $prod];
-        }
+		}
         return $result;
-    }
+	}
 
 }

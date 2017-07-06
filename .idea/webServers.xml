@@ -2,16 +2,21 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="75de2587-2e42-4605-8c6a-1ef53768dbe2" name="metiz.alista.com.ua" url="http://metiz.alista.com.ua">
+      <webServer id="15b9d2de-00c6-4529-b852-d074aaec35c0" name="metiz.alista.com.ua" url="http://metiz.alista.com.ua">
         <fileTransfer host="dpmst.ftp.ukraine.com.ua" port="21" rootFolder="/metiz.alista.com.ua/www">
           <advancedOptions>
-            <advancedOptions compatibilityMode="true" dataProtectionLevel="Private" forceListCommand="true" keepAliveCommand="LIST" passiveMode="true" accurateTimestamps="ALWAYS" showHiddenFiles="true" />
+            <advancedOptions compatibilityMode="true" dataProtectionLevel="Private" forceListCommand="true" passiveMode="true" showHiddenFiles="true" />
           </advancedOptions>
           <option name="port" value="21" />
         </fileTransfer>
       </webServer>
-      <webServer id="6c430b5f-9d3c-47bf-8129-1a51b65a4a40" name="metiz.alista.com.ua (1)" url="http://localhost">
-        <fileTransfer port="0" mountedRoot="" accessType="MOUNT" />
+      <webServer id="6d779f90-682e-4aa3-ada6-5770f5426068" name="ssh(metiz)" url="http://dpmst.ftp.ukraine.com.ua">
+        <fileTransfer host="dpmst.ftp.ukraine.com.ua" port="22" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
       </webServer>
     </option>
   </component>

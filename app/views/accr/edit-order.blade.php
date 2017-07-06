@@ -33,7 +33,7 @@
         </br>
         Предприятие: {{ Form::select('e-comps', $comps,  null, ['id' => 'e-comps', "disabled" => "true", 'class' => 'form-control btn btn-primary', "style" => "align-content: center;"]) }}
         </br>
-        {{ Form::button('Сформировать',['id' => 'send','class' => 'form-control btn btn-primary']) }}
+        {{ Form::button('Сформировать',['id' => 'send','class' => 'form-control  btn btn-primary']) }}
         </br>
         <table class="table table-hover table-responsive" style="width:100%;">
             <thead>
@@ -63,7 +63,6 @@
                     <th class="totalPCC">{{ ceil(($value['totalPricePosCC'] / 6) * 100) / 100 * 6 }}</th>
                     <th class="totalPMC">{{ ceil(($value['totalPricePosMC'] / 6) * 100) / 100 * 6 }}</th>
                     <th class="">{{ Form::button('Удалить', ['class' => 'posDel btn btn-primary']) }}</th>
-                    <? var_dump($value); ?>
                     @if(count($value['pl']) == 10)
                         <th class="pl1" id="pl0" name="{{ $value['pl'][0]['PLID'] }}"
                             hidden="hidden">{{ ceil(($value['pl'][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 }}</th>

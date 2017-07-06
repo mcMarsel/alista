@@ -15,47 +15,46 @@ class TestController extends BaseController
         echo "</pre>";
         die();
         $orderID = Input::get('orderID');
-        if (Input::get('dateShipping')) {
-            $dateShipping = Input::get('dateShipping');
-        } else {
-            $dateShipping = '';
-        }
-        if (Input::get('originator')) {
-            $originator = Input::get('originator');
-        } else {
-            $originator = '';
-        }
-        if (Input::get('transporterID')) {
-            $transporterID = Input::get('transporterID');
-            $transporter = \Transporter::where('transporterID', '=', $transporterID)
-                ->get(['transporterName'])->last()->toArray();
-        } else {
-            $transporterID = '';
-            $transporter = '';
-        }
-        if (Input::get('city')) {
+		if (Input::get('dateShipping')) {
+			$dateShipping = Input::get('dateShipping');
+		} else {
+			$dateShipping = '';
+		}
+		if (Input::get('originator')) {
+			$originator = Input::get('originator');
+		} else {
+			$originator = '';
+		}
+		if (Input::get('transporterID')) {
+			$transporterID = Input::get('transporterID');
+			$transporter = \Transporter::where('transporterID', '=', $transporterID)->get(['transporterName'])->last()->toArray();
+		} else {
+			$transporterID = '';
+			$transporter = '';
+		}
+		if (Input::get('city')) {
             $cityID = Input::get('city');
             $city = \City::where('cityID', '=', $cityID)->get(['cityName'])->last()->toArray();
         } else {
             $cityID = '';
             $city['cityName'] = '';
         }
-        if ($transporterID == 1 && Input::get('StockID') == 118) {
+		if ($transporterID == 1 && Input::get('StockID') == 118) {
             $cityID = 1001;
             $city['cityName'] = 'Киев';
 
-        } else if ($transporterID == 1 && Input::get('StockID') == 110) {
+		} else if ($transporterID == 1 && Input::get('StockID') == 110) {
             $cityID = 49000;
             $city['cityName'] = 'Днепропетровск';
         }
 
-        if (Input::get('getCash')) {
+		if (Input::get('getCash')) {
             $getCash = Input::get('getCash');
-            if ($getCash == 0) {
+			if ($getCash == 0) {
                 $getCash = 'На карту';
-            } else if ($getCash == 1) {
+			} else if ($getCash == 1) {
                 $getCash = 'По факту';
-            } else if ($getCash == 2) {
+			} else if ($getCash == 2) {
                 $getCash = 'Наложенный платеж';
             } else {
                 $getCash = '';
@@ -63,32 +62,32 @@ class TestController extends BaseController
         } else {
             $getCash = '';
         }
-        if (Input::get('address')) {
+		if (Input::get('address')) {
             $address = Input::get('address');
         } else {
             $address = '';
         }
-        if (Input::get('addressee')) {
+		if (Input::get('addressee')) {
             $addressee = Input::get('addressee');
         } else {
             $addressee = '';
         }
-        if (Input::get('payer')) {
+		if (Input::get('payer')) {
             $payer = Input::get('payer');
         } else {
             $payer = '';
         }
-        if (Input::get('payForm')) {
+		if (Input::get('payForm')) {
             $payForm = Input::get('payForm');
         } else {
             $payForm = '';
         }
-        if (Input::get('specialNotes')) {
+		if (Input::get('specialNotes')) {
             $specialNotes = Input::get('specialNotes');
         } else {
             $specialNotes = '';
         }
-        if (Input::get('stockTransporter')) {
+		if (Input::get('stockTransporter')) {
             $stockTransporter = Input::get('stockTransporter');
         } else {
             $stockTransporter = '';
@@ -108,7 +107,7 @@ class TestController extends BaseController
         print_r($city);
         echo "</pre>";
         die();*/
-        if (is_array($filename)) {
+		if (is_array($filename)) {
             $msg = 'По всем позиция нет подходящей партии с нужным количеством. Проверьте количество';
             return View::make('msg', compact(['msg']));
         } else {
@@ -137,8 +136,8 @@ class TestController extends BaseController
 
     public function createPdfApproved($dateShipping, $orderID, $transporterID, $specialNote, $city)
     {
-        $arrDate = explode('-', $dateShipping);
-        $strDate = $arrDate[2] . '.' . $arrDate[1] . '.' . $arrDate[0];
+		$arrDate = explode('-', $dateShipping);
+		$strDate = $arrDate[2] . '.' . $arrDate[1] . '.' . $arrDate[0];
         $fpdf = new PDF_MC_Table();
         $fpdf->data($orderID, $strDate);
         $fpdf->AliasNbPages();
@@ -149,11 +148,11 @@ class TestController extends BaseController
         $fpdf->SetMargins(10, 10, 10);
         $fpdf->SetTextColor(0, 0, 0);
         $fpdf->Ln();
-        $fpdf->AddFont('Tahoma', '', 'tahoma.php');
-        $fpdf->SetFont('Tahoma', '', 10);
-        $header[0] = [0 => 'Дата відвантаження', 1 => 'Перевізник', 2 => 'Місто'];
+		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
+		$fpdf->SetFont('Tahoma', '', 10);
+		$header[0] = [0 => 'Дата відвантаження', 1 => 'Перевізник', 2 => 'Місто'];
         $fpdf->SetWidths([35, 55, 105]);
-        foreach ($header as $key => $value) {
+		foreach ($header as $key => $value) {
             $fpdf->RowExtended($value, 15, 1, 'C');
             $fpdf->Ln();
         }
@@ -164,62 +163,62 @@ class TestController extends BaseController
             ->where('status', '=', 1)
             ->get()->toArray();
         $comp = \Comps::where('CompID', '=', $order['CompID'])->get()->last()->toArray();
-        $headerP[0] = [0 => $strDate, 1 => $transporter['transporterName'], 2 => trim($city)];
-        $fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-        $fpdf->SetFont('Tahoma-Bold', '', 10);
+		$headerP[0] = [0 => $strDate, 1 => $transporter['transporterName'], 2 => trim($city)];
+		$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
+		$fpdf->SetFont('Tahoma-Bold', '', 10);
         $fpdf->SetWidths([35, 55, 105]);
-        foreach ($headerP as $key => $value) {
+		foreach ($headerP as $key => $value) {
             $fpdf->RowExtended($value, 15, 1, 'C');
             $fpdf->Ln();
         }
-        $fpdf->AddFont('Tahoma', '', 'tahoma.php');
-        $fpdf->SetFont('Tahoma', '', 10);
-        $fpdf->Cell(195, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Особливі відмітки'), 1, 0, 'C');
+		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
+		$fpdf->SetFont('Tahoma', '', 10);
+		$fpdf->Cell(195, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Особливі відмітки'), 1, 0, 'C');
         $fpdf->Ln();
-        $fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-        $fpdf->SetFont('Tahoma-Bold', '', 14);
+		$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
+		$fpdf->SetFont('Tahoma-Bold', '', 14);
         $specialNotes = [0 => $specialNote];
         $fpdf->SetWidths([195]);
         $fpdf->RowExtended($specialNotes, 5, 1, 'C');
         $fpdf->Ln(30);
-        $headerOur[0] = [0 => 'Фірма', 1 => 'Алиста', 2 => 1];
-        $headerComp[0] = [0 => 'Предприятие', 1 => $comp['CompName'], 2 => ''];
-        $headerTr[0] = [0 => 'Відправник товару', 1 => 'Склад метизов', 2 => $order['StockID']];
-        $headerAd[0] = [0 => 'Адреса', 1 => 'Днепропетровск, вул. Героїв Сталінграда, буд.147', 2 => ''];
-        $fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-        $fpdf->SetFont('Tahoma-Bold', '', 8);
+		$headerOur[0] = [0 => 'Фірма', 1 => 'Алиста', 2 => 1];
+		$headerComp[0] = [0 => 'Предприятие', 1 => $comp['CompName'], 2 => ''];
+		$headerTr[0] = [0 => 'Відправник товару', 1 => 'Склад метизов', 2 => $order['StockID']];
+		$headerAd[0] = [0 => 'Адреса', 1 => 'Днепропетровск, вул. Героїв Сталінграда, буд.147', 2 => ''];
+		$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
+		$fpdf->SetFont('Tahoma-Bold', '', 8);
 
         $fpdf->SetWidths([45, 105, 45]);
-        foreach ($headerOur as $key => $value) {
+		foreach ($headerOur as $key => $value) {
             $fpdf->Row($value);
             $fpdf->Ln();
         }
-        $fpdf->AddFont('Tahoma', '', 'tahoma.php');
-        $fpdf->SetFont('Tahoma', '', 8);
-        foreach ($headerComp as $row => $col) {
-            $fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[0]), 1, 0, 'C');
-            $fpdf->Cell(105, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[1]), 1, 0, 'C');
-            $fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[2]), 1, 0, 'C');
+		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
+		$fpdf->SetFont('Tahoma', '', 8);
+		foreach ($headerComp as $row => $col) {
+			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[0]), 1, 0, 'C');
+			$fpdf->Cell(105, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[1]), 1, 0, 'C');
+			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[2]), 1, 0, 'C');
             $fpdf->Ln();
         }
-        $fpdf->AddFont('Tahoma', '', 'tahoma.php');
-        $fpdf->SetFont('Tahoma', '', 8);
-        foreach ($headerTr as $row => $col) {
-            $fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[0]), 1, 0, 'C');
-            $fpdf->Cell(105, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[1]), 1, 0, 'C');
-            $fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[2]), 1, 0, 'C');
+		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
+		$fpdf->SetFont('Tahoma', '', 8);
+		foreach ($headerTr as $row => $col) {
+			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[0]), 1, 0, 'C');
+			$fpdf->Cell(105, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[1]), 1, 0, 'C');
+			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[2]), 1, 0, 'C');
             $fpdf->Ln();
         }
-        $fpdf->AddFont('Tahoma', '', 'tahoma.php');
-        $fpdf->SetFont('Tahoma', '', 8);
-        foreach ($headerAd as $row => $col) {
-            $fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[0]), 1, 0, 'C');
-            $fpdf->Cell(105, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[1]), 1, 0, 'C');
-            $fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[2]), 1, 0, 'C');
+		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
+		$fpdf->SetFont('Tahoma', '', 8);
+		foreach ($headerAd as $row => $col) {
+			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[0]), 1, 0, 'C');
+			$fpdf->Cell(105, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[1]), 1, 0, 'C');
+			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[2]), 1, 0, 'C');
             $fpdf->Ln();
         }
-        $fpdf->AddFont('Tahoma', '', 'tahoma.php');
-        $fpdf->SetFont('Tahoma', '', 8);
+		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
+		$fpdf->SetFont('Tahoma', '', 8);
         $prodHead[0] = [0 => 'Код', 1 => 'Товар', 2 => 'Дод.Од.Вим.', 3 => 'Дод.кільк.', 4 => 'Од.Вим.',
             5 => 'Кількість', 6 => 'Загальна кількість'];
         $orders = \Orders::where('DocID', '=', $orderID)
@@ -227,74 +226,74 @@ class TestController extends BaseController
             ->get(['ProdID', 'ProdName', 'UM', 'Qty', 'UM'])->toArray();
         $prodBody = [];
         $totalWeight = '';
-        foreach ($orders as $key => $value) {
+		foreach ($orders as $key => $value) {
             $prod = \Prods::where('ProdID', '=', $value['ProdID'])
                 ->get(['Weight'])->last();
             $Weight = $prod['Weight'] * $value['Qty'];
             $totalWeight += $Weight;
         }
-        foreach ($orders as $key => $value) {
-            $rem = '';
+		foreach ($orders as $key => $value) {
+			$rem = '';
             $prodBody[$key][] = $value['ProdID'];
             $prodBody[$key][] = $value['ProdName'];
             $prodBody[$key][] = $value['UM'];
-            $prodBody[$key][] = round($value['Qty'], 1);
+			$prodBody[$key][] = round($value['Qty'], 1);
             $prodBody[$key][] = $value['UM'];
-            $prodBody[$key][] = round($value['Qty'], 1);
+			$prodBody[$key][] = round($value['Qty'], 1);
             $arrRem = \Rem::where('StockID', '=', $order['StockID'])
                 ->where('ProdID', '=', $value['ProdID'])->get()->toArray();
-            foreach ($arrRem as $k => $val) {
+			foreach ($arrRem as $k => $val) {
                 $rem += $val['RemCash'];
                 $rem += $val['RemUncash'];
             }
             $prodBody[$key][] = round($rem, 2);
         }
-        $fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-        $fpdf->SetFont('Tahoma-Bold', '', 8);
+		$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
+		$fpdf->SetFont('Tahoma-Bold', '', 8);
         $fpdf->Ln(10);
         $fpdf->SetWidths([10, 75, 20, 20, 20, 20, 30]);
-        foreach ($prodHead as $key => $value) {
+		foreach ($prodHead as $key => $value) {
             $fpdf->RowExtended($value, 5, 1, 'C');
             $fpdf->Ln();
         }
-        $fpdf->AddFont('Tahoma', '', 'tahoma.php');
-        $fpdf->SetFont('Tahoma', '', 8);
+		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
+		$fpdf->SetFont('Tahoma', '', 8);
         $fpdf->SetWidths([10, 75, 20, 20, 20, 20, 30]);
-        if (empty($prodBody)) {
+		if (empty($prodBody)) {
             return ['error' => 'Нет партии для товаров'];
         } else {
-            foreach ($prodBody as $key => $value) {
+			foreach ($prodBody as $key => $value) {
                 $fpdf->RowExtended($value, 7, 1, 'L');
                 $fpdf->Ln();
             }
             $fpdf->Ln(5);
             $totalQty = '';
-            foreach ($orders as $key => $value) {
+			foreach ($orders as $key => $value) {
                 $totalQty += $value['Qty'];
             }
-            $fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-            $fpdf->SetFont('Tahoma-Bold', '', 8);
-            $fpdf->Cell(180, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Кількість'), 0, 0, 'R');
-            $fpdf->Cell(15, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalQty), 0, 0);
+			$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
+			$fpdf->SetFont('Tahoma-Bold', '', 8);
+			$fpdf->Cell(180, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Кількість'), 0, 0, 'R');
+			$fpdf->Cell(15, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalQty), 0, 0);
             $fpdf->Ln();
-            $fpdf->Cell(180, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Додаткова Кількість'), 0, 0, 'R');
-            $fpdf->Cell(15, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalQty), 0, 0);
+			$fpdf->Cell(180, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Додаткова Кількість'), 0, 0, 'R');
+			$fpdf->Cell(15, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalQty), 0, 0);
             $fpdf->Ln();
-            $fpdf->Cell(180, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Вага'), 0, 0, 'R');
-            $fpdf->Cell(15, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalWeight), 0, 0);
+			$fpdf->Cell(180, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Вага'), 0, 0, 'R');
+			$fpdf->Cell(15, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalWeight), 0, 0);
             $fpdf->Ln(5);
             $signers = [0 => 'Дозволив', 1 => 'Відпустив', 2 => 'Узгодив'];
             $lineArr = [0 => '_______________________', 1 => '_______________________', 2 => '_______________________'];
             $signersPart = [0 => 'ПІБ Підпис', 1 => 'ПІБ Підпис', 2 => 'ПІБ Підпис'];
             $fpdf->SetWidths([65, 65, 65]);
-            $fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-            $fpdf->SetFont('Tahoma-Bold', '', 8);
+			$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
+			$fpdf->SetFont('Tahoma-Bold', '', 8);
             $fpdf->RowExtended($signers, 10, 0, 'L');
             $fpdf->Ln(7);
             $fpdf->RowExtended($lineArr, 10, 0, 'L');
             $fpdf->Ln(3);
-            $fpdf->AddFont('Tahoma', '', 'tahoma.php');
-            $fpdf->SetFont('Tahoma', '', 5);
+			$fpdf->AddFont('Tahoma', '', 'tahoma.php');
+			$fpdf->SetFont('Tahoma', '', 5);
             $fpdf->RowExtended($signersPart, 10, 0, 'C');
             $fpdf->Footer();
             $fileName = 'Заявка на відбір товару.pdf';
@@ -337,20 +336,20 @@ class TestController extends BaseController
         $mailer = new PHPMailer();
         $orderObj = \Orders::where('DocID', '=', $orderID)
             ->get()->last()->toArray();
-        if ($orderObj['StockID'] == 110) {
+		if ($orderObj['StockID'] == 110) {
             $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last()->toArray();
             $mailer->CharSet = 'utf-8';
             $mailer->AddReplyTo(Auth::getUser()->email, $user['EmpName']);
-            $mailer->SetFrom('tsipa@const.dp.ua', $user['EmpName']);
+			$mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
             $mailer->AddCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
             $mailer->AddAddress('glazunov@alista.com.ua', "Глазунов Петр Алимович");
             $mailer->addBCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
 
-            $mailer->Subject = "Заявка на " . $orderObj['CompName'];
-            $mailer->AltBody = "Заявка на " . $orderObj['CompName'];
-            $mailer->MsgHTML('<h1>Заявка на ' . $orderObj['CompName'] . '</h1>');
+			$mailer->Subject = "Заявка на " . $orderObj['CompName'];
+			$mailer->AltBody = "Заявка на " . $orderObj['CompName'];
+			$mailer->MsgHTML('<h1>Заявка на ' . $orderObj['CompName'] . '</h1>');
             $mailer->AddAttachment($filename);
-            if (!$mailer->Send()) {
+			if (!$mailer->Send()) {
                 return "Mailer Error: " . $mailer->ErrorInfo;
             } else {
                 return "Message sent!";
@@ -359,7 +358,7 @@ class TestController extends BaseController
             $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last()->toArray();
             $mailer->CharSet = 'utf-8';
             $mailer->AddReplyTo(Auth::getUser()->email, $user['EmpName']);
-            $mailer->SetFrom('tsipa@const.dp.ua', $user['EmpName']);
+			$mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
             $mailer->AddCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
             $mailer->addBCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
 
@@ -367,7 +366,7 @@ class TestController extends BaseController
             $mailer->AltBody = "Заявка на отбор товара";
             $mailer->MsgHTML('<h1> Заявка на отбор товара </h1>');
             $mailer->AddAttachment($filename);
-            if (!$mailer->Send()) {
+			if (!$mailer->Send()) {
                 return "Mailer Error: " . $mailer->ErrorInfo;
             } else {
                 return "Message sent!";
@@ -378,20 +377,20 @@ class TestController extends BaseController
     public function getCompID()
     {
         $compID = \Orders::where('orderID', '=', Input::get('id'))->get(['CompID'])->toArray();
-        if (empty($compID)) {
+		if (empty($compID)) {
             $compID = \Orders::where('DocID', '=', Input::get('id'))->get(['CompID'])->last()->toArray();
         } else {
             $compID = \Orders::where('orderID', '=', Input::get('id'))->get(['CompID'])->last()->toArray();
-        }
+		}
         return $compID['CompID'];
     }
 
-    public function approved()
-    {
+	public function approved()
+	{
         clearstatcache(true, 'public/packages/manager/approved-order.js');
         $orderID = 27151;
         $ord = \Orders::where('orderID', '=', $orderID)->get()->toArray();
-        if (empty($ord)) {
+		if (empty($ord)) {
             $orderType = 'DocID';
         } else {
             $orderType = 'orderID';
@@ -406,13 +405,13 @@ class TestController extends BaseController
         $compAddName = [];
         $compContactID = [];
         $compContactName = [];
-        foreach ($compAdd as $key => $value) {
+		foreach ($compAdd as $key => $value) {
             array_push($compAddID, $value['CompAdd']);
             array_push($compAddName, $value['CompAdd']);
         }
         unset($compAdd);
         $compAdd = array_combine($compAddID, $compAddName);
-        foreach ($compContact as $key => $value) {
+		foreach ($compContact as $key => $value) {
             array_push($compContactID, $value['Contact']);
             array_push($compContactName, $value['Contact']);
         }
@@ -420,9 +419,9 @@ class TestController extends BaseController
         unset($compContact);
         $compContact = array_combine($compContactID, $compContactName);
         $transporter = \Transporter::get()->toArray();
-        $transporterID = [];
-        $transporterName = [];
-        foreach ($transporter as $key => $value) {
+		$transporterID = [];
+		$transporterName = [];
+		foreach ($transporter as $key => $value) {
             array_push($transporterID, $value['transporterID']);
             array_push($transporterName, $value['transporterName']);
         }
@@ -447,79 +446,75 @@ class TestController extends BaseController
         ));
     }
 
-    public function addGoods()
-    {
-        $pgrID3 = Input::get('categ');
-        $currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
-        $prods = \Prods::where('PGrID3', '=', $pgrID3)->get(['ProdID', 'ProdName', 'ShortProdName', 'UM'])->toArray();
-        $goods = [];
-        foreach ($prods as $key => $value) {
-            $good = [];
-            $pl = \ProdMP::where('ProdID', '=', $value['ProdID'])->orderBy('PLID', 'asc')->get(['PLID', 'PriceMC'])->toArray();
-            $rem = \Rem::where('ProdID', '=', $value['ProdID'])->groupBy('ProdID')->get(['RemCash', 'ResCash', 'RemUncash', 'ResUncash'])->toArray();
-            if (!empty($rem) && !empty($pl)) {
-                array_push($good, $value, $pl, $rem);
-                array_push($goods, $good);
-            } else {
-                continue;
-            }
-        }
-        $html = '';
-        foreach ($goods as $key => $value) {
-            $html .= '<tr><th><div class="shortName">' . $value[0]['ShortProdName'] . '</div></th>';
-            $html .= '<th><div class="name">' . $value[0]['ProdName'] . '</div></th>';
-            $html .= '<th><input class="quantity" type="number" autocorrect="off" pattern="\d*" novalidate></th>';
-            $html .= '<th><div class="UM">' . $value[0]['UM'] . '</div></th>';
-            $html .= '<th><span style="width: 100%; height: 100%" class="btn price" name="price' . $key . '" id="price' . $key . '"></span></th>';
-            $html .= '<th><div class="remains_cashless" name="residue' . $key . '" >' . round(($value[2][0]['RemUncash'] - $value[2][0]['ResUncash']), 2) . '</div></th>';
-            $html .= '<th><div class="remains_cash" name="residue' . $key . '" >' . round(($value[2][0]['RemCash'] - $value[2][0]['ResCash']), 2) . '</div></th>';
-            if (count($value[1]) == 10) {
-                $html .= '<th hidden="hidden" class="pl1">' . ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl2">' . ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl3">' . ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl4">' . ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl5">' . ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl6">' . ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl7">' . ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl8">' . ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl9">' . ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl10">' . ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-            } elseif (count($value[1]) == 11) {
-                $html .= '<th hidden="hidden" class="pl0">' . ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl1">' . ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl2">' . ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl3">' . ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl4">' . ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl5">' . ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl6">' . ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl7">' . ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl8">' . ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl9">' . ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-                $html .= '<th hidden="hidden" class="pl10">' . ceil(($value[1][10]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-            }
+	public function addGoods()
+	{
+		$pgrID3 = Input::get('categ');
+		$currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
+		$prods = \Prods::where('PGrID3', '=', $pgrID3)->get(['ProdID', 'ProdName', 'ShortProdName', 'UM'])->toArray();
+		$goods = [];
+		foreach ($prods as $key => $value) {
+			$good = [];
+			$pl = \ProdMP::where('ProdID', '=', $value['ProdID'])->orderBy('PLID', 'asc')->get(['PLID', 'PriceMC'])->toArray();
+			$rem = \Rem::where('ProdID', '=', $value['ProdID'])->groupBy('ProdID')->get(['RemCash', 'ResCash', 'RemUncash', 'ResUncash'])->toArray();
+			if (!empty($rem) && !empty($pl)) {
+				array_push($good, $value, $pl, $rem);
+				array_push($goods, $good);
+			} else {
+				continue;
+			}
+		}
+		$html = '';
+		foreach ($goods as $key => $value) {
+			$html .= '<tr><th><div class="shortName">' . $value[0]['ShortProdName'] . '</div></th>';
+			$html .= '<th><div class="name">' . $value[0]['ProdName'] . '</div></th>';
+			$html .= '<th><input class="quantity" type="number" autocorrect="off" pattern="\d*" novalidate></th>';
+			$html .= '<th><div class="UM">' . $value[0]['UM'] . '</div></th>';
+			$html .= '<th><span style="width: 100%; height: 100%" class="btn price" name="price' . $key . '" id="price' . $key . '"></span></th>';
+			$html .= '<th><div class="remains_cashless" name="residue' . $key . '" >' . round(($value[2][0]['RemUncash'] - $value[2][0]['ResUncash']), 2) . '</div></th>';
+			$html .= '<th><div class="remains_cash" name="residue' . $key . '" >' . round(($value[2][0]['RemCash'] - $value[2][0]['ResCash']), 2) . '</div></th>';
+			if (count($value[1]) == 10) {
+				$html .= '<th hidden="hidden" class="pl1">' . ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl2">' . ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl3">' . ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl4">' . ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl5">' . ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl6">' . ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl7">' . ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl8">' . ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl9">' . ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl10">' . ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+			} elseif (count($value[1]) == 11) {
+				$html .= '<th hidden="hidden" class="pl0">' . ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl1">' . ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl2">' . ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl3">' . ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl4">' . ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl5">' . ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl6">' . ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl7">' . ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl8">' . ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl9">' . ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+				$html .= '<th hidden="hidden" class="pl10">' . ceil(($value[1][10]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+			}
 
-            $html .= '<th><input type="button" class="btnAddGood btn btn-primary" value="Добавить"></th></tr>';
-        }
-        return $html;
-    }
+			$html .= '<th><input type="button" class="btnAddGood btn btn-primary" value="Добавить"></th></tr>';
+		}
+		return $html;
+	}
 
-    public function addCateg()
-    {
-        $pgr3Obj = \ProdGr3::whereNotIn('PGrID3', [395, 397, 398, 400, 404, 407, 408, 410, 422, 424, 427, 428, 429, 490, 494, 495, 499, 500, 504])
-            ->whereNotBetween('PGrID3', [448, 458])
-            ->whereNotBetween('PGrID3', [470, 484])
-            ->orderBy('PGrName3', 'asc')
-            ->get(['PGrID3', 'PGrName3'])->toArray();
-        $pgrName3 = [];
-        $pgrID3 = [];
-        foreach ($pgr3Obj as $key => $value) {
-            array_push($pgrName3, $value['PGrName3']);
-            array_push($pgrID3, $value['PGrID3']);
-        }
-        unset($pgr3Obj);
-        $pgr3Obj = array_combine($pgrID3, $pgrName3);
-        return $pgr3Obj;
-    }
+	public function addCateg()
+	{
+		$pgr3Obj = \ProdGr3::whereNotIn('PGrID3', [395, 397, 398, 400, 404, 407, 408, 410, 422, 424, 427, 428, 429, 490, 494, 495, 499, 500, 504])->whereNotBetween('PGrID3', [448, 458])->whereNotBetween('PGrID3', [470, 484])->orderBy('PGrName3', 'asc')->get(['PGrID3', 'PGrName3'])->toArray();
+		$pgrName3 = [];
+		$pgrID3 = [];
+		foreach ($pgr3Obj as $key => $value) {
+			array_push($pgrName3, $value['PGrName3']);
+			array_push($pgrID3, $value['PGrID3']);
+		}
+		unset($pgr3Obj);
+		$pgr3Obj = array_combine($pgrID3, $pgrName3);
+		return $pgr3Obj;
+	}
 
     public function sendOrderComp()
     {
@@ -533,14 +528,14 @@ class TestController extends BaseController
         $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last()->toArray();
         $mailer->CharSet = 'utf-8';
         $mailer->AddReplyTo(Auth::getUser()->email, $user['EmpName']);
-        $mailer->SetFrom('tsipa@const.dp.ua', $user['EmpName']);
+		$mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
         $mailer->AddAddress($email, "");
-        $mailer->Subject = "Счет на " . $orderObj['CompName'];
-        $mailer->AltBody = "Счет на " . $orderObj['CompName'];
-        $mailer->MsgHTML('<h1> Счет на ' . $orderObj['CompName'] . '</h1>');
+		$mailer->Subject = "Счет на " . $orderObj['CompName'];
+		$mailer->AltBody = "Счет на " . $orderObj['CompName'];
+		$mailer->MsgHTML('<h1> Счет на ' . $orderObj['CompName'] . '</h1>');
         $mailer->AddAttachment($filename);
-        if (!$mailer->Send()) {
-            $msg = "Произошла ошибка при отправке: " . $mailer->ErrorInfo . '.';
+		if (!$mailer->Send()) {
+			$msg = "Произошла ошибка при отправке: " . $mailer->ErrorInfo . '.';
             $msg .= '<br/>Обратитесь к администратору';
             return View::make('msg', compact(['msg']));
         } else {
@@ -560,14 +555,14 @@ class TestController extends BaseController
         $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last()->toArray();
         $mailer->CharSet = 'utf-8';
         $mailer->AddReplyTo(Auth::getUser()->email, $user['EmpName']);
-        $mailer->SetFrom('tsipa@const.dp.ua', $user['EmpName']);
+		$mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
         $mailer->AddAddress($email, "");
-        $mailer->Subject = "Счет на " . $orderObj['CompName'];
-        $mailer->AltBody = "Счет на " . $orderObj['CompName'];
-        $mailer->MsgHTML('<h1> Счет на ' . $orderObj['CompName'] . '</h1>');
+		$mailer->Subject = "Счет на " . $orderObj['CompName'];
+		$mailer->AltBody = "Счет на " . $orderObj['CompName'];
+		$mailer->MsgHTML('<h1> Счет на ' . $orderObj['CompName'] . '</h1>');
         $mailer->AddAttachment($filename);
-        if (!$mailer->Send()) {
-            $msg = "Произошла ошибка при отправке: " . $mailer->ErrorInfo . '.';
+		if (!$mailer->Send()) {
+			$msg = "Произошла ошибка при отправке: " . $mailer->ErrorInfo . '.';
             $msg .= '<br/>Обратитесь к администратору';
             return View::make('msg', compact(['msg']));
         } else {
@@ -576,11 +571,11 @@ class TestController extends BaseController
         }
     }
 
-    public function viewOrder()
-    {
+	public function viewOrder()
+	{
         $orderID = Input::get('orderID');
         $arrOrder = \Orders::where('DocID', '=', $orderID)->get()->last()->toArray();
-        if ($arrOrder['CompID'] != 0) {
+		if ($arrOrder['CompID'] != 0) {
             $filename = $this->createPdf($orderID);
             $orderArr = \Orders::where('DocID', '=', $orderID)
                 ->get()->last()->toArray();
@@ -602,46 +597,45 @@ class TestController extends BaseController
             //->where('status', '!=', 10)
             ->get()->toArray();
         $date = $arrOrder['created_at'];
-        $arrDate = explode('-', $date);
+		$arrDate = explode('-', $date);
         $partDate = explode(' ', $arrDate[2]);
-        $strDate = $partDate[0] . '.' . $arrDate[1] . '.' . $arrDate[0];
+		$strDate = $partDate[0] . '.' . $arrDate[1] . '.' . $arrDate[0];
         $typeInv = $arrOrder['CodeID3'];
-        $pdf->AddFont('Tahoma', '', 'tahoma.php');
-        $pdf->AddFont('Tahoma-bold', '', 'tahoma_bold.php');
+		$pdf->AddFont('Tahoma', '', 'tahoma.php');
+		$pdf->AddFont('Tahoma-bold', '', 'tahoma_bold.php');
         $pdf->SetAutoPageBreak(true, 20);
         $pdf->AliasNbPages();
         $pdf->data($orderID, $strDate);
         $pdf->Open();
         $pdf->AddPage();
-        if ($typeInv == 4) {
-            $pdf->SetFont('Tahoma-bold', '', 8);
+		if ($typeInv == 4) {
+			$pdf->SetFont('Tahoma-bold', '', 8);
             $pdf->Cell(120, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",
                 'ПУБЛІЧНЕ АКЦІОНЕРНЕ ТОВАРИСТВО "ДНІПРОПОЛІМЕРМАШ"'), 0, 0, 'L');
-            $pdf->SetFont('Tahoma', '', 8);
+			$pdf->SetFont('Tahoma', '', 8);
             $pdf->Cell(75, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'р/с 2600718904'), 0, 0, 'R');
             $pdf->Ln();
             $pdf->Cell(120, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", '49033, м. Дніпропетровськ'), 0, 0, 'L');
             $pdf->Cell(75, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'ПАТ «ПУМБ», м. Дніпропетровськ'), 0, 0, 'R');
             $pdf->Ln();
             $pdf->Cell(120, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'вул. Героїв Сталінграда,147'), 0, 0, 'L');
-            $pdf->SetFont('Tahoma-bold', '', 8);
+			$pdf->SetFont('Tahoma-bold', '', 8);
             $pdf->Cell(75, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'МФО 334851'), 0, 0, 'R');
             $pdf->Ln();
             $pdf->Cell(120, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",
                 'Податковий код: 002186104027, Свідоцтво: 100335408'), 0, 0, 'L');
-            $pdf->SetFont('Tahoma', '', 8);
+			$pdf->SetFont('Tahoma', '', 8);
             $pdf->Cell(75, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Код ОКПО 00218615'), 0, 0, 'R');
             $pdf->Ln();
         } else {
-            $pdf->SetFont('Tahoma', '', 8);
-            $pdf->Cell(15, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Алиста'), 0, 0, 'L');
+			$pdf->SetFont('Tahoma', '', 8);
+			$pdf->Cell(15, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Алиста'), 0, 0, 'L');
             $pdf->Ln(20);
         }
         $pdf->Ln();
-        if (\Comps::where('comps.CompID', '=', $arrOrder['CompID'])
-            ->join('CompAdd', 'CompAdd.CompID', '=', 'comps.CompID')
-            ->get()->toArray()
-        ) {
+		if (\Comps::where('comps.CompID', '=', $arrOrder['CompID'])
+            ->join('CompAdd', 'CompAdd.CompID', '=', 'comps.CompID')->get()->toArray()
+		) {
             $comp = \Comps::where('CompID', '=', $arrOrder['CompID'])
                 ->get()->last()->toArray();
             $compAdd = \CompAdd::where('CompID', '=', $arrOrder['CompID'])
@@ -652,14 +646,14 @@ class TestController extends BaseController
             $compAdd = ['CompAdd' => ''];
         }
         $pdf->Rect($pdf->GetX(), $pdf->GetY(), 40, 20);
-        $pdf->Rect($pdf->GetX() + 40, $pdf->GetY(), 115, 20);
-        $pdf->Rect($pdf->GetX() + 155, $pdf->GetY(), 40, 20);
-        $pdf->SetFont('Tahoma-bold', '', 8);
+		$pdf->Rect($pdf->GetX() + 40, $pdf->GetY(), 115, 20);
+		$pdf->Rect($pdf->GetX() + 155, $pdf->GetY(), 40, 20);
+		$pdf->SetFont('Tahoma-bold', '', 8);
         $pdf->Cell(40, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Підприємство:'), 0, 0, 'R');
         $pdf->Cell(115, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $comp['CompName']), 0, 0, 'L');
         $pdf->Cell(40, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $comp['CompID']), 0, 0, 'L');
         $pdf->Ln();
-        $pdf->SetFont('Tahoma', '', 8);
+		$pdf->SetFont('Tahoma', '', 8);
         $pdf->Cell(40, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Адреса:'), 0, 0, 'R');
         $pdf->Cell(115, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $compAdd['CompAdd']), 0, 0, 'L');
         $pdf->Cell(40, 2, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", '72'), 0, 0, 'L');
@@ -682,20 +676,20 @@ class TestController extends BaseController
         $totalQty = '';
         $totalPriceCCnt = '';
         $totalPriceWithTax = '';
-        foreach ($arrProd as $key => $value) {
+		foreach ($arrProd as $key => $value) {
             $prodBody[$key][] = $value['ProdID'];
             $prodBody[$key][] = $value['ProdName'];
             $prodBody[$key][] = $value['UM'];
             $prodBody[$key][] = round($value['Qty'], 0);
-            $prodBody[$key][] = str_replace('.', ',', round(($value['PriceMC'] / 1.2), 2));
-            $prodBody[$key][] = str_replace('.', ',', round(($value['PriceMC'] / 1.2) * $value['Qty'], 2));
-            $prodBody[$key][] = str_replace('.', ',', round($value['PriceMC'], 2));
-            $prodBody[$key][] = str_replace('.', ',', round($value['PriceMC'] * $value['Qty'], 2));
+			$prodBody[$key][] = str_replace('.', ',', round(($value['PriceMC'] / 1.2), 2));
+			$prodBody[$key][] = str_replace('.', ',', round(($value['PriceMC'] / 1.2) * $value['Qty'], 2));
+			$prodBody[$key][] = str_replace('.', ',', round($value['PriceMC'], 2));
+			$prodBody[$key][] = str_replace('.', ',', round($value['PriceMC'] * $value['Qty'], 2));
             $prod = \Prods::where('ProdID', '=', $value['ProdID'])
                 ->get(['Weight'])->last();
             $Weight = $prod['Weight'] * $value['Qty'];
-            $PriceCCnt = (($value['PriceMC'] / 1.2) * $value['Qty']);
-            $PriceWithTax = ($value['PriceMC'] * $value['Qty']);
+			$PriceCCnt = (($value['PriceMC'] / 1.2) * $value['Qty']);
+			$PriceWithTax = ($value['PriceMC'] * $value['Qty']);
             $totalQty += $value['Qty'];
             $totalWeight += $Weight;
             $totalPriceCCnt += $PriceCCnt;
@@ -704,36 +698,35 @@ class TestController extends BaseController
         $pdf->SetWidths([15, 70, 15, 15, 20, 20, 20, 20]);
         $pdf->RowExtended($prodHead, 5, 1, 'C', 1);
         $pdf->Ln();
-        foreach ($prodBody as $key => $value) {
+		foreach ($prodBody as $key => $value) {
             $pdf->RowExtended($value, 7, 1, 'L', 1);
             $pdf->Ln();
         }
-        $pdf->AddFont('Tahoma-bold', '', 'tahoma-bold.php');
-        $pdf->SetFont('Tahoma-bold', '', 8);
+		$pdf->AddFont('Tahoma-bold', '', 'tahoma-bold.php');
+		$pdf->SetFont('Tahoma-bold', '', 8);
         $pdf->Ln(3);
-        $pdf->Cell(150, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Кількість: ' . round($totalQty, 0)), 0, 0, 'L');
+		$pdf->Cell(150, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Кількість: ' . round($totalQty, 0)), 0, 0, 'L');
         $pdf->Cell(20, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Сума без НДС:'), 0, 0, 'R');
-        $pdf->Cell(25, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", str_replace('.', ',', round($totalPriceCCnt, 2))), 0, 0, 'R');
+		$pdf->Cell(25, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", str_replace('.', ',', round($totalPriceCCnt, 2))), 0, 0, 'R');
         $pdf->Ln();
-        $pdf->Cell(150, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Загальна вага: ' . str_replace('.', ',', $totalQty) . ' кг.'), 0, 0, 'L');
+		$pdf->Cell(150, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Загальна вага: ' . str_replace('.', ',', $totalQty) . ' кг.'), 0, 0, 'L');
         $pdf->Cell(20, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Сума НДС:'), 0, 0, 'R');
-        $pdf->Cell(25, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", str_replace('.', ',', round(($totalPriceWithTax / 6), 2))), 0, 0, 'R');
+		$pdf->Cell(25, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", str_replace('.', ',', round(($totalPriceWithTax / 6), 2))), 0, 0, 'R');
         $pdf->Ln(10);
-        $pdf->SetFont('Tahoma-bold', '', 10);
+		$pdf->SetFont('Tahoma-bold', '', 10);
         $pdf->SetWidths([25, 150, 20]);
-        $footerOrder = [0 => 'Сума з ПДВ:', 1 => $pdf->num2text_ua($totalPriceWithTax), 2 => str_replace('.', ',', round($totalPriceWithTax, 2))];
+		$footerOrder = [0 => 'Сума з ПДВ:', 1 => $pdf->num2text_ua($totalPriceWithTax), 2 => str_replace('.', ',', round($totalPriceWithTax, 2))];
         $pdf->RowExtended($footerOrder, 8, 1, 'C');
         $pdf->Ln();
-        $pdf->SetFont('Tahoma-bold', '', 8);
-        $pdf->Cell(195, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",
-            'Вiдхилення кiлькостi одиниць товару в упаковцi може складати +/-3% вiд кiлькостi, зазначеної на упаковці'),
+		$pdf->SetFont('Tahoma-bold', '', 8);
+        $pdf->Cell(195, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Вiдхилення кiлькостi одиниць товару в упаковцi може складати +/-3% вiд кiлькостi, зазначеної на упаковці'),
             0, 0, 'L');
         $pdf->Ln(20);
         $pdf->Cell(50, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Директор:'), 0, 0, 'L');
         $pdf->Ln(15);
         $pdf->Cell(50, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'М П'), 0, 0, 'L');
         $pdf->Ln(10);
-        $pdf->SetFont('Tahoma-bold', '', 14);
+		$pdf->SetFont('Tahoma-bold', '', 14);
         $pdf->SetTextColor(255, 0, 0);
         $pdf->Cell(195, 15, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Увага!!! Нові реквізити!!!'), 0, 0, 'C');
         $pdf->Ln();
@@ -749,41 +742,41 @@ class TestController extends BaseController
         //return [1 => $fileName, 2 => $orderID];
     }
 
-    public function editOrder()
-    {
+	public function editOrder()
+	{
         $orderID = Input::get('orderID');
         $ord = \Orders::where('orderID', '=', $orderID)->get()->toArray();
-        if (empty($ord)) {
+		if (empty($ord)) {
             $orderType = 'DocID';
         } else {
             $orderType = 'orderID';
         }
-        if (Auth::getUser()->status == 1) {
-            $Emps = \Emps::orderBy('EmpName', 'desc')->get()->toArray();
-            $empName = [];
-            $empID = [];
-            foreach ($Emps as $key => $value) {
-                array_push($empName, $value['EmpName']);
-                array_push($empID, $value['EmpID']);
+		if (Auth::getUser()->status == 1) {
+			$Emps = \Emps::orderBy('EmpName', 'desc')->get()->toArray();
+			$empName = [];
+			$empID = [];
+			foreach ($Emps as $key => $value) {
+				array_push($empName, $value['EmpName']);
+				array_push($empID, $value['EmpID']);
             }
             unset($Emps);
             $Emps = array_combine($empID, $empName);
-        } else {
-            $empID = Auth::getUser()->EmpID;
-            $empNameObj = \Emps::where('EmpID', '=', $empID)->get()->toArray();
-            $empName = $empNameObj[0]['EmpName'];
-            $Emps = [$empID => $empName];
-        }
+		} else {
+			$empID = Auth::getUser()->EmpID;
+			$empNameObj = \Emps::where('EmpID', '=', $empID)->get()->toArray();
+			$empName = $empNameObj[0]['EmpName'];
+			$Emps = [$empID => $empName];
+		}
         $totalPricePos = '';
-        $comps = \Comps::orderBy('CompName', 'asc')->get(['CompName', 'CompID'])->toArray();
-        $compName = [];
-        $compID = [];
-        foreach ($comps as $key => $value) {
-            if ($value['CompName'] == NULL) {
+		$comps = \Comps::orderBy('CompName', 'asc')->get(['CompName', 'CompID'])->toArray();
+		$compName = [];
+		$compID = [];
+		foreach ($comps as $key => $value) {
+			if ($value['CompName'] == NULL) {
                 continue;
             } else {
-                array_push($compName, $value['CompName']);
-                array_push($compID, $value['CompID']);
+				array_push($compName, $value['CompName']);
+				array_push($compID, $value['CompID']);
             }
         }
         unset($comps);
@@ -795,8 +788,7 @@ class TestController extends BaseController
         $curCompName = $curComp['CompName'];
         $aboutOrder = \Orders::where($orderType, '=', $orderID)
             ->join('Emps', 'Emps.EmpID', '=', 'orders.EmpID')
-            ->join('status_inv', 'status_inv.statusType', '=', 'orders.status')
-            ->get(['orders.status', 'Emps.EmpName', 'orders.EmpID'])
+            ->join('status_inv', 'status_inv.statusType', '=', 'orders.status')->get(['orders.status', 'Emps.EmpName', 'orders.EmpID'])
             ->last()
             ->toArray();
         $orders = \Orders::where($orderType, '=', $orderID)
@@ -805,34 +797,33 @@ class TestController extends BaseController
             ->join('prods', 'prods.ProdID', '=', 'orders.ProdID')
             ->get(['prods.ShortProdName', 'orders.orderID', 'orders.DocID', 'orders.Kurs', 'orders.CompID',
                 'orders.CompName', 'orders.ProdID', 'orders.ProdName', 'orders.CodeID3', 'orders.UM',
-                'orders.Qty', 'orders.PriceMC', 'orders.PLID', 'orders.StockID',
-                'orders.SrcPosID', 'orders.status'])
+                'orders.Qty', 'orders.PriceMC', 'orders.PLID', 'orders.StockID', 'orders.SrcPosID', 'orders.status'])
             ->toArray();
-        foreach ($orders as $key => $value) {
-            if ($value['status'] == 10) {
+		foreach ($orders as $key => $value) {
+			if ($value['status'] == 10) {
                 $orders[$key]['color'] = '#EE8F48';
             } else {
                 $orders[$key]['color'] = '';
             }
-            $orders[$key]['totalPricePosCC'] = $value['Qty'] * $value['PriceMC'];
-            $orders[$key]['totalPricePosMC'] = $value['Qty'] * $value['PriceMC'] / $value['Kurs'];
+			$orders[$key]['totalPricePosCC'] = $value['Qty'] * $value['PriceMC'];
+			$orders[$key]['totalPricePosMC'] = $value['Qty'] * $value['PriceMC'] / $value['Kurs'];
         }
-        foreach ($orders as $key => $value) {
+		foreach ($orders as $key => $value) {
             $pl = \ProdMP::where('ProdID', '=', $value['ProdID'])
                 ->orderBy('PLID', 'asc')
                 ->get(['PLID', 'PriceMC'])
                 ->toArray();
             $orders[$key]['pl'] = $pl;
         }
-        $currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
-        return View::make('accr.edit-order', compact(['aboutOrder', 'orders', 'orderID', 'comps',
+		$currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
+		return View::make('accr.edit-order', compact(['aboutOrder', 'orders', 'orderID', 'comps',
             'curCompName', 'curCompID', 'currency', 'Emps']));
-    }
+	}
 
-    public function saveEditOrder()
-    {
-        $res = Input::get('res');
-        if (\Orders::where('orderID', '=', Input::get('orderID'))->get()->toArray()) {
+	public function saveEditOrder()
+	{
+		$res = Input::get('res');
+		if (\Orders::where('orderID', '=', Input::get('orderID'))->get()->toArray()) {
             $DocIdArr = \Orders::where('orderID', '=', Input::get('orderID'))->get(['DocID'])->last()->toArray();
             $DocID = $DocIdArr['DocID'];
             $orderID = Input::get('orderID');
@@ -843,35 +834,35 @@ class TestController extends BaseController
             $DocID = Input::get('orderID');
             \Orders::where('DocID', '=', Input::get('orderID'))->delete();
         }
-        if (empty($res)) {
-            return ['message' => ['error' => 'Нет позиций в счете']];
-        }
-        $pos = 1;
-        $result = [];
-        foreach ($res as $key => $value) {
-            $goods = \Prods::where('ProdName', '=', $value['name'])->get()->first()->toArray();
-            if (empty($goods)) {
-                return ['message' => ['error' => 'Нет товара']];
-            }
-            $comp = \Comps::where('CompID', '=', $value['CompID'])->get()->first()->toArray();
-            if (empty($comp)) {
-                return ['message' => ['error' => 'Нет предприятия']];
-            }
-            $rem = \Rem::where('ProdID', '=', $goods['ProdID'])->get()->first()->toArray();
-            if (empty($rem)) {
-                return ['message' => ['error' => 'Нет остатков']];
-            }
-            $price = \ProdMP::where('ProdID', '=', $goods['ProdID'])->where('PLID', '=', $value['pl'])->get(['PriceMC'])->toArray();
-            if (empty($price)) {
-                return ['message' => ['error' => 'Нет цены']];
-            } else {
+		if (empty($res)) {
+			return ['message' => ['error' => 'Нет позиций в счете']];
+		}
+		$pos = 1;
+		$result = [];
+		foreach ($res as $key => $value) {
+			$goods = \Prods::where('ProdName', '=', $value['name'])->get()->first()->toArray();
+			if (empty($goods)) {
+				return ['message' => ['error' => 'Нет товара']];
+			}
+			$comp = \Comps::where('CompID', '=', $value['CompID'])->get()->first()->toArray();
+			if (empty($comp)) {
+				return ['message' => ['error' => 'Нет предприятия']];
+			}
+			$rem = \Rem::where('ProdID', '=', $goods['ProdID'])->get()->first()->toArray();
+			if (empty($rem)) {
+				return ['message' => ['error' => 'Нет остатков']];
+			}
+			$price = \ProdMP::where('ProdID', '=', $goods['ProdID'])->where('PLID', '=', $value['pl'])->get(['PriceMC'])->toArray();
+			if (empty($price)) {
+				return ['message' => ['error' => 'Нет цены']];
+			} else {
                 $price = \ProdMP::where('ProdID', '=', $goods['ProdID'])->where('PLID', '=', $value['pl'])->get(['PriceMC'])->last()->toArray();
             }
-            if ($value['typeInv'] == 1) {
-                $currency = \Currency::where('appointment', '=', 1)->get(['value'])->first()->value;
-            } else {
-                $currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
-            }
+			if ($value['typeInv'] == 1) {
+				$currency = \Currency::where('appointment', '=', 1)->get(['value'])->first()->value;
+			} else {
+				$currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
+			}
             \Orders::create(
                 [
                     'status' => 0,
@@ -907,17 +898,16 @@ class TestController extends BaseController
                     'StockID' => $value['stock'],
                     'CodeID3' => $value['typeInv'],
                     'EmpID' => $value['EmpID'],
-                    'PLID' => $value['pl'],
-                    'PriceMC' => $price['PriceMC'] * $currency,
+                    'PLID' => $value['pl'], 'PriceMC' => $price['PriceMC'] * $currency,
                     'Qty' => $value['quantity'],
                     'Kurs' => $currency
                 ];
             $result[$key] = ['state' => 'success', 'prod' => $prod];
-        }
+		}
         return $result;
-    }
+	}
 
-    public function exampleOrder()
+	public function exampleOrder()
     {
         $filename = 'test1.xls';
         //$xml = simplexml_load_file('test1.xml');
@@ -1059,11 +1049,11 @@ class PDF_MC_Table extends \fpdf\FPDF
 
     function Header()
     {
-        $this->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-        $this->SetFont('Tahoma-Bold', '', 14);
+		$this->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
+		$this->SetFont('Tahoma-Bold', '', 14);
         $this->Cell(145, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Заявка на відбір товару'), 0);
-        $this->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-        $this->SetFont('Tahoma-Bold', '', 8);
+		$this->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
+		$this->SetFont('Tahoma-Bold', '', 8);
         $this->Cell(25, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Номер: '), 0, 0, 'R');
         $this->Cell(25, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $this->orderID), 0, 0, 'R');
         $this->Ln();
@@ -1077,48 +1067,46 @@ class PDF_MC_Table extends \fpdf\FPDF
     function Footer()
     {
         $this->SetY(-15);
-        $this->AddFont('Tahoma', '', 'tahoma.php');
-        $this->SetFont('Tahoma', '', 5);
-        $this->Cell(0, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Сторінка') . $this->PageNo() . '/{nb}', 0, 0, 'R');
+		$this->AddFont('Tahoma', '', 'tahoma.php');
+		$this->SetFont('Tahoma', '', 5);
+		$this->Cell(0, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Сторінка') . $this->PageNo() . '/{nb}', 0, 0, 'R');
     }
 
     function SetWidths($w)
     {
         //Set the array of column widths
-        $this->widths = $w;
+		$this->widths = $w;
     }
 
     function SetAligns($a)
     {
         //Set the array of column alignments
-        $this->aligns = $a;
+		$this->aligns = $a;
     }
 
     function Row($data)
     {
         //Calculate the height of the row
-        $nb = 0;
-        foreach ($data as $key => $value)
-            if (isset($nd) && isset($data[$key])) {
-                $nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
+		$nb = 0;
+		foreach ($data as $key => $value) if (isset($nd) && isset($data[$key])) {
+			$nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
             }
-        $h = 5 * $nb;
+		$h = 5 * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
         //Draw the cells of the row
-        foreach ($data as $key => $value) {
-            if (isset($this->widths[$key]))
-                $w = $this->widths[$key];
-            $a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'C';
+		foreach ($data as $key => $value) {
+			if (isset($this->widths[$key])) $w = $this->widths[$key];
+			$a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'C';
             //Save the current position
-            $x = $this->GetX();
-            $y = $this->GetY();
+			$x = $this->GetX();
+			$y = $this->GetY();
             //Draw the border
             $this->Rect($x, $y, $w, $h);
             //Print the text
-            $this->MultiCell($w, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 1, $a);
+			$this->MultiCell($w, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 1, $a);
             //Put the position to the right of the cell
-            $this->SetXY($x + $w, $y);
+			$this->SetXY($x + $w, $y);
         }
         //Go to the next line
         $this->Ln($h);
@@ -1127,43 +1115,41 @@ class PDF_MC_Table extends \fpdf\FPDF
     function NbLines($w, $txt)
     {
         //Computes the number of lines a MultiCell of width w will take
-        $cw =& $this->CurrentFont['cw'];
-        if ($w == 0)
-            $w = $this->w - $this->rMargin - $this->x;
-        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
-        $s = str_replace("\r", '', $txt);
-        $nb = strlen($s);
-        if ($nb > 0 and $s[$nb - 1] == "\n")
+		$cw =& $this->CurrentFont['cw'];
+		if ($w == 0) $w = $this->w - $this->rMargin - $this->x;
+		$wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
+		$s = str_replace("\r", '', $txt);
+		$nb = strlen($s);
+		if ($nb > 0 and $s[$nb - 1] == "\n")
             $nb--;
-        $sep = -1;
-        $i = 0;
-        $j = 0;
-        $l = 0;
-        $nl = 1;
-        while ($i < $nb) {
-            $c = $s[$i];
-            if ($c == "\n") {
+		$sep = -1;
+		$i = 0;
+		$j = 0;
+		$l = 0;
+		$nl = 1;
+		while ($i < $nb) {
+			$c = $s[$i];
+			if ($c == "\n") {
                 $i++;
-                $sep = -1;
-                $j = $i;
-                $l = 0;
+				$sep = -1;
+				$j = $i;
+				$l = 0;
                 $nl++;
                 continue;
             }
-            if ($c == ' ')
-                $sep = $i;
-            $l += $cw[$c];
-            if ($l > $wmax) {
-                if ($sep == -1) {
-                    if ($i == $j)
+			if ($c == ' ') $sep = $i;
+			$l += $cw[$c];
+			if ($l > $wmax) {
+				if ($sep == -1) {
+					if ($i == $j)
                         $i++;
-                } else
-                    $i = $sep + 1;
-                $sep = -1;
-                $j = $i;
-                $l = 0;
+				} else
+					$i = $sep + 1;
+				$sep = -1;
+				$j = $i;
+				$l = 0;
                 $nl++;
-            } else
+			} else
                 $i++;
         }
         return $nl;
@@ -1172,34 +1158,32 @@ class PDF_MC_Table extends \fpdf\FPDF
     function CheckPageBreak($h)
     {
         //If the height h would cause an overflow, add a new page immediately
-        if ($this->GetY() + $h > $this->PageBreakTrigger)
+		if ($this->GetY() + $h > $this->PageBreakTrigger)
             $this->AddPage($this->CurOrientation);
     }
 
-    function RowExtended($data, $height = 10, $border = 1, $align = 'C')
+	function RowExtended($data, $height = 10, $border = 1, $align = 'C')
     {
         //Calculate the height of the row
-        $nb = 0;
-        foreach ($data as $key => $value)
-            if (isset($nd) && isset($data[$key])) {
-                $nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
+		$nb = 0;
+		foreach ($data as $key => $value) if (isset($nd) && isset($data[$key])) {
+			$nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
             }
-        $h = 5 * $nb;
+		$h = 5 * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
         //Draw the cells of the row
-        foreach ($data as $key => $value) {
-            if (isset($this->widths[$key]))
-                $w = $this->widths[$key];
-            $a = isset($this->aligns[$key]) ? $this->aligns[$key] : $align;
+		foreach ($data as $key => $value) {
+			if (isset($this->widths[$key])) $w = $this->widths[$key];
+			$a = isset($this->aligns[$key]) ? $this->aligns[$key] : $align;
             //Save the current position
-            $x = $this->GetX();
-            $y = $this->GetY();
+			$x = $this->GetX();
+			$y = $this->GetY();
             //Draw the border
             //Print the text
-            $this->MultiCell($w, $height, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), $border, $a);
+			$this->MultiCell($w, $height, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), $border, $a);
             //Put the position to the right of the cell
-            $this->SetXY($x + $w, $y);
+			$this->SetXY($x + $w, $y);
         }
         //Go to the next line
         $this->Ln($h);
@@ -1208,27 +1192,25 @@ class PDF_MC_Table extends \fpdf\FPDF
     function RowWithoutBorder($data)
     {
         //Calculate the height of the row
-        $nb = 0;
-        foreach ($data as $key => $value)
-            if (isset($nd) && isset($data[$key])) {
-                $nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
+		$nb = 0;
+		foreach ($data as $key => $value) if (isset($nd) && isset($data[$key])) {
+			$nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
             }
-        $h = 5 * $nb;
+		$h = 5 * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
         //Draw the cells of the row
-        foreach ($data as $key => $value) {
-            if (isset($this->widths[$key]))
-                $w = $this->widths[$key];
-            $a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'C';
+		foreach ($data as $key => $value) {
+			if (isset($this->widths[$key])) $w = $this->widths[$key];
+			$a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'C';
             //Save the current position
-            $x = $this->GetX();
-            $y = $this->GetY();
+			$x = $this->GetX();
+			$y = $this->GetY();
             //Draw the border
             //Print the text
-            $this->MultiCell($w, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 0, $a);
+			$this->MultiCell($w, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 0, $a);
             //Put the position to the right of the cell
-            $this->SetXY($x + $w, $y);
+			$this->SetXY($x + $w, $y);
         }
         //Go to the next line
         $this->Ln($h);
@@ -1237,27 +1219,25 @@ class PDF_MC_Table extends \fpdf\FPDF
     function RowToSigners($data)
     {
         //Calculate the height of the row
-        $nb = 0;
-        foreach ($data as $key => $value)
-            if (isset($nd) && isset($data[$key])) {
-                $nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
+		$nb = 0;
+		foreach ($data as $key => $value) if (isset($nd) && isset($data[$key])) {
+			$nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
             }
-        $h = 5 * $nb;
+		$h = 5 * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
         //Draw the cells of the row
-        foreach ($data as $key => $value) {
-            if (isset($this->widths[$key]))
-                $w = $this->widths[$key];
-            $a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'L';
+		foreach ($data as $key => $value) {
+			if (isset($this->widths[$key])) $w = $this->widths[$key];
+			$a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'L';
             //Save the current position
-            $x = $this->GetX();
-            $y = $this->GetY();
+			$x = $this->GetX();
+			$y = $this->GetY();
             //Draw the border
             //Print the text
-            $this->MultiCell($w, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 0, $a);
+			$this->MultiCell($w, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 0, $a);
             //Put the position to the right of the cell
-            $this->SetXY($x + $w, $y);
+			$this->SetXY($x + $w, $y);
         }
         //Go to the next line
         $this->Ln($h);

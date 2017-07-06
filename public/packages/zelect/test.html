@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link rel="stylesheet" href="node_modules/mocha/mocha.css"/>
+    <style>
+        #sut {
+            z-index: 2;
+            background-color: white;
+            border: 1px dashed #ccc;
+            padding: 10px;
+            position: fixed;
+            min-width: 300px;
+            right: 100px;
+            top: 100px;
+            border-radius: 16px;
+        }
+    </style>
+    <script src="node_modules/jquery-browser/lib/jquery.js"></script>
+    <script src="node_modules/underscore/underscore.js"></script>
+    <script src="node_modules/chai/chai.js"></script>
+    <script src="node_modules/mocha/mocha.js"></script>
+    <script src="zelect.js"></script>
+    <script>mocha.setup('bdd')</script>
+    <script src="test.js"></script>
+</head>
+<body>
+<div id="sut"></div>
+<div id="mocha"></div>
+<script>
+    var assert = chai.assert
+    chai.assert.eq = chai.assert.equal
+
+    window.mochaPhantomJS ? mochaPhantomJS.run() : mocha.run()
+
+    function setup(templateId) {
+        var select = $('#templates').find('.' + templateId).clone()
+        select.attr('id', 'select')
+        $('#sut').html(select)
+    }
+
+</script>
+<div id="templates" style="display:none">
+    <select class="empty"></select>
+    <select class="with-two-options">
+        <option>First</option>
+        <option>Last</option>
+    </select>
+    <select class="with-several-options">
+        <option>This is first</option>
+        <option>I'm filterished out</option>
+        <option>Here is second</option>
+        <option>I be third</option>
+        <option>Isn't fifth</option>
+    </select>
+    <select class="with-two-options-with-values">
+        <option value="first">First</option>
+        <option value="second">Second</option>
+    </select>
+    <select class="xss-payload">
+        <option>Evil option &lt;script&gt;throw new Error('XSS from option label')&lt;/script&gt;</option>
+        <option value="&lt;script&gt;throw new Error('XSS from option value')&lt;/script&gt;">Evil value</option>
+    </select>
+    <select class="option-with-empty-string">
+        <option value="something">Has a value</option>
+        <option value="something-elese">Also has a value</option>
+        <option value="">Has empty string as value</option>
+    </select>
+</div>
+</body>
+</html>

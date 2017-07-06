@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ORMConfig">
+    <option name="database" value="" />
+    <option name="ip" value="" />
+    <option name="packageName" value="" />
+    <option name="password" value="" />
+    <option name="port" value="" />
+    <option name="user" value="" />
+  </component>
+</project>

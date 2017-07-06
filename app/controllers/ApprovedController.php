@@ -8,9 +8,9 @@ require(__DIR__ . '/../Admin/PdfOrders.php');
 class ApprovedController extends BaseController
 {
 
-    public function index()
-    {
-        if (Auth::getUser()->status == 1) {
+	public function index()
+	{
+		if (Auth::getUser()->status == 1) {
             $approvedOnce = \Approved::where('AppID', '!=', 0)
                 ->join('orders', 'orders.DocID', '=', 'transporter.DocID')
                 ->join('status_inv', 'status_inv.statusType', '=', 'orders.status')
@@ -63,21 +63,21 @@ class ApprovedController extends BaseController
         $totalMC = '';
         $totalCC = '';
         $price = [];
-        foreach ($approvedOnce as $key => $value) {
-            $totalCC += $total / $value['Kurs'];
-            $total = $value['Qty'] * $value['PriceMC'];
+		foreach ($approvedOnce as $key => $value) {
+			$totalCC += $total / $value['Kurs'];
+			$total = $value['Qty'] * $value['PriceMC'];
             $totalMC += $total;
             $price[$value['DocID']] = round($totalMC, 2);
         }
-        foreach ($approvedOnce as $key => $value) {
-            foreach ($price as $k => $val) {
-                if ($k == $value['DocID']) {
+		foreach ($approvedOnce as $key => $value) {
+			foreach ($price as $k => $val) {
+				if ($k == $value['DocID']) {
                     $approvedOnce[$key]['totalPriceMC'] = $val;
                 }
             }
         }
         return View::make('approved-list', compact('approvedOnce'));
-    }
+	}
 
     public function sendPDF()
     {
@@ -93,12 +93,12 @@ class ApprovedController extends BaseController
         $appArr = \Approved::where('AppID', '=', $appID)
             ->get()->last();
         $orderID = $appArr->DocID;
-        $dateShipping = explode(' ', $appArr->dateShipping);
-        $arrDate = explode('-', $dateShipping[0]);
-        $strDate = $arrDate[2] . '.' . $arrDate[1] . '.' . $arrDate[0];
+		$dateShipping = explode(' ', $appArr->dateShipping);
+		$arrDate = explode('-', $dateShipping[0]);
+		$strDate = $arrDate[2] . '.' . $arrDate[1] . '.' . $arrDate[0];
         $date = explode(' ', $appArr->created_at);
         $dateArr = explode('-', $date[0]);
-        $strCDate = $dateArr[2] . '.' . $dateArr[1] . '.' . $dateArr[0];
+		$strCDate = $dateArr[2] . '.' . $dateArr[1] . '.' . $dateArr[0];
         $orders = \Orders::where('DocID', '=', $orderID)
             ->join('prods', 'prods.ProdID', '=', 'orders.ProdID')
             ->where('status', '=', 3)
@@ -228,14 +228,12 @@ class ApprovedController extends BaseController
                         <td style="text-align: center; align-content: center; font-size: 12px; font-weight: bold; overflow-y: hidden; margin: 0; padding: 0;">Кількість</td>
                         <td style="text-align: center; align-content: center; font-size: 12px; font-weight: bold; overflow-y: hidden; margin: 0; padding: 0;">Загальна кількість</td>
                 </tr></thead><tbody>';
-        foreach ($orders as $key => $value) {
+		foreach ($orders as $key => $value) {
             $TQty += $value['Qty'];
-            $prod = DB::select("SELECT Weight FROM prods WHERE ProdID =" . $value['ProdID']);
+			$prod = DB::select("SELECT Weight FROM prods WHERE ProdID =" . $value['ProdID']);
             $Weight = $prod[0]->Weight * $value['Qty'];
             $TWeight += $Weight;
-            $arrRem = DB::select("SELECT SUM(r.RemUnCash + r.RemCash) AS Rem FROM  Rem r"
-                . " WHERE r.ProdID = " . $value['ProdID']
-                . " AND r.StockID =" . $orders[0]['StockID']);
+			$arrRem = DB::select("SELECT SUM(r.RemUnCash + r.RemCash) as Rem FROM  Rem r" . " WHERE r.ProdID = " . $value['ProdID'] . " AND r.StockID =" . $orders[0]['StockID']);
             $prodBody[$key][] = $arrRem[0]->Rem;
             $html .= '<tr>
                 <td style="text-align: center; align-content: center; font-size: 12px; overflow-y: hidden; margin: 0; padding: 0;">' . $value['ProdID'] . '</td>
@@ -292,11 +290,11 @@ class ApprovedController extends BaseController
         $mailer = new PHPMailer();
         $appArr = \Approved::where('AppID', '=', $appID)->get(['DocID'])->last();
         $orderObj = \Orders::where('DocID', '=', $appArr->DocID)->get()->last();
-        if ($orderObj->StockID == 110) {
+		if ($orderObj->StockID == 110) {
             $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last();
             $mailer->CharSet = 'utf-8';
             $mailer->AddReplyTo(Auth::getUser()->email, $user->EmpName);
-            $mailer->SetFrom('tsipa@const.dp.ua', $user->EmpName);
+			$mailer->SetFrom('webmaster@metiz.alista.org.ua', $user->EmpName);
             $mailer->AddAddress('kyzmenkos@const.dp.ua', "Кузьменко Сергей Иванович");
             $mailer->AddCC('kyzmenkos@const.dp.ua', "Кузьменко Сергей Иванович");
             $mailer->AddAddress('afanasyevd@alista.com.ua', "Афанасьев Дмитрий Вадимович");
@@ -310,11 +308,11 @@ class ApprovedController extends BaseController
             $mailer->AddAddress('glazunov@alista.com.ua', "Глазунов Петр Алимович");
             $mailer->AddCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
             $mailer->addBCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
-            $mailer->Subject = "Заявка на " . $orderObj->CompName;
-            $mailer->AltBody = "Заявка на " . $orderObj->CompName;
-            $mailer->MsgHTML('<h1>Заявка на ' . $orderObj->CompName . '</h1>');
+			$mailer->Subject = "Заявка на " . $orderObj->CompName;
+			$mailer->AltBody = "Заявка на " . $orderObj->CompName;
+			$mailer->MsgHTML('<h1>Заявка на ' . $orderObj->CompName . '</h1>');
             $mailer->AddAttachment($filename);
-            if (!$mailer->Send()) {
+			if (!$mailer->Send()) {
                 return "Mailer Error: " . $mailer->ErrorInfo;
             } else {
                 return "Message sent!";
@@ -323,7 +321,7 @@ class ApprovedController extends BaseController
             $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last();
             $mailer->CharSet = 'utf-8';
             $mailer->AddReplyTo(Auth::getUser()->email, $user->EmpName);
-            $mailer->SetFrom('tsipa@const.dp.ua', $user->EmpName);
+			$mailer->SetFrom('webmaster@metiz.alista.org.ua', $user->EmpName);
             $mailer->AddAddress('kyzmenkos@const.dp.ua', "Кузьменко Сергей Иванович");
             $mailer->AddCC('kyzmenkos@const.dp.ua', "Кузьменко Сергей Иванович");
             $mailer->AddAddress('kurasova@alista.com.ua', "Курасова Светлана Васильевна");
@@ -343,7 +341,7 @@ class ApprovedController extends BaseController
             $mailer->AltBody = "Заявка на отбор товара";
             $mailer->MsgHTML('<h1> Заявка на отбор товара </h1>');
             $mailer->AddAttachment($filename);
-            if (!$mailer->Send()) {
+			if (!$mailer->Send()) {
                 return "Mailer Error: " . $mailer->ErrorInfo;
             } else {
                 return "Message sent!";
@@ -368,11 +366,11 @@ class PDF_MC_Table extends \fpdf\FPDF
 
     function Header()
     {
-        $this->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-        $this->SetFont('Tahoma-Bold', '', 14);
+		$this->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
+		$this->SetFont('Tahoma-Bold', '', 14);
         $this->Cell(145, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Заявка на відбір товару'), 0);
-        $this->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-        $this->SetFont('Tahoma-Bold', '', 8);
+		$this->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
+		$this->SetFont('Tahoma-Bold', '', 8);
         $this->Cell(25, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Номер: '), 0, 0, 'R');
         $this->Cell(25, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $this->orderID), 0, 0, 'R');
         $this->Ln();
@@ -386,48 +384,46 @@ class PDF_MC_Table extends \fpdf\FPDF
     function Footer()
     {
         $this->SetY(-15);
-        $this->AddFont('Tahoma', '', 'tahoma.php');
-        $this->SetFont('Tahoma', '', 5);
-        $this->Cell(0, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Сторінка') . $this->PageNo() . '/{nb}', 0, 0, 'R');
+		$this->AddFont('Tahoma', '', 'tahoma.php');
+		$this->SetFont('Tahoma', '', 5);
+		$this->Cell(0, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Сторінка') . $this->PageNo() . '/{nb}', 0, 0, 'R');
     }
 
     function SetWidths($w)
     {
         //Set the array of column widths
-        $this->widths = $w;
+		$this->widths = $w;
     }
 
     function SetAligns($a)
     {
         //Set the array of column alignments
-        $this->aligns = $a;
+		$this->aligns = $a;
     }
 
     function Row($data)
     {
         //Calculate the height of the row
-        $nb = 0;
-        foreach ($data as $key => $value)
-            if (isset($nd) && isset($data[$key])) {
-                $nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
+		$nb = 0;
+		foreach ($data as $key => $value) if (isset($nd) && isset($data[$key])) {
+			$nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
             }
-        $h = 5 * $nb;
+		$h = 5 * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
         //Draw the cells of the row
-        foreach ($data as $key => $value) {
-            if (isset($this->widths[$key]))
-                $w = $this->widths[$key];
-            $a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'C';
+		foreach ($data as $key => $value) {
+			if (isset($this->widths[$key])) $w = $this->widths[$key];
+			$a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'C';
             //Save the current position
-            $x = $this->GetX();
-            $y = $this->GetY();
+			$x = $this->GetX();
+			$y = $this->GetY();
             //Draw the border
             $this->Rect($x, $y, $w, $h);
             //Print the text
-            $this->MultiCell($w, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 1, $a);
+			$this->MultiCell($w, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 1, $a);
             //Put the position to the right of the cell
-            $this->SetXY($x + $w, $y);
+			$this->SetXY($x + $w, $y);
         }
         //Go to the next line
         $this->Ln($h);
@@ -436,43 +432,41 @@ class PDF_MC_Table extends \fpdf\FPDF
     function NbLines($w, $txt)
     {
         //Computes the number of lines a MultiCell of width w will take
-        $cw =& $this->CurrentFont['cw'];
-        if ($w == 0)
-            $w = $this->w - $this->rMargin - $this->x;
-        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
-        $s = str_replace("\r", '', $txt);
-        $nb = strlen($s);
-        if ($nb > 0 and $s[$nb - 1] == "\n")
+		$cw =& $this->CurrentFont['cw'];
+		if ($w == 0) $w = $this->w - $this->rMargin - $this->x;
+		$wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
+		$s = str_replace("\r", '', $txt);
+		$nb = strlen($s);
+		if ($nb > 0 and $s[$nb - 1] == "\n")
             $nb--;
-        $sep = -1;
-        $i = 0;
-        $j = 0;
-        $l = 0;
-        $nl = 1;
-        while ($i < $nb) {
-            $c = $s[$i];
-            if ($c == "\n") {
+		$sep = -1;
+		$i = 0;
+		$j = 0;
+		$l = 0;
+		$nl = 1;
+		while ($i < $nb) {
+			$c = $s[$i];
+			if ($c == "\n") {
                 $i++;
-                $sep = -1;
-                $j = $i;
-                $l = 0;
+				$sep = -1;
+				$j = $i;
+				$l = 0;
                 $nl++;
                 continue;
             }
-            if ($c == ' ')
-                $sep = $i;
-            $l += $cw[$c];
-            if ($l > $wmax) {
-                if ($sep == -1) {
-                    if ($i == $j)
+			if ($c == ' ') $sep = $i;
+			$l += $cw[$c];
+			if ($l > $wmax) {
+				if ($sep == -1) {
+					if ($i == $j)
                         $i++;
-                } else
-                    $i = $sep + 1;
-                $sep = -1;
-                $j = $i;
-                $l = 0;
+				} else
+					$i = $sep + 1;
+				$sep = -1;
+				$j = $i;
+				$l = 0;
                 $nl++;
-            } else
+			} else
                 $i++;
         }
         return $nl;
@@ -481,34 +475,32 @@ class PDF_MC_Table extends \fpdf\FPDF
     function CheckPageBreak($h)
     {
         //If the height h would cause an overflow, add a new page immediately
-        if ($this->GetY() + $h > $this->PageBreakTrigger)
+		if ($this->GetY() + $h > $this->PageBreakTrigger)
             $this->AddPage($this->CurOrientation);
     }
 
-    function RowExtended($data, $height = 10, $border = 1, $align = 'C')
+	function RowExtended($data, $height = 10, $border = 1, $align = 'C')
     {
         //Calculate the height of the row
-        $nb = 0;
-        foreach ($data as $key => $value)
-            if (isset($nd) && isset($data[$key])) {
-                $nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
+		$nb = 0;
+		foreach ($data as $key => $value) if (isset($nd) && isset($data[$key])) {
+			$nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
             }
-        $h = 5 * $nb;
+		$h = 5 * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
         //Draw the cells of the row
-        foreach ($data as $key => $value) {
-            if (isset($this->widths[$key]))
-                $w = $this->widths[$key];
-            $a = isset($this->aligns[$key]) ? $this->aligns[$key] : $align;
+		foreach ($data as $key => $value) {
+			if (isset($this->widths[$key])) $w = $this->widths[$key];
+			$a = isset($this->aligns[$key]) ? $this->aligns[$key] : $align;
             //Save the current position
-            $x = $this->GetX();
-            $y = $this->GetY();
+			$x = $this->GetX();
+			$y = $this->GetY();
             //Draw the border
             //Print the text
-            $this->MultiCell($w, $height, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), $border, $a);
+			$this->MultiCell($w, $height, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), $border, $a);
             //Put the position to the right of the cell
-            $this->SetXY($x + $w, $y);
+			$this->SetXY($x + $w, $y);
         }
         //Go to the next line
         $this->Ln($h);
@@ -517,27 +509,25 @@ class PDF_MC_Table extends \fpdf\FPDF
     function RowWithoutBorder($data)
     {
         //Calculate the height of the row
-        $nb = 0;
-        foreach ($data as $key => $value)
-            if (isset($nd) && isset($data[$key])) {
-                $nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
+		$nb = 0;
+		foreach ($data as $key => $value) if (isset($nd) && isset($data[$key])) {
+			$nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
             }
-        $h = 5 * $nb;
+		$h = 5 * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
         //Draw the cells of the row
-        foreach ($data as $key => $value) {
-            if (isset($this->widths[$key]))
-                $w = $this->widths[$key];
-            $a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'C';
+		foreach ($data as $key => $value) {
+			if (isset($this->widths[$key])) $w = $this->widths[$key];
+			$a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'C';
             //Save the current position
-            $x = $this->GetX();
-            $y = $this->GetY();
+			$x = $this->GetX();
+			$y = $this->GetY();
             //Draw the border
             //Print the text
-            $this->MultiCell($w, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 0, $a);
+			$this->MultiCell($w, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 0, $a);
             //Put the position to the right of the cell
-            $this->SetXY($x + $w, $y);
+			$this->SetXY($x + $w, $y);
         }
         //Go to the next line
         $this->Ln($h);
@@ -546,27 +536,25 @@ class PDF_MC_Table extends \fpdf\FPDF
     function RowToSigners($data)
     {
         //Calculate the height of the row
-        $nb = 0;
-        foreach ($data as $key => $value)
-            if (isset($nd) && isset($data[$key])) {
-                $nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
+		$nb = 0;
+		foreach ($data as $key => $value) if (isset($nd) && isset($data[$key])) {
+			$nb = max($nb, $this->NbLines($this->widths[$key], $data[$$key]));
             }
-        $h = 5 * $nb;
+		$h = 5 * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
         //Draw the cells of the row
-        foreach ($data as $key => $value) {
-            if (isset($this->widths[$key]))
-                $w = $this->widths[$key];
-            $a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'L';
+		foreach ($data as $key => $value) {
+			if (isset($this->widths[$key])) $w = $this->widths[$key];
+			$a = isset($this->aligns[$key]) ? $this->aligns[$key] : 'L';
             //Save the current position
-            $x = $this->GetX();
-            $y = $this->GetY();
+			$x = $this->GetX();
+			$y = $this->GetY();
             //Draw the border
             //Print the text
-            $this->MultiCell($w, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 0, $a);
+			$this->MultiCell($w, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $data[$key]), 0, $a);
             //Put the position to the right of the cell
-            $this->SetXY($x + $w, $y);
+			$this->SetXY($x + $w, $y);
         }
         //Go to the next line
         $this->Ln($h);

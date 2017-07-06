@@ -13,7 +13,6 @@
     <link href="{{ url('public/packages/admin/style.css') }}" rel="stylesheet">
     <style>
         @import "{{ url('/public/packages/font/osans.css') }}";
-
         * {
             font-family: 'OpenSansLightRegular';
         }

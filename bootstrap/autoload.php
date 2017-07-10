@@ -14,7 +14,7 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -27,11 +27,12 @@ require __DIR__ . '/../vendor/autoload.php';
 |
 */
 
-if (file_exists($compiled = __DIR__ . '/compiled.php')) {
+if (file_exists($compiled = __DIR__.'/compiled.php'))
+{
 	require $compiled;
 }
 
-/*sessions
+/*
 |--------------------------------------------------------------------------
 | Setup Patchwork UTF-8 Handling
 |--------------------------------------------------------------------------
@@ -68,6 +69,7 @@ Illuminate\Support\ClassLoader::register();
 |
 */
 
-if (is_dir($workbench = __DIR__ . '/../workbench')) {
+if (is_dir($workbench = __DIR__.'/../workbench'))
+{
 	Illuminate\Workbench\Starter::start($workbench);
 }

@@ -1,9 +1,10 @@
-$(document).ready(function () {
+$(document).ready(function()
+{
     $('#pgr3').footable();
 
     $('#user').footable();
 
-    $('#saveKurs').on('click', function () {
+    $('#saveKurs').on('click', function(){
         var cash = $('#cash').val();
         var uncash = $('#uncash').val();
         $.ajax({
@@ -12,9 +13,10 @@ $(document).ready(function () {
             data: {
                 cash: cash,
                 uncash: uncash
-            }, success: function (responce) {
+            }, success: function(responce) {
                 //console.log(responce);
-                if (Number(responce.status) == 1) {
+                if(Number(responce.status) == 1)
+                {
                     $('#saveKurs').addClass('btn-success');
                     $('#saveKurs').removeClass('btn-primary');
                 } else {
@@ -25,7 +27,7 @@ $(document).ready(function () {
         });
     });
 
-    $('.edit').on('click', function () {
+    $('.edit').on('click', function(){
         var id = $(this).attr('id');
         //console.log($(this).attr('id'));
         $.ajax({
@@ -33,7 +35,8 @@ $(document).ready(function () {
             method: "POST",
             data: {
                 id: id
-            }, success: function (responce) {
+            }, success: function(responce)
+            {
                 var emp = $.parseJSON(responce.emp);
                 var user = $.parseJSON(responce.user);
                 $('#EmpName').val(emp.EmpName);
@@ -42,8 +45,8 @@ $(document).ready(function () {
                 $('#UAEmpName').val(emp.UAEmpName);
                 $('#DepID').val(emp.DepID);
                 var selHead = $('#heads').children();
-                for (var i = 0; i < selHead.length; i++) {
-                    if ($(selHead[i]).val() == emp.HeadID) {
+                for(var i = 0; i < selHead.length; i++) {
+                    if($(selHead[i]).val() == emp.HeadID) {
                         $(selHead[i]).attr('selected', 'selected');
                     }
                 }
@@ -57,7 +60,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#modal-done').on('click', function () {
+    $('#modal-done').on('click', function(){
         var obj = {};
         obj.EmpID = $('#EmpID').val();
         obj.id = $('#id').text();
@@ -66,15 +69,15 @@ $(document).ready(function () {
         obj.UAEmpName = $('#UAEmpName').val();
         obj.HeadID = $('#heads option:selected').val();
         obj.PLID = $('#PLID').val();
-        obj.EMail = $('#EMail').val();
+        obj.EMail =  $('#EMail').val();
         obj.password = $('#password').val();
         $.ajax({
             url: 'saveProfile',
             method: 'POST',
             data: {
                 obj: obj
-            }, success: function (responce) {
-                if (responce.status == 1) {
+            }, success: function(responce){
+                if(responce.status == 1) {
                     $('#editModal').modal("hide");
                     $('#EmpName').val('');
                     $('#username').val('');
@@ -90,7 +93,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#spw').on('click', function () {
+    $('#spw').on('click', function(){
         var password = $('#password').val();
         var id = $(this).attr('id');
         $.ajax({
@@ -99,8 +102,8 @@ $(document).ready(function () {
             data: {
                 password: password,
                 id: id
-            }, success: function (responce) {
-                if (responce.status == 1) {
+            }, success: function(responce) {
+                if(responce.status == 1) {
                     $('#spw').addClass('btn-success');
                     $('#spw').removeClass('btn-primary');
                 }
@@ -108,7 +111,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#addUser').on('click', function () {
+    $('#addUser').on('click', function(){
         $('#EmpName').val('');
         $('#username').hide();
         $('#usernameLabel').hide();
@@ -124,22 +127,22 @@ $(document).ready(function () {
         $('#modal-title').text('Создание нового пользователя и служащего');
         $('#modal-done').attr('id', 'new_user');
         $('#editModal').modal();
-        $('#new_user').on('click', function () {
+        $('#new_user').on('click', function(){
             var obj = {};
             obj.EmpID = $('#EmpID').val();
             obj.EmpName = $('#EmpName').val();
             obj.UAEmpName = $('#UAEmpName').val();
             obj.HeadID = $('#heads option:selected').val();
             obj.PLID = $('#PLID').val();
-            obj.EMail = $('#EMail').val();
+            obj.EMail =  $('#EMail').val();
             obj.password = $('#password').val();
             $.ajax({
                 url: 'new_user',
                 method: 'POST',
                 data: {
                     obj: obj
-                }, success: function (responce) {
-                    if (responce.status == 1) {
+                }, success: function(responce){
+                    if(responce.status == 1) {
                         $('#editModal').modal("hide");
                         $('#EmpName').val('');
                         $('#username').val('');
@@ -156,7 +159,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#close').on('click', function () {
+    $('#close').on('click', function(){
         $('#EmpName').val('');
         $('#username').val('');
         $('#EmpID').val('');
@@ -171,30 +174,30 @@ $(document).ready(function () {
         $('#editModal').modal('hide');
     });
 
-    $('.del_user').on('click', function () {
+    $('.del_user').on('click', function(){
         var id = $(this).attr('id');
         $.ajax({
             url: 'rmUser',
             method: 'POST',
             data: {
                 id: id
-            }, success: function (responce) {
-                if (responce.status == 1) {
+            }, success: function(responce){
+                if(responce.status == 1) {
                     $(this).parent().parent().hide();
                 }
             }
         });
     });
 
-    $('.hideGr3').on('click', function () {
+    $('.hideGr3').on('click', function(){
         var id = $(this).prop('id');
         $.ajax({
             url: 'hidegr3',
             method: 'POST',
             data: {
                 id: id
-            }, success: function (responce) {
-                if (responce == 1) {
+            }, success: function(responce){
+                if(responce == 1) {
                     $(this).prop('disabled', 'true');
                     $(this).removeClass(['btn-primary']);
                     $(this).addClass(['btn-success']);
@@ -203,15 +206,15 @@ $(document).ready(function () {
         });
     });
 
-    $('.showGr3').on('click', function () {
+    $('.showGr3').on('click', function(){
         var id = $(this).prop('id');
         $.ajax({
             url: 'showgr3',
             method: 'POST',
             data: {
                 id: id
-            }, success: function (responce) {
-                if (responce == 1) {
+            }, success: function(responce){
+                if(responce == 1) {
                     $(this).prop('disabled', 'true');
                     $(this).removeClass(['btn-primary']);
                     $(this).addClass(['btn-success']);
@@ -220,7 +223,7 @@ $(document).ready(function () {
         });
     });
 
-    $('.degrade').on('click', function () {
+    $('.degrade').on('click', function(){
         var id = $(this).prop('id');
         var status = $(this).prop('status');
         $.ajax({
@@ -229,8 +232,8 @@ $(document).ready(function () {
             data: {
                 id: id,
                 status: status
-            }, success: function (responce) {
-                if (responce == 1) {
+            }, success: function(responce){
+                if(responce == 1) {
                     $(this).prop('disabled', 'true');
                     $(this).removeClass(['btn-primary']);
                     $(this).addClass(['btn-success']);
@@ -239,7 +242,7 @@ $(document).ready(function () {
         });
     });
 
-    $('.increase').on('click', function () {
+    $('.increase').on('click', function(){
         var id = $(this).prop('id');
         var status = $(this).prop('status');
         $.ajax({
@@ -248,8 +251,8 @@ $(document).ready(function () {
             data: {
                 id: id,
                 status: status
-            }, success: function (responce) {
-                if (responce == 1) {
+            }, success: function(responce){
+                if(responce == 1) {
                     $(this).prop('disabled', 'true');
                     $(this).removeClass(['btn-primary']);
                     $(this).addClass(['btn-success']);
@@ -258,33 +261,33 @@ $(document).ready(function () {
         });
     });
 
-    $('.degrade_head').on('click', function () {
+    $('.degrade_head').on('click', function(){
         var id = $(this).attr('id');
         $.ajax({
             url: 'degrade_head',
             method: 'POST',
             data: {
-                id: id
-            }, success: function (responce) {
-                if (responce.status == 1) {
+                id:id
+            }, success: function(responce){
+                if(responce.status == 1) {
                     $(this).parent().parent().hide();
                 }
             }
         });
     });
 
-    $('#addHead').on('click', function () {
+    $('#addHead').on('click', function(){
         var selEmp = $('#selHead option:selected').val();
         $.ajax({
             url: 'addHead',
             method: 'POST',
             data: {
                 selEmp: selEmp
-            }, success: function (responce) {
-                if (responce.status == 1) {
+            }, success: function(responce) {
+                if(responce.status == 1) {
                     var sel = $('#selHead').children();
                     for (var i = 0; i < sel.length; i++) {
-                        if ($(sel[i]).val() == selEmp) {
+                        if($(sel[i]).val() == selEmp) {
                             $(sel[i]).hide();
                         }
                     }

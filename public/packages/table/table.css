@@ -1,4 +1,5 @@
-.table-container {
+.table-container
+{
     width: 100%;
     overflow-y: auto;
     _overflow: auto;

@@ -1,4 +1,5 @@
 describe "Bootstrap Tour", ->
+
   beforeEach ->
     $.support.transition = false
     $.fx.off = true
@@ -568,16 +569,16 @@ describe "Bootstrap Tour", ->
   it "should render custom navigation template", ->
     @tour = new Tour
       template:
-      "<div class='popover tour'>
-        <div class='arrow'></div>
-        <h3 class='popover-title'></h3>
-        <div class='popover-content'></div>
-        <div class='popover-navigation'>
-          <a data-role='prev'></a>
-          <a data-role='next'></a>
-          <a data-role='end'></a>
-        </div>
-      </div>"
+        "<div class='popover tour'>
+          <div class='arrow'></div>
+          <h3 class='popover-title'></h3>
+          <div class='popover-content'></div>
+          <div class='popover-navigation'>
+            <a data-role='prev'></a>
+            <a data-role='next'></a>
+            <a data-role='end'></a>
+          </div>
+        </div>"
     @tour.addStep(element: $("<div></div>").appendTo("body"))
     @tour.addStep(element: $("<div></div>").appendTo("body"))
     @tour.addStep(element: $("<div></div>").appendTo("body"))
@@ -675,7 +676,7 @@ describe "Bootstrap Tour", ->
       duration: 5000
     @tour.addStep(element: $("<div></div>").appendTo("body"))
     @tour.start()
-    window.setTimeout(=>
+    window.setTimeout( =>
       @tour.pause()
       expect(@tour._timer).toBe null
       expect(@tour._duration).toBeGreaterThan(0).toBeLessThan(5000)
@@ -709,7 +710,7 @@ describe "Bootstrap Tour", ->
 
   it "should not display inactive popover upon rapid navigation", ->
 
-# Flag that gives signal to the async test that it should evaluate.
+    # Flag that gives signal to the async test that it should evaluate.
     step_displayed = false
 
     # Cleanup all leftover popovers from previous tests.

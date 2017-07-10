@@ -1,6 +1,6 @@
 <?php
 
-class ClientController extends BaseController
+class ClientController extends BaseController 
 {
     public function saveContact()
     {
@@ -85,7 +85,8 @@ class ClientController extends BaseController
     {
         $city = \City::where('regionID', '=', Input::get('id'))->get()->toArray();
         $cityID = [];
-		foreach ($city as $key => $value) {
+        foreach($city as $key => $value)
+        {
             array_push($cityID, $value['cityID']);
         }
         return $cityID;
@@ -93,20 +94,21 @@ class ClientController extends BaseController
 
 	public function ListClient()
 	{
-		if (Auth::getUser()->status == 0) {
+        if(Auth::getUser()->status == 0) {
             $EmpID = Auth::getUser()->EmpID;
             $comps = \Comps::where('EmpID', '=', $EmpID)->get()->toArray();
-		} elseif (Auth::getUser()->status == 1) {
+        } elseif(Auth::getUser()->status == 1)
+        {
             $comps = \Comps::get()->toArray();
         }
         return View::make('client.list', compact(['comps']));
 	}
-
+	
 	public function newClient()
 	{
         $city = \City::where('cityID', '=', Input::get('city'))->get()->last();
         $comp = \Comps::orderBy('id', 'desc')->get()->first()->toArray();
-		$id = $comp['id'] + 1;
+        $id = $comp['id']+1;
         \CompAdd::insert(
             [
                 'id' => $id,
@@ -118,7 +120,8 @@ class ClientController extends BaseController
             [
                 'id' => $id,
                 'PhoneWork' => Input::get('phone'),
-                'Contact' => Input::get('fullName'), 'ContactAll' => Input::get('fullName') . ' ' . Input::get('phone'),
+                'Contact' => Input::get('fullName'),
+                'ContactAll' => Input::get('fullName').' '.Input::get('phone'),
                 'eMail' => Input::get('email')
             ]
         );
@@ -163,7 +166,7 @@ class ClientController extends BaseController
     }
 
 	/*public function newClient()
-	{
+	{	
 		$clientName = Input::get('clientName');
 		$region = Input::get('region');
 		$city = Input::get('city');
@@ -189,7 +192,7 @@ class ClientController extends BaseController
     			//'Reply-To: krutijk@alista.org.ua' . "\r\n" .
     			'X-Mailer: PHP/' . phpversion();
 		mail($to, $subject, $message, $headers);
-		return View::make('client.email', compact(['clientName', 'region', 'city', 'fullName', 'timeWork', 'phone']));
+		return View::make('client.email', compact(['clientName', 'region', 'city', 'fullName', 'timeWork', 'phone']));		
 	}*/
 
 }

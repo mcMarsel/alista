@@ -1,0 +1,84 @@
+[26-Feb-2016 10:54:12 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 10:54:23 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 32 bytes) in phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Package/Version/VersionParser.php on line 103
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP Stack trace:
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP   1. {main}() /home/alistaor/public_html/metiz/composer.phar:0
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP   2. require() /home/alistaor/public_html/metiz/composer.phar:25
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP   3. Composer\Console\Application->run() phar:///home/alistaor/public_html/metiz/composer.phar/bin/composer:43
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP   4. Symfony\Component\Console\Application->run() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Console/Application.php:82
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP   5. Composer\Console\Application->doRun() phar:///home/alistaor/public_html/metiz/composer.phar/vendor/symfony/console/Symfony/Component/Console/Application.php:126
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP   6. Symfony\Component\Console\Application->doRun() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Console/Application.php:146
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP   7. Symfony\Component\Console\Application->doRunCommand() phar:///home/alistaor/public_html/metiz/composer.phar/vendor/symfony/console/Symfony/Component/Console/Application.php:195
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP   8. Symfony\Component\Console\Command\Command->run() phar:///home/alistaor/public_html/metiz/composer.phar/vendor/symfony/console/Symfony/Component/Console/Application.php:874
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP   9. Composer\Command\UpdateCommand->execute() phar:///home/alistaor/public_html/metiz/composer.phar/vendor/symfony/console/Symfony/Component/Console/Command/Command.php:257
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  10. Composer\Installer->run() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Command/UpdateCommand.php:140
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  11. Composer\Installer->doInstall() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Installer.php:230
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  12. Composer\DependencyResolver\Solver->solve() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Installer.php:505
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  13. Composer\DependencyResolver\RuleSetGenerator->getRulesFor() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/DependencyResolver/Solver.php:177
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  14. Composer\DependencyResolver\RuleSetGenerator->whitelistFromPackage() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/DependencyResolver/RuleSetGenerator.php:322
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  15. Composer\DependencyResolver\Pool->whatProvides() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/DependencyResolver/RuleSetGenerator.php:161
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  16. Composer\DependencyResolver\Pool->computeWhatProvides() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/DependencyResolver/Pool.php:188
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  17. Composer\Repository\ComposerRepository->whatProvides() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/DependencyResolver/Pool.php:199
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  18. Composer\Repository\ComposerRepository->createPackage() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Repository/ComposerRepository.php:332
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  19. Composer\Package\Loader\ArrayLoader->load() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Repository/ComposerRepository.php:567
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  20. Composer\Package\Loader\ArrayLoader->parseLinks() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Package/Loader/ArrayLoader.php:124
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  21. Composer\Package\Version\VersionParser->parseConstraints() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Package/Loader/ArrayLoader.php:232
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  22. Composer\Package\Version\VersionParser->parseConstraint() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Package/Version/VersionParser.php:262
+[26-Feb-2016 10:54:45 Europe/Kiev] PHP  23. Composer\Package\Version\VersionParser->normalize() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Package/Version/VersionParser.php:439
+[26-Feb-2016 10:55:04 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 10:55:12 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 10:55:16 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8388608 bytes) in phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Package/Loader/ArrayLoader.php on line 238
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP Stack trace:
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP   1. {main}() /home/alistaor/public_html/metiz/composer.phar:0
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP   2. require() /home/alistaor/public_html/metiz/composer.phar:25
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP   3. Composer\Console\Application->run() phar:///home/alistaor/public_html/metiz/composer.phar/bin/composer:43
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP   4. Symfony\Component\Console\Application->run() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Console/Application.php:99
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP   5. Composer\Console\Application->doRun() phar:///home/alistaor/public_html/metiz/composer.phar/vendor/symfony/console/Application.php:123
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP   6. Symfony\Component\Console\Application->doRun() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Console/Application.php:166
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP   7. Symfony\Component\Console\Application->doRunCommand() phar:///home/alistaor/public_html/metiz/composer.phar/vendor/symfony/console/Application.php:192
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP   8. Symfony\Component\Console\Command\Command->run() phar:///home/alistaor/public_html/metiz/composer.phar/vendor/symfony/console/Application.php:844
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP   9. Composer\Command\UpdateCommand->execute() phar:///home/alistaor/public_html/metiz/composer.phar/vendor/symfony/console/Command/Command.php:259
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP  10. Composer\Installer->run() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Command/UpdateCommand.php:173
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP  11. Composer\Installer->doInstall() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Installer.php:215
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP  12. Composer\DependencyResolver\Solver->solve() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Installer.php:506
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP  13. Composer\DependencyResolver\RuleSetGenerator->getRulesFor() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/DependencyResolver/Solver.php:208
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP  14. Composer\DependencyResolver\RuleSetGenerator->whitelistFromPackage() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/DependencyResolver/RuleSetGenerator.php:322
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP  15. Composer\DependencyResolver\Pool->whatProvides() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/DependencyResolver/RuleSetGenerator.php:161
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP  16. Composer\DependencyResolver\Pool->computeWhatProvides() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/DependencyResolver/Pool.php:188
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP  17. Composer\Repository\ComposerRepository->whatProvides() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/DependencyResolver/Pool.php:199
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP  18. Composer\Repository\ComposerRepository->createPackage() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Repository/ComposerRepository.php:361
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP  19. Composer\Package\Loader\ArrayLoader->load() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Repository/ComposerRepository.php:592
+[26-Feb-2016 10:55:18 Europe/Kiev] PHP  20. Composer\Package\Loader\ArrayLoader->parseLinks() phar:///home/alistaor/public_html/metiz/composer.phar/src/Composer/Package/Loader/ArrayLoader.php:125
+[26-Feb-2016 11:20:51 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 11:22:30 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 11:22:33 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 11:22:34 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 11:22:35 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 11:23:32 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 11:25:22 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 11:25:22 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 11:25:23 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[26-Feb-2016 11:25:23 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[04-Apr-2016 16:42:07 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[04-Apr-2016 16:42:22 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[05-Apr-2016 08:17:36 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[05-Apr-2016 08:17:43 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[05-Apr-2016 08:19:29 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[05-Apr-2016 08:19:29 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[05-Apr-2016 08:19:29 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[05-Apr-2016 08:22:57 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[05-Apr-2016 10:44:06 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[11-Apr-2016 11:15:58 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[11-Apr-2016 13:42:01 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[11-Apr-2016 13:43:45 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[11-Apr-2016 13:43:48 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[11-Apr-2016 13:43:48 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[11-Apr-2016 13:44:29 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[14-Apr-2016 15:22:26 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[14-Apr-2016 15:24:58 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[14-Apr-2016 15:25:00 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[14-Apr-2016 15:25:00 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[14-Apr-2016 15:25:26 Europe/Kiev] PHP Warning:  Module 'json' already loaded in Unknown on line 0
+[19-May-2016 10:56:27 Europe/Kiev] PHP Warning:  APM cannot be enabled, '/var/php/apm/db' is not directory in Unknown on line 0
+[19-May-2016 10:56:56 Europe/Kiev] PHP Warning:  APM cannot be enabled, '/var/php/apm/db' is not directory in Unknown on line 0

@@ -1,9 +1,9 @@
 <?php
 
-require(__DIR__ . '/../../vendor/itbz/fpdf/makefont/makefont.php');
-require(__DIR__ . '/../../vendor/itbz/fpdf/src/fpdf/FPDF.php');
-require(__DIR__ . '/../../vendor/PHPMailer-master/class.phpmailer.php');
-require(__DIR__ . '/../Admin/PdfOrders.php');
+require(__DIR__.'/../../vendor/itbz/fpdf/makefont/makefont.php');
+require(__DIR__.'/../../vendor/itbz/fpdf/src/fpdf/FPDF.php');
+require(__DIR__.'/../../vendor/PHPMailer-master/class.phpmailer.php');
+require(__DIR__.'/../Admin/PdfOrders.php');
 
 class AccRController extends BaseController
 {
@@ -17,8 +17,8 @@ class AccRController extends BaseController
 
     public function createPdfApproved($dateShipping, $orderID, $transporterID, $specialNote, $city)
     {
-		$arrDate = explode('-', $dateShipping);
-		$strDate = $arrDate[2] . '.' . $arrDate[1] . '.' . $arrDate[0];
+        $arrDate = explode('-',$dateShipping);
+        $strDate = $arrDate[2].'.'.$arrDate[1].'.'.$arrDate[0];
         $fpdf = new PDF_MC_Table();
         $fpdf->data($orderID, $strDate);
         $fpdf->AliasNbPages();
@@ -29,11 +29,12 @@ class AccRController extends BaseController
         $fpdf->SetMargins(10, 10, 10);
         $fpdf->SetTextColor(0, 0, 0);
         $fpdf->Ln();
-		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
-		$fpdf->SetFont('Tahoma', '', 10);
-		$header[0] = [0 => 'Дата відвантаження', 1 => 'Перевізник', 2 => 'Місто'];
+        $fpdf->AddFont('Tahoma','','tahoma.php');
+        $fpdf->SetFont('Tahoma','',10);
+        $header[0] = [ 0 => 'Дата відвантаження', 1 => 'Перевізник', 2 => 'Місто'];
         $fpdf->SetWidths([35, 55, 105]);
-		foreach ($header as $key => $value) {
+        foreach($header as $key => $value)
+        {
             $fpdf->RowExtended($value, 15, 1, 'C');
             $fpdf->Ln();
         }
@@ -46,62 +47,67 @@ class AccRController extends BaseController
             ->where('status', '=', 1)
             ->get()->toArray();
         $comp = \Comps::where('CompID', '=', $order['CompID'])->get()->last()->toArray();
-		$headerP[0] = [0 => $strDate, 1 => $transporter['transporterName'], 2 => trim($city)];
-		$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-		$fpdf->SetFont('Tahoma-Bold', '', 10);
+        $headerP[0] = [ 0 => $strDate, 1 => $transporter['transporterName'], 2 => trim($city)];
+        $fpdf->AddFont('Tahoma-Bold','','tahoma_bold.php');
+        $fpdf->SetFont('Tahoma-Bold','',10);
         $fpdf->SetWidths([35, 55, 105]);
-		foreach ($headerP as $key => $value) {
+        foreach($headerP as $key => $value)
+        {
             $fpdf->RowExtended($value, 15, 1, 'C');
             $fpdf->Ln();
         }
-		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
-		$fpdf->SetFont('Tahoma', '', 10);
-		$fpdf->Cell(195, 10, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Особливі відмітки'), 1, 0, 'C');
+        $fpdf->AddFont('Tahoma','','tahoma.php');
+        $fpdf->SetFont('Tahoma','',10);
+        $fpdf->Cell(195,10,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Особливі відмітки'),1,0,'C');
         $fpdf->Ln();
-		$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-		$fpdf->SetFont('Tahoma-Bold', '', 14);
+        $fpdf->AddFont('Tahoma-Bold','','tahoma_bold.php');
+        $fpdf->SetFont('Tahoma-Bold','',14);
         $specialNotes = [0 => $specialNote];
         $fpdf->SetWidths([195]);
         $fpdf->RowExtended($specialNotes, 5, 1, 'C');
         $fpdf->Ln(30);
-		$headerOur[0] = [0 => 'Фірма', 1 => 'Алиста', 2 => 1];
-		$headerComp[0] = [0 => 'Предприятие', 1 => $comp['CompName'], 2 => ''];
-		$headerTr[0] = [0 => 'Відправник товару', 1 => 'Склад метизов', 2 => $order['StockID']];
-		$headerAd[0] = [0 => 'Адреса', 1 => 'Днепропетровск, вул. Героїв Сталінграда, буд.147', 2 => ''];
-		$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-		$fpdf->SetFont('Tahoma-Bold', '', 8);
+        $headerOur[0] = [ 0 => 'Фірма', 1 => 'Алиста', 2 => 1];
+        $headerComp[0] = [ 0 => 'Предприятие', 1 => $comp['CompName'], 2 => ''];
+        $headerTr[0] = [ 0 => 'Відправник товару', 1 => 'Склад метизов', 2 => $order['StockID']];
+        $headerAd[0] = [ 0 => 'Адреса', 1 => 'Днепропетровск, вул. Героїв Сталінграда, буд.147', 2 => ''];
+        $fpdf->AddFont('Tahoma-Bold','','tahoma_bold.php');
+        $fpdf->SetFont('Tahoma-Bold','',8);
 
         $fpdf->SetWidths([45, 105, 45]);
-		foreach ($headerOur as $key => $value) {
+        foreach($headerOur as $key => $value)
+        {
             $fpdf->Row($value);
             $fpdf->Ln();
         }
-		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
-		$fpdf->SetFont('Tahoma', '', 8);
-		foreach ($headerComp as $row => $col) {
-			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[0]), 1, 0, 'C');
-			$fpdf->Cell(105, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[1]), 1, 0, 'C');
-			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[2]), 1, 0, 'C');
+        $fpdf->AddFont('Tahoma','','tahoma.php');
+        $fpdf->SetFont('Tahoma','',8);
+        foreach($headerComp as $row => $col)
+        {
+            $fpdf->Cell(45,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",$col[0]),1,0,'C');
+            $fpdf->Cell(105,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",$col[1]),1,0,'C');
+            $fpdf->Cell(45,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",$col[2]),1,0,'C');
             $fpdf->Ln();
         }
-		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
-		$fpdf->SetFont('Tahoma', '', 8);
-		foreach ($headerTr as $row => $col) {
-			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[0]), 1, 0, 'C');
-			$fpdf->Cell(105, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[1]), 1, 0, 'C');
-			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[2]), 1, 0, 'C');
+        $fpdf->AddFont('Tahoma','','tahoma.php');
+        $fpdf->SetFont('Tahoma','',8);
+        foreach($headerTr as $row => $col)
+        {
+            $fpdf->Cell(45,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",$col[0]),1,0,'C');
+            $fpdf->Cell(105,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",$col[1]),1,0,'C');
+            $fpdf->Cell(45,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",$col[2]),1,0,'C');
             $fpdf->Ln();
         }
-		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
-		$fpdf->SetFont('Tahoma', '', 8);
-		foreach ($headerAd as $row => $col) {
-			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[0]), 1, 0, 'C');
-			$fpdf->Cell(105, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[1]), 1, 0, 'C');
-			$fpdf->Cell(45, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $col[2]), 1, 0, 'C');
+        $fpdf->AddFont('Tahoma','','tahoma.php');
+        $fpdf->SetFont('Tahoma','',8);
+        foreach($headerAd as $row => $col)
+        {
+            $fpdf->Cell(45,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",$col[0]),1,0,'C');
+            $fpdf->Cell(105,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",$col[1]),1,0,'C');
+            $fpdf->Cell(45,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE",$col[2]),1,0,'C');
             $fpdf->Ln();
         }
-		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
-		$fpdf->SetFont('Tahoma', '', 8);
+        $fpdf->AddFont('Tahoma','','tahoma.php');
+        $fpdf->SetFont('Tahoma','',8);
         $prodHead[0] = [0 => 'Код', 1 => 'Товар', 2 => 'Дод.Од.Вим.', 3 => 'Дод.кільк.', 4 => 'Од.Вим.',
             5 => 'Кількість', 6 => 'Загальна кількість'];
         $orders = \Orders::where('DocID', '=', $orderID)
@@ -109,74 +115,81 @@ class AccRController extends BaseController
             ->get(['ProdID', 'ProdName', 'UM', 'Qty', 'UM'])->toArray();
         $prodBody = [];
         $totalWeight = '';
-		foreach ($orders as $key => $value) {
+        foreach($orders as $key => $value)
+        {
             $prod = \Prods::where('ProdID', '=', $value['ProdID'])
                 ->get(['Weight'])->last();
             $Weight = $prod['Weight'] * $value['Qty'];
             $totalWeight += $Weight;
         }
-		foreach ($orders as $key => $value) {
-			$rem = '';
+        foreach($orders as $key => $value)
+        {
+            $rem ='';
             $prodBody[$key][] = $value['ProdID'];
             $prodBody[$key][] = $value['ProdName'];
             $prodBody[$key][] = $value['UM'];
-			$prodBody[$key][] = round($value['Qty'], 1);
+            $prodBody[$key][] = round($value['Qty'],1);
             $prodBody[$key][] = $value['UM'];
-			$prodBody[$key][] = round($value['Qty'], 1);
+            $prodBody[$key][] = round($value['Qty'],1);
             $arrRem = \Rem::where('StockID', '=', $order['StockID'])
                 ->where('ProdID', '=', $value['ProdID'])->get()->toArray();
-			foreach ($arrRem as $k => $val) {
+            foreach($arrRem as $k => $val)
+            {
                 $rem += $val['RemCash'];
                 $rem += $val['RemUncash'];
             }
             $prodBody[$key][] = round($rem, 2);
         }
-		$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-		$fpdf->SetFont('Tahoma-Bold', '', 8);
+        $fpdf->AddFont('Tahoma-Bold','','tahoma_bold.php');
+        $fpdf->SetFont('Tahoma-Bold','',8);
         $fpdf->Ln(10);
         $fpdf->SetWidths([10, 75, 20, 20, 20, 20, 30]);
-		foreach ($prodHead as $key => $value) {
+        foreach($prodHead as $key => $value)
+        {
             $fpdf->RowExtended($value, 5, 1, 'C');
             $fpdf->Ln();
         }
-		$fpdf->AddFont('Tahoma', '', 'tahoma.php');
-		$fpdf->SetFont('Tahoma', '', 8);
+        $fpdf->AddFont('Tahoma','','tahoma.php');
+        $fpdf->SetFont('Tahoma','',8);
         $fpdf->SetWidths([10, 75, 20, 20, 20, 20, 30]);
-		if (empty($prodBody)) {
+        if(empty($prodBody))
+        {
             return ['error' => 'Нет партии для товаров'];
         } else {
-			foreach ($prodBody as $key => $value) {
+            foreach($prodBody as $key => $value)
+            {
                 $fpdf->RowExtended($value, 7, 1, 'L');
                 $fpdf->Ln();
             }
             $fpdf->Ln(5);
             $totalQty = '';
-			foreach ($orders as $key => $value) {
+            foreach($orders as $key => $value)
+            {
                 $totalQty += $value['Qty'];
             }
-			$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-			$fpdf->SetFont('Tahoma-Bold', '', 8);
-			$fpdf->Cell(180, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Кількість'), 0, 0, 'R');
-			$fpdf->Cell(15, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalQty), 0, 0);
+            $fpdf->AddFont('Tahoma-Bold','','tahoma_bold.php');
+            $fpdf->SetFont('Tahoma-Bold','',8);
+            $fpdf->Cell(180,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Кількість'),0,0,'R');
+            $fpdf->Cell(15,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalQty),0,0);
             $fpdf->Ln();
-			$fpdf->Cell(180, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Додаткова Кількість'), 0, 0, 'R');
-			$fpdf->Cell(15, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalQty), 0, 0);
+            $fpdf->Cell(180,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Додаткова Кількість'),0,0,'R');
+            $fpdf->Cell(15,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalQty),0,0);
             $fpdf->Ln();
-			$fpdf->Cell(180, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Вага'), 0, 0, 'R');
-			$fpdf->Cell(15, 5, iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalWeight), 0, 0);
+            $fpdf->Cell(180,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", 'Вага'),0,0,'R');
+            $fpdf->Cell(15,5,iconv("UTF-8//IGNORE", "Windows-1251//IGNORE", $totalWeight),0,0);
             $fpdf->Ln(5);
             $signers = [0 => 'Дозволив', 1 => 'Відпустив', 2 => 'Узгодив'];
             $lineArr = [0 => '_______________________', 1 => '_______________________', 2 => '_______________________'];
             $signersPart = [0 => 'ПІБ Підпис', 1 => 'ПІБ Підпис', 2 => 'ПІБ Підпис'];
             $fpdf->SetWidths([65, 65, 65]);
-			$fpdf->AddFont('Tahoma-Bold', '', 'tahoma_bold.php');
-			$fpdf->SetFont('Tahoma-Bold', '', 8);
+            $fpdf->AddFont('Tahoma-Bold','','tahoma_bold.php');
+            $fpdf->SetFont('Tahoma-Bold','',8);
             $fpdf->RowExtended($signers, 10, 0, 'L');
             $fpdf->Ln(7);
             $fpdf->RowExtended($lineArr, 10, 0, 'L');
             $fpdf->Ln(3);
-			$fpdf->AddFont('Tahoma', '', 'tahoma.php');
-			$fpdf->SetFont('Tahoma', '', 5);
+            $fpdf->AddFont('Tahoma','','tahoma.php');
+            $fpdf->SetFont('Tahoma','',5);
             $fpdf->RowExtended($signersPart, 10, 0, 'C');
             $fpdf->Footer();
             $fileName = 'Заявка на відбір товару.pdf';
@@ -187,118 +200,6 @@ class AccRController extends BaseController
             return $fileName;
         }
 
-    }
-
-    public function approvedDone()
-    {
-        $orderID = Input::get('orderID');
-		if (Input::get('dateShipping')) {
-            $dateShipping = Input::get('dateShipping');
-        } else {
-            $dateShipping = '';
-        }
-		if (Input::get('originator')) {
-            $originator = Input::get('originator');
-        } else {
-            $originator = '';
-        }
-		if (Input::get('transporterID')) {
-            $transporterID = Input::get('transporterID');
-            $transporter = \Transporter::where('transporterID', '=', $transporterID)
-                ->get(['transporterName'])->last()->toArray();
-        } else {
-            $transporterID = '';
-            $transporter = '';
-        }
-		if (Input::get('city')) {
-            $cityID = Input::get('city');
-            $city = \City::where('cityID', '=', $cityID)->get(['cityName'])->last()->toArray();
-        } else {
-            $cityID = '';
-            $city['cityName'] = '';
-        }
-		if ($transporterID == 1 && Input::get('StockID') == 118) {
-            $cityID = 1000;
-            $city['cityName'] = 'Киев';
-
-		} else if ($transporterID == 1 && Input::get('StockID') == 110) {
-            $cityID = 49000;
-            $city['cityName'] = 'Днепропетровск';
-        }
-		if (Input::get('getCash')) {
-            $getCash = Input::get('getCash');
-			if ($getCash == 0) {
-                $getCash = 'На карту';
-			} else if ($getCash == 1) {
-                $getCash = 'По факту';
-			} else if ($getCash == 2) {
-                $getCash = 'Наложенный платеж';
-            } else {
-                $getCash = '';
-            }
-        } else {
-            $getCash = '';
-        }
-		if (Input::get('address')) {
-            $address = Input::get('address');
-            \CompAdd::where('CompID', '=', Input::get('CompID'))
-                ->update(['CompAdd' => $address]);
-		} else if (Input::get('addressSel')) {
-            $address = Input::get('addressSel');
-        } else {
-            $address = '';
-        }
-		if (Input::get('addressee')) {
-            $addressee = Input::get('addressee');
-            \CompContact::where('CompID', '=', Input::get('CompID'))
-                ->update(['Contact' => $addressee]);
-		} else if (Input::get('addresseeSel')) {
-            $addressee = Input::get('addresseeSel');
-        } else {
-            $addressee = '';
-        }
-
-		if (Input::get('payer')) {
-            $payer = Input::get('payer');
-		} elseif (Input::get('payerT')) {
-            $payer = Input::get('payerT');
-        } else {
-            $payer = '';
-        }
-		if (Input::get('payForm')) {
-            $payForm = Input::get('payForm');
-        } else {
-            $payForm = '';
-        }
-		if (Input::get('specialNotes')) {
-            $specialNotes = Input::get('specialNotes');
-        } else {
-            $specialNotes = '';
-        }
-		if (Input::get('stockTransporter')) {
-            $stockTransporter = Input::get('stockTransporter');
-        } else {
-            $stockTransporter = '';
-        }
-        //$orderID, $dateShipping, $getCash, $transporterID, $transporterName, $cityID, $cityName,
-        //$originator, $addressee, $payer, $address, $stockTransporter, $payForm, $specialNotes
-        /*$filename = $this->createPdfApproved(
-            $dateShipping,
-            $orderID,
-            $transporterID,
-            $specialNotes,
-            $city['cityName']
-        );*/
-        /*if(is_array($filename))
-        {
-            $msg = 'По всем позиция нет подходящей партии с нужным количеством. Проверьте количество';
-            return View::make('msg', compact(['msg']));
-        } else {*/
-		$this->approvedToDB($orderID, $dateShipping, $getCash, $transporterID, $transporter['transporterName'], $cityID, $city['cityName'], $originator, $addressee, $payer, $address, $stockTransporter, $payForm, $specialNotes);
-		$msg = 'Заявка в процесе формирования. Чтобы отправить заявку на склад перейдите в реестр заявок на отбор используя навигацию.';
-		//$this->sendApproved($filename, $orderID);
-		return View::make('msg', compact(['msg']));
-        //}
     }
 
     public function approvedToDB($orderID, $dateShipping, $getCash, $transporterID, $transporterName, $cityID, $cityName, $originator, $addressee, $payer, $address, $stockTransporter, $payForm, $specialNotes)
@@ -325,15 +226,162 @@ class AccRController extends BaseController
         \Orders::where('DocID', '=', $orderID)->update(['status' => 2]);
     }
 
+    public function approvedDone()
+    {
+        $orderID = Input::get('orderID');
+        if(Input::get('dateShipping'))
+        {
+            $dateShipping = Input::get('dateShipping');
+        } else {
+            $dateShipping = '';
+        }
+        if(Input::get('originator'))
+        {
+            $originator = Input::get('originator');
+        } else {
+            $originator = '';
+        }
+        if(Input::get('transporterID'))
+        {
+            $transporterID = Input::get('transporterID');
+            $transporter = \Transporter::where('transporterID', '=', $transporterID)
+                ->get(['transporterName'])->last()->toArray();
+        } else {
+            $transporterID = '';
+            $transporter = '';
+        }
+        if(Input::get('city'))
+        {
+            $cityID = Input::get('city');
+            $city = \City::where('cityID', '=', $cityID)->get(['cityName'])->last()->toArray();
+        } else {
+            $cityID = '';
+            $city['cityName'] = '';
+        }
+        if($transporterID == 1 && Input::get('StockID') == 118)
+        {
+            $cityID = 1000;
+            $city['cityName'] = 'Киев';
+
+        } else if($transporterID == 1 && Input::get('StockID') == 110)
+        {
+            $cityID = 49000;
+            $city['cityName'] = 'Днепропетровск';
+        }
+        if(Input::get('getCash'))
+        {
+            $getCash = Input::get('getCash');
+            if($getCash == 0)
+            {
+                $getCash = 'На карту';
+            } else if($getCash == 1)
+            {
+                $getCash = 'По факту';
+            } else if($getCash == 2)
+            {
+                $getCash = 'Наложенный платеж';
+            } else {
+                $getCash = '';
+            }
+        } else {
+            $getCash = '';
+        }
+        if(Input::get('address'))
+        {
+            $address = Input::get('address');
+            \CompAdd::where('CompID', '=', Input::get('CompID'))
+                ->update(['CompAdd' => $address]);
+        } else if(Input::get('addressSel')) 
+        {
+            $address = Input::get('addressSel');
+        } else {
+            $address = '';
+        }
+        if(Input::get('addressee'))
+        {
+            $addressee = Input::get('addressee');
+            \CompContact::where('CompID', '=', Input::get('CompID'))
+                ->update(['Contact' => $addressee]);
+        } else if(Input::get('addresseeSel'))
+        {
+            $addressee = Input::get('addresseeSel');
+        } else {
+            $addressee = '';
+        }
+
+        if(Input::get('payer'))
+        {
+            $payer = Input::get('payer');
+        } elseif (Input::get('payerT')) 
+        {
+            $payer = Input::get('payerT');
+        } else {
+            $payer = '';
+        }
+        if(Input::get('payForm'))
+        {
+            $payForm = Input::get('payForm');
+        } else {
+            $payForm = '';
+        }
+        if(Input::get('specialNotes'))
+        {
+            $specialNotes = Input::get('specialNotes');
+        } else {
+            $specialNotes = '';
+        }
+        if(Input::get('stockTransporter'))
+        {
+            $stockTransporter = Input::get('stockTransporter');
+        } else {
+            $stockTransporter = '';
+        }
+        //$orderID, $dateShipping, $getCash, $transporterID, $transporterName, $cityID, $cityName,
+        //$originator, $addressee, $payer, $address, $stockTransporter, $payForm, $specialNotes
+        /*$filename = $this->createPdfApproved(
+            $dateShipping,
+            $orderID,
+            $transporterID,
+            $specialNotes,
+            $city['cityName']
+        );*/
+        /*if(is_array($filename))
+        {
+            $msg = 'По всем позиция нет подходящей партии с нужным количеством. Проверьте количество';
+            return View::make('msg', compact(['msg']));
+        } else {*/
+            $this->approvedToDB(
+                $orderID,
+                $dateShipping,
+                $getCash,
+                $transporterID,
+                $transporter['transporterName'],
+                $cityID,
+                $city['cityName'],
+                $originator,
+                $addressee,
+                $payer,
+                $address,
+                $stockTransporter,
+                $payForm,
+                $specialNotes
+            );
+            $msg = 'Заявка в процесе формирования. Чтобы отправить заявку на склад перейдите в реестр заявок на отбор используя навигацию.';
+            //$this->sendApproved($filename, $orderID);
+            return View::make('msg', compact(['msg']));
+        //}
+    }
+
     public function getCompID()
     {
 
         $compID = \Orders::where('orderID', '=', Input::get('id'))->get(['CompID'])->toArray();
-		if (empty($compID)) {
+        if(empty($compID))
+        {
             $compID = \Orders::where('DocID', '=', Input::get('id'))->get(['CompID'])->last()->toArray();
         } else {
             $compID = \Orders::where('orderID', '=', Input::get('id'))->get(['CompID'])->last()->toArray();
-		}
+         }
         return $compID['CompID'];
     }
 
@@ -342,7 +390,8 @@ class AccRController extends BaseController
         clearstatcache(true, 'public/packages/manager/approved-order.js');
         $orderID = Input::get('orderID');
         $ord = \Orders::where('orderID', '=', $orderID)->get()->toArray();
-		if (empty($ord)) {
+        if(empty($ord))
+        {
             $orderType = 'DocID';
         } else {
             $orderType = 'orderID';
@@ -358,13 +407,15 @@ class AccRController extends BaseController
         $compAddName = [];
         $compContactID = [];
         $compContactName = [];
-		foreach ($compAdd as $key => $value) {
+        foreach($compAdd as $key => $value)
+        {
             array_push($compAddID, $value['CompAdd']);
             array_push($compAddName, $value['CompAdd']);
         }
         unset($compAdd);
         $compAdd = array_combine($compAddID, $compAddName);
-		foreach ($compContact as $key => $value) {
+        foreach($compContact as $key => $value)
+        {
             array_push($compContactID, $value['ContactAll']);
             array_push($compContactName, $value['ContactAll']);
         }
@@ -373,7 +424,8 @@ class AccRController extends BaseController
         $transporter = \Transporter::get()->toArray();
 		$transporterID = [];
 		$transporterName = [];
-		foreach ($transporter as $key => $value) {
+        foreach($transporter as $key => $value)
+        {
             array_push($transporterID, $value['transporterID']);
             array_push($transporterName, $value['transporterName']);
         }
@@ -400,7 +452,7 @@ class AccRController extends BaseController
             ]
         ));
     }
-
+	
 	public function addGoods()
 	{
 		$pgrID3 = Input::get('categ');
@@ -408,7 +460,8 @@ class AccRController extends BaseController
         $currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
         $prods = \Prods::where('PGrID3', '=', $pgrID3)->get(['ProdID', 'ProdName', 'ShortProdName', 'UM'])->toArray();
         $goods = [];
-		foreach ($prods as $key => $value) {
+        foreach($prods as $key => $value)
+        {
             $good = [];
             $pl = \ProdMP::where('ProdID', '=', $value['ProdID'])
                 ->where('PLID', '!=', 100)
@@ -416,7 +469,8 @@ class AccRController extends BaseController
             $rem = \Rem::where('ProdID', '=', $value['ProdID'])
                 ->where('StockID', '=', $stock)
                 ->groupBy('ProdID')->get(['RemCash', 'ResCash', 'RemUncash', 'ResUncash'])->toArray();
-			if (!empty($rem) && !empty($pl)) {
+            if(!empty($rem) && !empty($pl))
+            {
                 array_push($good, $value, $pl, $rem);
                 array_push($goods, $good);
             } else {
@@ -424,38 +478,40 @@ class AccRController extends BaseController
             }
         }
         $html = '';
-		foreach ($goods as $key => $value) {
-			$html .= '<tr><th><div class="shortName">' . $value[0]['ShortProdName'] . '</div></th>';
-			$html .= '<th><div class="name">' . $value[0]['ProdName'] . '</div></th>';
+        foreach($goods as $key => $value)
+        {
+            $html .='<tr><th><div class="shortName">'.$value[0]['ShortProdName'].'</div></th>';
+            $html .= '<th><div class="name">'.$value[0]['ProdName'].'</div></th>';
             $html .= '<th><input class="quantity" type="number" autocorrect="off" pattern="\d*" novalidate></th>';
-			$html .= '<th><div class="UM">' . $value[0]['UM'] . '</div></th>';
-			$html .= '<th><span style="width: 100%; height: 100%" class="btn price" name="price' . $key . '" id="price' . $key . '"></span></th>';
-			$html .= '<th><div class="remains_cashless" name="residue' . $key . '" >' . round(($value[2][0]['RemUncash'] - $value[2][0]['ResUncash']), 2) . '</div></th>';
-			$html .= '<th><div class="remains_cash" name="residue' . $key . '" >' . round(($value[2][0]['RemCash'] - $value[2][0]['ResCash']), 2) . '</div></th>';
-			if (count($value[1]) == 10) {
-				$html .= '<th hidden="hidden" class="p1" plid="' . $value[1][0]['PLID'] . '" minpl="' . $value[1][0]['MinPLID'] . '">' . ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p2" plid="' . $value[1][1]['PLID'] . '" minpl="' . $value[1][1]['MinPLID'] . '">' . ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p3" plid="' . $value[1][2]['PLID'] . '" minpl="' . $value[1][2]['MinPLID'] . '">' . ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p4" plid="' . $value[1][3]['PLID'] . '" minpl="' . $value[1][3]['MinPLID'] . '">' . ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p5" plid="' . $value[1][4]['PLID'] . '" minpl="' . $value[1][4]['MinPLID'] . '">' . ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p6" plid="' . $value[1][5]['PLID'] . '" minpl="' . $value[1][5]['MinPLID'] . '">' . ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p7" plid="' . $value[1][6]['PLID'] . '" minpl="' . $value[1][6]['MinPLID'] . '">' . ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p8" plid="' . $value[1][7]['PLID'] . '" minpl="' . $value[1][7]['MinPLID'] . '">' . ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p9" plid="' . $value[1][8]['PLID'] . '" minpl="' . $value[1][8]['MinPLID'] . '">' . ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p10" plid="' . $value[1][9]['PLID'] . '" minpl="' . $value[1][9]['MinPLID'] . '">' . ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+            $html .= '<th><div class="UM">'.$value[0]['UM'].'</div></th>';
+            $html .= '<th><span style="width: 100%; height: 100%" class="btn price" name="price'.$key.'" id="price'. $key .'"></span></th>';
+            $html .= '<th><div class="remains_cashless" name="residue'. $key .'" >'.round(($value[2][0]['RemUncash']-$value[2][0]['ResUncash']), 2) .'</div></th>';
+            $html .= '<th><div class="remains_cash" name="residue'. $key .'" >'.round(($value[2][0]['RemCash']-$value[2][0]['ResCash']), 2).'</div></th>';
+            if(count($value[1]) == 10)
+            {
+                $html .= '<th hidden="hidden" class="p1" plid="'.$value[1][0]['PLID'].'" minpl="'.$value[1][0]['MinPLID'].'">'. ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p2" plid="'.$value[1][1]['PLID'].'" minpl="'.$value[1][1]['MinPLID'].'">'. ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p3" plid="'.$value[1][2]['PLID'].'" minpl="'.$value[1][2]['MinPLID'].'">'. ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p4" plid="'.$value[1][3]['PLID'].'" minpl="'.$value[1][3]['MinPLID'].'">'. ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p5" plid="'.$value[1][4]['PLID'].'" minpl="'.$value[1][4]['MinPLID'].'">'. ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p6" plid="'.$value[1][5]['PLID'].'" minpl="'.$value[1][5]['MinPLID'].'">'. ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p7" plid="'.$value[1][6]['PLID'].'" minpl="'.$value[1][6]['MinPLID'].'">'. ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p8" plid="'.$value[1][7]['PLID'].'" minpl="'.$value[1][7]['MinPLID'].'">'. ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p9" plid="'.$value[1][8]['PLID'].'" minpl="'.$value[1][8]['MinPLID'].'">'. ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p10" plid="'.$value[1][9]['PLID'].'" minpl="'.$value[1][9]['MinPLID'].'">'. ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
                 $html .= '<th hidden="hidden" class="p0"> - </th>';
-			} elseif (count($value[1]) == 11) {
-				$html .= '<th hidden="hidden" class="p0" plid="' . $value[1][0]['PLID'] . '" minpl="' . $value[1][0]['MinPLID'] . '">' . ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p1" plid="' . $value[1][1]['PLID'] . '" minpl="' . $value[1][1]['MinPLID'] . '">' . ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p2" plid="' . $value[1][2]['PLID'] . '" minpl="' . $value[1][2]['MinPLID'] . '">' . ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p3" plid="' . $value[1][3]['PLID'] . '" minpl="' . $value[1][3]['MinPLID'] . '">' . ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p4" plid="' . $value[1][4]['PLID'] . '" minpl="' . $value[1][4]['MinPLID'] . '">' . ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p5" plid="' . $value[1][5]['PLID'] . '" minpl="' . $value[1][5]['MinPLID'] . '">' . ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p6" plid="' . $value[1][6]['PLID'] . '" minpl="' . $value[1][6]['MinPLID'] . '">' . ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p7" plid="' . $value[1][7]['PLID'] . '" minpl="' . $value[1][7]['MinPLID'] . '">' . ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p8" plid="' . $value[1][8]['PLID'] . '" minpl="' . $value[1][8]['MinPLID'] . '">' . ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p9" plid="' . $value[1][9]['PLID'] . '" minpl="' . $value[1][9]['MinPLID'] . '">' . ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
-				$html .= '<th hidden="hidden" class="p10" plid="' . $value[1][10]['PLID'] . '" minpl="' . $value[1][10]['MinPLID'] . '">' . ceil(($value[1][10]['PriceMC'] * $currency / 6) * 100) / 100 * 6 . '</th>';
+            } elseif(count($value[1]) == 11) {
+                $html .= '<th hidden="hidden" class="p0" plid="'.$value[1][0]['PLID'].'" minpl="'.$value[1][0]['MinPLID'].'">'. ceil(($value[1][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p1" plid="'.$value[1][1]['PLID'].'" minpl="'.$value[1][1]['MinPLID'].'">'. ceil(($value[1][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p2" plid="'.$value[1][2]['PLID'].'" minpl="'.$value[1][2]['MinPLID'].'">'. ceil(($value[1][2]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p3" plid="'.$value[1][3]['PLID'].'" minpl="'.$value[1][3]['MinPLID'].'">'. ceil(($value[1][3]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p4" plid="'.$value[1][4]['PLID'].'" minpl="'.$value[1][4]['MinPLID'].'">'. ceil(($value[1][4]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p5" plid="'.$value[1][5]['PLID'].'" minpl="'.$value[1][5]['MinPLID'].'">'. ceil(($value[1][5]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p6" plid="'.$value[1][6]['PLID'].'" minpl="'.$value[1][6]['MinPLID'].'">'. ceil(($value[1][6]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p7" plid="'.$value[1][7]['PLID'].'" minpl="'.$value[1][7]['MinPLID'].'">'. ceil(($value[1][7]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p8" plid="'.$value[1][8]['PLID'].'" minpl="'.$value[1][8]['MinPLID'].'">'. ceil(($value[1][8]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p9" plid="'.$value[1][9]['PLID'].'" minpl="'.$value[1][9]['MinPLID'].'">'. ceil(($value[1][9]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
+                $html .= '<th hidden="hidden" class="p10" plid="'.$value[1][10]['PLID'].'" minpl="'.$value[1][10]['MinPLID'].'">'. ceil(($value[1][10]['PriceMC'] * $currency / 6) * 100) / 100 * 6 .'</th>';
             }
             $html .= '<th><input type="button" class="btnAddGood btn btn-primary" value="Добавить"></th></tr>';
         }
@@ -469,74 +525,125 @@ class AccRController extends BaseController
             ->get(['PGrID3', 'PGrName3'])->toArray();
         $pgrName3 = [];
         $pgrID3 = [];
-		foreach ($pgr3Obj as $key => $value) {
-			array_push($pgrName3, $value['PGrName3']);
-			array_push($pgrID3, $value['PGrID3']);
+        foreach($pgr3Obj as $key => $value)
+		{
+			array_push($pgrName3, $value['PGrName3']); 
+			array_push($pgrID3, $value['PGrID3']); 	
 		}
 		unset($pgr3Obj);
 		$pgr3Obj = array_combine($pgrID3, $pgrName3);
-		return $pgr3Obj;
+		return $pgr3Obj;	
 	}
 
-    public function sendApproved($filename, $orderID)
+    public function createPdf($DocID)
     {
-        $mailer = new PHPMailer();
-        $orderObj = \Orders::where('DocID', '=', $orderID)
-            ->get()->last()->toArray();
-		if ($orderObj['StockID'] == 110) {
-            $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last()->toArray();
-            $mailer->CharSet = 'utf-8';
-            $mailer->AddReplyTo(Auth::getUser()->email, $user['EmpName']);
-			$mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
-            $mailer->AddAddress('kyzmenkos@const.dp.ua', "Кузьменко Сергей Иванович");
-            $mailer->AddAddress('kurasova@alista.com.ua', "Курасова Светлана Васильевна");
-            $mailer->AddCC('kurasova@alista.com.ua', "Курасова Светлана Васильевна");
-            $mailer->AddAddress('davydov@alista.com.ua', "Давыдов Денис Александрович");
-            $mailer->AddCC('davydov@alista.com.ua', "Давыдов Денис Александрович");
-            $mailer->AddAddress('tsebrenko@alista.com.ua', "Цебренко Алина Витальевна");
-            $mailer->AddCC('tsebrenko@alista.com.ua', "Цебренко Алина Витальевна");
-            $mailer->AddAddress('krutijk@alista.com.ua', "Крутий Константин Игоревич");
-            $mailer->AddCC('krutijk@alista.com.ua', "Крутий Константин Игоревич");
-            $mailer->AddAddress('glazunov@alista.com.ua', "Глазунов Петр Алимович");
-            $mailer->AddCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
-			$mailer->Subject = "Заявка на " . $orderObj['CompName'];
-			$mailer->AltBody = "Заявка на " . $orderObj['CompName'];
-			$mailer->MsgHTML('<h1>Заявка на ' . $orderObj['CompName'] . '</h1>');
-            $mailer->AddAttachment($filename);
-			if (!$mailer->Send()) {
-                return "Mailer Error: " . $mailer->ErrorInfo;
-            } else {
-                return "Message sent!";
-            }
+        $order = \Orders::where('DocID', '=', $DocID)
+            ->join('prods', 'prods.ProdID', '=', 'orders.ProdID')
+            ->get(
+                [
+                    'orders.DocID',
+                    'orders.ProdID',
+                    'orders.CodeID3',
+                    'orders.Kurs',
+                    'orders.CompID',
+                    'orders.CompName',
+                    'orders.ProdID',
+                    'orders.ProdName',
+                    'orders.UM',
+                    'orders.Qty',
+                    'orders.PriceMC',
+                    'orders.SumPrice',
+                    'orders.PLID',
+                    'orders.EmpID',
+                    'orders.StockID',
+                    'prods.Weight',
+                    'orders.created_at'
+                ])->toArray();
+        $filename = 'Счет на оплату.pdf';
+        $DocDate = explode(' ', $order[0]['created_at']);
+        $arrDate = explode('-',$DocDate[0]);
+        $strDate = $arrDate[2].'.'.$arrDate[1].'.'.$arrDate[0];
+        $CompID = $order[0]['CompID'];
+        $CompName = $order[0]['CompName'];
+        $comp = \Comps::where('CompID', '=', $CompID)->get()->last();
+        $compAdd = \CompAdd::where('CompID', '=', $CompID)->get()->toArray();
+        $compContact = \CompContact::where('CompID', '=', $CompID)->get()->toArray();
+        $CityName = $comp->City;
+        $TSum_wt = '';
+        $TSum_nt = '';
+        $TQty = '';
+        $TWeight = '';
+        $pdf = new \Admin\PdfOrders();
+        if(\Comps::where('comps.CompID', '=', $CompID)
+            ->join('CompAdd', 'CompAdd.CompID', '=', 'comps.CompID')
+            ->get()->toArray())
+        {
+            $comp = \Comps::where('CompID', '=', $CompID)
+                ->get()->last()->toArray();
+            $compAdd = \CompAdd::where('CompID', '=', $CompID)
+                ->get()->last()->toArray();
         } else {
-            $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last()->toArray();
-            $mailer->CharSet = 'utf-8';
-            $mailer->AddReplyTo(Auth::getUser()->email, $user['EmpName']);
-			$mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
-            $mailer->AddAddress('kyzmenkos@const.dp.ua', "Кузьменко Сергей Иванович");
-            $mailer->AddAddress('kurasova@alista.com.ua', "Курасова Светлана Васильевна");
-            $mailer->AddCC('kurasova@alista.com.ua', "Курасова Светлана Васильевна");
-            $mailer->AddAddress('davydov@alista.com.ua', "Давыдов Денис Александрович");
-            $mailer->AddCC('davydov@alista.com.ua', "Давыдов Денис Александрович");
-            $mailer->AddAddress('tsebrenko@alista.com.ua', "Цебренко Алина Витальевна");
-            $mailer->AddCC('tsebrenko@alista.com.ua', "Цебренко Алина Витальевна");
-            $mailer->AddAddress('melnik@alista.com.ua', "Мельник Александр Александрович");
-            $mailer->AddCC('melnik@alista.com.ua', "Мельник Александр Александрович");
-            $mailer->AddAddress('krutijk@alista.com.ua', "Крутий Константин Игоревич");
-            $mailer->AddCC('krutijk@alista.com.ua', "Крутий Константин Игоревич");
-            $mailer->AddAddress('glazunov@alista.com.ua', "Глазунов Петр Алимович");
-            $mailer->AddCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
-            $mailer->addBCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
-
-            $mailer->Subject = "Заявка на отбор товара";
-            $mailer->AltBody = "Заявка на отбор товара";
-            $mailer->MsgHTML('<h1> Заявка на отбор товара </h1>');
-            $mailer->AddAttachment($filename);
-			if (!$mailer->Send()) {
-                return "Mailer Error: " . $mailer->ErrorInfo;
-            } else {
-                return "Message sent!";
-            }
+            $comp = \Comps::where('CompID', '=', $CompID)
+                ->get()->last()->toArray();
+            $compAdd = ['CompAdd' => ''];
+        }
+        $CompAdd =  $compAdd['CompAdd'];
+        foreach($order as $key => $value)
+        {
+            $PWeight = '';
+            $PWeight = $value['Qty'] * $value['Weight'];
+            $TSum_wt += $value['SumPrice'];
+            $TSum_nt += $value['SumPrice']/1.2;
+            $TQty += $value['Qty'];
+            $TWeight += $PWeight;
+        }
+        $TPrice_wt = str_replace('.',',',round($TSum_wt, 2));
+        $numberChar = $pdf->num2text_ua($TSum_wt);
+        if($order[0]['CodeID3'] == 4)
+        {
+            $html = View::make('order-template', compact(
+                [
+                    'order',
+                    'DocID',
+                    'strDate',
+                    'CompID',
+                    'CompName',
+                    'CityName',
+                    'TSum_wt',
+                    'TSum_nt',
+                    'TQty',
+                    'TPrice_wt',
+                    'numberChar',
+                    'CompAdd',
+                    'TWeight'
+                ]
+            ))->render();
+            $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+            $bpdf = BPDF::loadHTML($html, 'UTF-8');
+            $bpdf->setPaper('a4')->setOrientation('portrait')->setWarnings(false)->save('Счет на оплату.pdf')->stream('opdf.pdf');
+            return $filename;
+        } else {
+            $html = View::make('order-templateCASH', compact(
+                [
+                    'order',
+                    'DocID',
+                    'strDate',
+                    'CompID',
+                    'CompName',
+                    'CityName',
+                    'TSum_wt',
+                    'TSum_nt',
+                    'TQty',
+                    'TPrice_wt',
+                    'numberChar',
+                    'CompAdd',
+                    'TWeight'
+                ]
+            ))->render();
+            $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+            $bpdf = BPDF::loadHTML($html, 'UTF-8');
+            $bpdf->setPaper('a4')->setOrientation('portrait')->setWarnings(false)->save('Счет на оплату.pdf')->stream('opdf.pdf');
+            return $filename;
         }
     }
 
@@ -696,6 +803,69 @@ class AccRController extends BaseController
         return $fileName;
     }*/
 
+    public function sendApproved($filename, $orderID)
+    {
+        $mailer = new PHPMailer();
+        $orderObj = \Orders::where('DocID', '=', $orderID)
+            ->get()->last()->toArray();
+        if($orderObj['StockID'] == 110)
+        {
+            $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last()->toArray();
+            $mailer->CharSet = 'utf-8';
+            $mailer->AddReplyTo(Auth::getUser()->email, $user['EmpName']);
+            $mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
+            $mailer->AddAddress('kyzmenkos@const.dp.ua', "Кузьменко Сергей Иванович");
+            $mailer->AddAddress('kurasova@alista.com.ua', "Курасова Светлана Васильевна");
+            $mailer->AddCC('kurasova@alista.com.ua', "Курасова Светлана Васильевна");
+            $mailer->AddAddress('davydov@alista.com.ua', "Давыдов Денис Александрович");
+            $mailer->AddCC('davydov@alista.com.ua', "Давыдов Денис Александрович");
+            $mailer->AddAddress('tsebrenko@alista.com.ua', "Цебренко Алина Витальевна");
+            $mailer->AddCC('tsebrenko@alista.com.ua', "Цебренко Алина Витальевна");
+            $mailer->AddAddress('krutijk@alista.com.ua', "Крутий Константин Игоревич");
+            $mailer->AddCC('krutijk@alista.com.ua', "Крутий Константин Игоревич");
+            $mailer->AddAddress('glazunov@alista.com.ua', "Глазунов Петр Алимович");
+            $mailer->AddCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
+            $mailer->Subject = "Заявка на ".$orderObj['CompName'];
+            $mailer->AltBody = "Заявка на ".$orderObj['CompName'];
+            $mailer->MsgHTML('<h1>Заявка на '.$orderObj['CompName'].'</h1>');
+            $mailer->AddAttachment($filename);
+            if(!$mailer->Send()) {
+                return "Mailer Error: " . $mailer->ErrorInfo;
+            } else {
+                return "Message sent!";
+            }
+        } else {
+            $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last()->toArray();
+            $mailer->CharSet = 'utf-8';
+            $mailer->AddReplyTo(Auth::getUser()->email, $user['EmpName']);
+            $mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
+            $mailer->AddAddress('kyzmenkos@const.dp.ua', "Кузьменко Сергей Иванович");
+            $mailer->AddAddress('kurasova@alista.com.ua', "Курасова Светлана Васильевна");
+            $mailer->AddCC('kurasova@alista.com.ua', "Курасова Светлана Васильевна");
+            $mailer->AddAddress('davydov@alista.com.ua', "Давыдов Денис Александрович");
+            $mailer->AddCC('davydov@alista.com.ua', "Давыдов Денис Александрович");
+            $mailer->AddAddress('tsebrenko@alista.com.ua', "Цебренко Алина Витальевна");
+            $mailer->AddCC('tsebrenko@alista.com.ua', "Цебренко Алина Витальевна");
+            $mailer->AddAddress('melnik@alista.com.ua', "Мельник Александр Александрович");
+            $mailer->AddCC('melnik@alista.com.ua', "Мельник Александр Александрович");
+            $mailer->AddAddress('krutijk@alista.com.ua', "Крутий Константин Игоревич");
+            $mailer->AddCC('krutijk@alista.com.ua', "Крутий Константин Игоревич");
+            $mailer->AddAddress('glazunov@alista.com.ua', "Глазунов Петр Алимович");
+            $mailer->AddCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
+            $mailer->addBCC('glazunov@alista.com.ua', "Глазунов Петр Алимович");
+
+            $mailer->Subject = "Заявка на отбор товара";
+            $mailer->AltBody = "Заявка на отбор товара";
+            $mailer->MsgHTML('<h1> Заявка на отбор товара </h1>');
+            $mailer->AddAttachment($filename);
+            if(!$mailer->Send()) {
+                return "Mailer Error: " . $mailer->ErrorInfo;
+            } else {
+                return "Message sent!";
+            }
+        }
+    }
+
     public function sendOrderComp()
     {
         $filename = Input::get('filename');
@@ -708,14 +878,15 @@ class AccRController extends BaseController
         $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last()->toArray();
         $mailer->CharSet = 'utf-8';
         $mailer->AddReplyTo(Auth::getUser()->email, $user['EmpName']);
-		$mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
+        $mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
         $mailer->AddAddress($email, "");
-		$mailer->Subject = "Счет на " . $orderObj['CompName'];
-		$mailer->AltBody = "Счет на " . $orderObj['CompName'];
-		$mailer->MsgHTML('<h1> Счет на ' . $orderObj['CompName'] . '</h1>');
+        $mailer->Subject = "Счет на ".$orderObj['CompName'];
+        $mailer->AltBody = "Счет на ".$orderObj['CompName'];
+        $mailer->MsgHTML('<h1> Счет на '.$orderObj['CompName'].'</h1>');
         $mailer->AddAttachment($filename);
-		if (!$mailer->Send()) {
-			$msg = "Произошла ошибка при отправке: " . $mailer->ErrorInfo . '.';
+        if(!$mailer->Send())
+        {
+            $msg = "Произошла ошибка при отправке: " . $mailer->ErrorInfo.'.';
             $msg .= '<br/>Обратитесь к администратору';
             return View::make('msg', compact(['msg']));
         } else {
@@ -735,14 +906,15 @@ class AccRController extends BaseController
         $user = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get()->last()->toArray();
         $mailer->CharSet = 'utf-8';
         $mailer->AddReplyTo(Auth::getUser()->email, $user['EmpName']);
-		$mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
+        $mailer->SetFrom('webmaster@metiz.alista.org.ua', $user['EmpName']);
         $mailer->AddAddress($email, "");
-		$mailer->Subject = "Счет на " . $orderObj['CompName'];
-		$mailer->AltBody = "Счет на " . $orderObj['CompName'];
-		$mailer->MsgHTML('<h1> Счет на ' . $orderObj['CompName'] . '</h1>');
+        $mailer->Subject = "Счет на ".$orderObj['CompName'];
+        $mailer->AltBody = "Счет на ".$orderObj['CompName'];
+        $mailer->MsgHTML('<h1> Счет на '.$orderObj['CompName'].'</h1>');
         $mailer->AddAttachment($filename);
-		if (!$mailer->Send()) {
-			$msg = "Произошла ошибка при отправке: " . $mailer->ErrorInfo . '.';
+        if(!$mailer->Send())
+        {
+            $msg = "Произошла ошибка при отправке: " . $mailer->ErrorInfo.'.';
             $msg .= '<br/>Обратитесь к администратору';
             return View::make('msg', compact(['msg']));
         } else {
@@ -755,7 +927,7 @@ class AccRController extends BaseController
 	{
         $orderID = Input::get('orderID');
         $arrOrder = \Orders::where('DocID', '=', $orderID)->get()->last()->toArray();
-		if ($arrOrder['CompID'] != 0) {
+        if($arrOrder['CompID'] != 0) {
             $filename = $this->createPdf($orderID);
             $orderArr = \Orders::where('DocID', '=', $orderID)
                 ->get()->last();
@@ -764,10 +936,10 @@ class AccRController extends BaseController
             $contactArr = \CompContact::where('CompID', '=', $orderArr->CompID)
                 ->get()->last();
             $compName = $compArr->CompName;
-			if ($compArr->EMail) {
+            if($compArr->EMail) {
                 $emailComp = $compArr->EMail;
                 return View::make('sendOrder', compact(['orderID', 'emailComp', 'filename', 'compName']));
-			} else if (!empty($contactArr->eMail)) {
+            } else if(!empty($contactArr->eMail)) {
                 $emailComp = $contactArr->eMail;
                 return View::make('sendOrder', compact(['orderID', 'emailComp', 'filename', 'compName']));
             } else {
@@ -779,133 +951,25 @@ class AccRController extends BaseController
             return View::make('msg', compact('msg'));
         }
     }
-
-    public function createPdf($DocID)
-    {
-        $order = \Orders::where('DocID', '=', $DocID)
-            ->join('prods', 'prods.ProdID', '=', 'orders.ProdID')
-            ->get(
-                [
-                    'orders.DocID',
-                    'orders.ProdID',
-                    'orders.CodeID3',
-                    'orders.Kurs',
-                    'orders.CompID',
-                    'orders.CompName',
-                    'orders.ProdID',
-                    'orders.ProdName',
-                    'orders.UM',
-                    'orders.Qty',
-                    'orders.PriceMC',
-                    'orders.SumPrice',
-                    'orders.PLID',
-                    'orders.EmpID',
-                    'orders.StockID',
-                    'prods.Weight',
-                    'orders.created_at'
-                ])->toArray();
-        $filename = 'Счет на оплату.pdf';
-        $DocDate = explode(' ', $order[0]['created_at']);
-		$arrDate = explode('-', $DocDate[0]);
-		$strDate = $arrDate[2] . '.' . $arrDate[1] . '.' . $arrDate[0];
-        $CompID = $order[0]['CompID'];
-        $CompName = $order[0]['CompName'];
-        $comp = \Comps::where('CompID', '=', $CompID)->get()->last();
-        $compAdd = \CompAdd::where('CompID', '=', $CompID)->get()->toArray();
-        $compContact = \CompContact::where('CompID', '=', $CompID)->get()->toArray();
-        $CityName = $comp->City;
-        $TSum_wt = '';
-        $TSum_nt = '';
-        $TQty = '';
-        $TWeight = '';
-        $pdf = new \Admin\PdfOrders();
-		if (\Comps::where('comps.CompID', '=', $CompID)
-            ->join('CompAdd', 'CompAdd.CompID', '=', 'comps.CompID')->get()->toArray()
-		) {
-            $comp = \Comps::where('CompID', '=', $CompID)
-                ->get()->last()->toArray();
-            $compAdd = \CompAdd::where('CompID', '=', $CompID)
-                ->get()->last()->toArray();
-        } else {
-            $comp = \Comps::where('CompID', '=', $CompID)
-                ->get()->last()->toArray();
-            $compAdd = ['CompAdd' => ''];
-        }
-		$CompAdd = $compAdd['CompAdd'];
-		foreach ($order as $key => $value) {
-            $PWeight = '';
-            $PWeight = $value['Qty'] * $value['Weight'];
-            $TSum_wt += $value['SumPrice'];
-			$TSum_nt += $value['SumPrice'] / 1.2;
-            $TQty += $value['Qty'];
-            $TWeight += $PWeight;
-        }
-		$TPrice_wt = str_replace('.', ',', round($TSum_wt, 2));
-        $numberChar = $pdf->num2text_ua($TSum_wt);
-		if ($order[0]['CodeID3'] == 4) {
-            $html = View::make('order-template', compact(
-                [
-                    'order',
-                    'DocID',
-                    'strDate',
-                    'CompID',
-                    'CompName',
-                    'CityName',
-                    'TSum_wt',
-                    'TSum_nt',
-                    'TQty',
-                    'TPrice_wt',
-                    'numberChar',
-                    'CompAdd',
-                    'TWeight'
-                ]
-            ))->render();
-            $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
-            $bpdf = BPDF::loadHTML($html, 'UTF-8');
-            $bpdf->setPaper('a4')->setOrientation('portrait')->setWarnings(false)->save('Счет на оплату.pdf')->stream('opdf.pdf');
-            return $filename;
-        } else {
-            $html = View::make('order-templateCASH', compact(
-                [
-                    'order',
-                    'DocID',
-                    'strDate',
-                    'CompID',
-                    'CompName',
-                    'CityName',
-                    'TSum_wt',
-                    'TSum_nt',
-                    'TQty',
-                    'TPrice_wt',
-                    'numberChar',
-                    'CompAdd',
-                    'TWeight'
-                ]
-            ))->render();
-            $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
-            $bpdf = BPDF::loadHTML($html, 'UTF-8');
-            $bpdf->setPaper('a4')->setOrientation('portrait')->setWarnings(false)->save('Счет на оплату.pdf')->stream('opdf.pdf');
-            return $filename;
-        }
-    }
-
+	
 	public function editOrder()
 	{
         $orderID = Input::get('orderID');
         $ord = \Orders::where('orderID', '=', $orderID)->get()->toArray();
-		if (empty($ord)) {
+        if(empty($ord)) {
             $orderType = 'DocID';
         } else {
             $orderType = 'orderID';
         }
         $EmpPL = \Emps::where('EmpID', '=', Auth::getUser()->EmpID)->get(['PLID'])->first()->PLID;
-		if (Auth::getUser()->status == 1) {
+        if(Auth::getUser()->status == 1) {
 			$Emps = \Emps::orderBy('EmpName', 'desc')->get()->toArray();
 			$empName = [];
 			$empID = [];
-			foreach ($Emps as $key => $value) {
-				array_push($empName, $value['EmpName']);
-				array_push($empID, $value['EmpID']);
+			foreach($Emps as $key => $value)
+            {
+                array_push($empName,$value['EmpName']);
+                array_push($empID,$value['EmpID']);
             }
             unset($Emps);
             $Emps = array_combine($empID, $empName);
@@ -913,18 +977,20 @@ class AccRController extends BaseController
 			$empID = Auth::getUser()->EmpID;
 			$empNameObj = \Emps::where('EmpID', '=', $empID)->get()->toArray();
 			$empName = $empNameObj[0]['EmpName'];
-			$Emps = [$empID => $empName];
+			$Emps = [$empID => $empName];	
 		}
         $totalPricePos = '';
 		$comps = \Comps::orderBy('CompName', 'asc')->get(['CompName', 'CompID'])->toArray();
-		$compName = [];
+		$compName = [];	
 		$compID = [];
-		foreach ($comps as $key => $value) {
-			if ($value['CompName'] == NULL) {
+        foreach($comps as $key => $value)
+        {
+            if($value['CompName'] == NULL)
+            {
                 continue;
             } else {
-				array_push($compName, $value['CompName']);
-				array_push($compID, $value['CompID']);
+                array_push($compName,$value['CompName']);
+                array_push($compID,$value['CompID']);
             }
         }
         unset($comps);
@@ -936,7 +1002,8 @@ class AccRController extends BaseController
         $curCompName = $curComp->CompName;
         $aboutOrder = \Orders::where($orderType, '=', $orderID)
             ->join('Emps', 'Emps.EmpID', '=', 'orders.EmpID')
-            ->join('status_inv', 'status_inv.statusType', '=', 'orders.status')->get(['orders.status', 'Emps.EmpName', 'orders.EmpID'])
+            ->join('status_inv', 'status_inv.statusType', '=', 'orders.status')
+            ->get(['orders.status','Emps.EmpName', 'orders.EmpID'])
             ->last()
             ->toArray();
         $orders = \Orders::where($orderType, '=', $orderID)
@@ -945,20 +1012,25 @@ class AccRController extends BaseController
             ->join('prods', 'prods.ProdID', '=', 'orders.ProdID')
             ->get(['prods.ShortProdName', 'orders.orderID', 'orders.DocID', 'orders.Kurs', 'orders.CompID',
                 'orders.CompName', 'orders.ProdID', 'orders.ProdName', 'orders.CodeID3', 'orders.UM',
-                'orders.Qty', 'orders.PriceMC', 'orders.PLID', 'orders.StockID', 'orders.SrcPosID', 'orders.status'])
+                'orders.Qty', 'orders.PriceMC', 'orders.PLID', 'orders.StockID',
+                 'orders.SrcPosID', 'orders.status'])
             ->toArray();
-		foreach ($orders as $key => $value) {
-			if ($value['status'] == 10) {
+        foreach($orders as $key => $value)
+        {
+            if($value['status'] == 10)
+            {
                 $orders[$key]['color'] = '#EE8F48';
-			} else if ($value['status'] == 5) {
+            } else if($value['status'] == 5)
+            {
                 $orders[$key]['color'] = '#FF4500';
             } else {
                 $orders[$key]['color'] = '';
             }
-			$orders[$key]['totalPricePosCC'] = $value['Qty'] * $value['PriceMC'];
-			$orders[$key]['totalPricePosMC'] = $value['Qty'] * $value['PriceMC'] / $value['Kurs'];
+            $orders[$key]['totalPricePosCC'] = $value['Qty']*$value['PriceMC'];
+            $orders[$key]['totalPricePosMC'] = $value['Qty']*$value['PriceMC'] / $value['Kurs'];
         }
-		foreach ($orders as $key => $value) {
+        foreach($orders as $key => $value)
+        {
             $pl = \ProdMP::where('ProdID', '=', $value['ProdID'])
                 ->orderBy('PLID', 'asc')
                 ->get(['PLID', 'PriceMC'])
@@ -969,11 +1041,12 @@ class AccRController extends BaseController
 		return View::make('accr.edit-order', compact(['EmpPL', 'aboutOrder', 'orders', 'orderID', 'comps',
             'curCompName', 'curCompID', 'currency', 'Emps']));
 	}
-
+	
 	public function saveEditOrder()
 	{
 		$res = Input::get('res');
-		if (\Orders::where('orderID', '=', Input::get('orderID'))->get()->toArray()) {
+        if(\Orders::where('orderID', '=', Input::get('orderID'))->get()->toArray())
+        {
             $DocIdArr = \Orders::where('orderID', '=', Input::get('orderID'))->get(['DocID'])->last()->toArray();
             $DocID = $DocIdArr['DocID'];
             $orderID = Input::get('orderID');
@@ -984,33 +1057,41 @@ class AccRController extends BaseController
             $DocID = Input::get('orderID');
             \Orders::where('DocID', '=', Input::get('orderID'))->delete();
         }
-		if (empty($res)) {
+        if(empty($res))
+		{
 			return ['message' => ['error' => 'Нет позиций в счете']];
 		}
 		$pos = 1;
 		$result = [];
-		foreach ($res as $key => $value) {
+		foreach($res as $key => $value)
+		{
 			$goods = \Prods::where('ProdName', '=', $value['name'])->get()->first()->toArray();
-			if (empty($goods)) {
+			if(empty($goods))
+			{
 				return ['message' => ['error' => 'Нет товара']];
 			}
 			$comp = \Comps::where('CompID', '=', $value['CompID'])->get()->first()->toArray();
-			if (empty($comp)) {
+			if(empty($comp))
+			{
 				return ['message' => ['error' => 'Нет предприятия']];
 			}
 			$rem = \Rem::where('ProdID', '=', $goods['ProdID'])->get()->first()->toArray();
-			if (empty($rem)) {
+			if(empty($rem))
+			{
 				return ['message' => ['error' => 'Нет остатков']];
 			}
 			$price = \ProdMP::where('ProdID', '=', $goods['ProdID'])->where('PLID', '=', $value['pl'])->get(['PriceMC'])->toArray();
-			if (empty($price)) {
+			if(empty($price))
+			{
 				return ['message' => ['error' => 'Нет цены']];
 			} else {
                 $price = \ProdMP::where('ProdID', '=', $goods['ProdID'])->where('PLID', '=', $value['pl'])->get(['PriceMC'])->last()->toArray();
             }
-			if ($value['typeInv'] == 1) {
+			if($value['typeInv'] == 1)
+			{
 				$currency = \Currency::where('appointment', '=', 1)->get(['value'])->first()->value;
-			} else {
+			} else 
+			{
 				$currency = \Currency::where('appointment', '=', 4)->get(['value'])->first()->value;
 			}
             \Orders::create(
@@ -1060,7 +1141,7 @@ class AccRController extends BaseController
         return $result;
 	}
 
-	public function exampleOrder()
+    public function  exampleOrder()
     {
         $filename = 'test1.xls';
         //$xml = simplexml_load_file('test1.xml');

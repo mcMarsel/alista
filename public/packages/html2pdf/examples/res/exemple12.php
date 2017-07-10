@@ -1,33 +1,36 @@
 <?php
-$chaine = 'test de texte assez long pour engendrer des retours à la ligne automatique...';
-$chaine .= ', répétitif car besoin d\'un retour à la ligne';
-$chaine .= ', répétitif car besoin d\'un retour à la ligne';
-$chaine .= ', répétitif car besoin d\'un retour à la ligne';
-$chaine .= ', répétitif car besoin d\'un retour à la ligne';
+    $chaine = 'test de texte assez long pour engendrer des retours à la ligne automatique...';
+    $chaine.= ', répétitif car besoin d\'un retour à la ligne';
+    $chaine.= ', répétitif car besoin d\'un retour à la ligne';
+    $chaine.= ', répétitif car besoin d\'un retour à la ligne';
+    $chaine.= ', répétitif car besoin d\'un retour à la ligne';
 ?>
 <style type="text/css">
-    <!--
-    ul {
-        background: #FFDDDD;
-        border: solid 1px #FF0000;
-    }
+<!--
+ul
+{
+    background: #FFDDDD;
+    border: solid 1px #FF0000;
+}
 
-    ol {
-        background: #DDFFDD;
-        border: solid 1px #00FF00;
-    }
+ol
+{
+    background: #DDFFDD;
+    border: solid 1px #00FF00;
+}
 
-    ul li {
-        background: #DDFFAA;
-        border: solid 1px #AAFF00;
-    }
+ul li
+{
+    background: #DDFFAA;
+    border: solid 1px #AAFF00;
+}
 
-    ol li {
-        background: #AADDFF;
-        border: solid 1px #00AAFF;
-    }
-
-    -->
+ol li
+{
+    background: #AADDFF;
+    border: solid 1px #00AAFF;
+}
+-->
 </style>
 <page style="font-size: 11px">
     <ul style="list-style-type: disc; width: 80%">
@@ -74,8 +77,7 @@ $chaine .= ', répétitif car besoin d\'un retour à la ligne';
             Point 3 :<br><?php echo $chaine; ?>
         </li>
     </ul>
-    <hr>
-    <hr>
+    <hr><hr>
     <ol style="list-style-type: upper-roman">
         <li>
             Point 1 :<br><?php echo $chaine; ?>

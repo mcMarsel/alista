@@ -20,7 +20,7 @@ class SelectParser
       children: 0
       disabled: group.disabled,
       classes: group.className
-    this.add_option(option, group_position, group.disabled) for option in group.childNodes
+    this.add_option( option, group_position, group.disabled ) for option in group.childNodes
 
   add_option: (option, group_position, group_disabled) ->
     if option.nodeName.toUpperCase() is "OPTION"
@@ -64,5 +64,5 @@ class SelectParser
 
 SelectParser.select_to_array = (select) ->
   parser = new SelectParser()
-  parser.add_node(child) for child in select.childNodes
+  parser.add_node( child ) for child in select.childNodes
   parser.parsed

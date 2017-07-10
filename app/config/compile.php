@@ -1,6 +1,8 @@
 <?php
 
-return array(/*
+return array(
+
+	/*
 	|--------------------------------------------------------------------------
 	| Additional Compiled Classes
 	|--------------------------------------------------------------------------
@@ -10,6 +12,7 @@ return array(/*
 	| that are included on basically every request into the application.
 	|
 	*/
+
 
 
 );

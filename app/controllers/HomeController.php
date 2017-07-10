@@ -1,7 +1,6 @@
 <?php
 
-class HomeController extends BaseController
-{
+class HomeController extends BaseController {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -16,12 +15,8 @@ class HomeController extends BaseController
 	|
 	*/
 
-	/**
-	 * @return mixed
-	 */
 	public function index()
 	{
-		Session::regenerate();
 		return View::make('default');
 	}
 

@@ -128,22 +128,25 @@ Route::post('approved-pdf',
     ]
 )->before('auth');
 
-Route::get('getCity{q?}', function ($q = 0) {
+Route::get('getCity{q?}', function($q=0)
+{
     $q = Input::get('q');
-	if (is_numeric($q)) {
-		$compObj = \City::where('cityID', 'LIKE', '%' . $q . '%')
+    if(is_numeric($q))
+    {
+        $compObj = \City::where('cityID', 'LIKE', '%'.$q.'%')
             ->join('Region', 'Region.RegionID', '=', 'at_city.regionID')
             ->where('at_city.RegionID', '!=', 0)
             ->get()->toArray();
     } else {
-		$compObj = \City::where('cityName', 'LIKE', '%' . $q . '%')
+        $compObj = \City::where('cityName', 'LIKE', '%'.$q.'%')
             ->join('Region', 'Region.RegionID', '=', 'at_city.regionID')
             ->where('at_city.RegionID', '!=', 0)
             ->get()->toArray();
     }
     $res = [];
     $count = count($compObj);
-	foreach ($compObj as $key => $value) {
+    foreach($compObj as $key => $value)
+    {
         $res[$key]['id'] = $value['cityID'];
         $res[$key]['name'] = $value['cityName'];
         $res[$key]['full_name'] = $value['cityName'];
@@ -184,12 +187,20 @@ Route::get('getRows',
 
 
 //============PriceController ROUTE
-Route::get('rew', ['as' => 'rew', 'uses' => 'PriceListController@rew']
+Route::get('rew', 
+	[
+        	'as' => 'rew',
+        	'uses' => 'PriceListController@rew'
+    	]
 )->before('auth');
 
 Route::any('tracker/{latitude}/{longitude}/{trackid}', 'SettingController@index');
 
-Route::post('req', ['as' => 'req', 'uses' => 'PriceListController@req']
+Route::post('req', 
+	[
+        	'as' => 'req',
+        	'uses' => 'PriceListController@req'
+    	]
 )->before('auth');
 
 Route::post('sendPrice',
@@ -481,10 +492,11 @@ Route::post('send',
     ]
 )->before('auth');
 
-Route::post('send1', function () {
+Route::post('send1', function()
+{
     ini_set('memory_limit', '-1');
     $file = Input::file('file');
-	$objPHPExcel = PHPExcel_IOFactory::load($file);
+    $objPHPExcel = PHPExcel_IOFactory::load( $file );
     //$objPHPExcel->setActiveSheetIndex(0);
     //$aSheet = $objPHPExcel->getActiveSheet();
     //$data = array();
@@ -539,7 +551,7 @@ Route::get('/',
     ]
 )->before('auth');
 
-/*Route::any('testtest', function(){
+Route::any('testtest', function(){
     $arrOrder = \Orders::where('DocID', '=', 26600)->get()->last()->toArray();
     echo "<pre>";
     print_r($arrOrder);
@@ -565,10 +577,11 @@ Route::get('/',
     } else {
         $msg = 'В данного счета нет ИД! Обратитесь к администратору.';
         return View::make('msg', compact('msg'));
-    }
-});*/
+    }*/
+});
 
-Route::get('export', function () {
+Route::get('export', function()
+{
     return View::make('excel');
 })->before('auth');
 

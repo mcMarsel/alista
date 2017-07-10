@@ -66,7 +66,6 @@ var imp = angular.module('wise.import', ['ui.grid'])
                     }
                 });
             }
-
             function transferComplete(evt) {
                 //console.log(evt.target.responseText);
                 $scope.uploaded = true;

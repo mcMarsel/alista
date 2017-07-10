@@ -25,9 +25,9 @@ class @Chosen extends AbstractChosen
 
     container_props.id = @form_field.id.replace(/[^\w]/g, '_') + "_chosen" if @form_field.id.length
 
-    @container = if @is_multiple then new Element('div', container_props).update(@multi_temp.evaluate({"default": @default_text})) else new Element('div', container_props).update(@single_temp.evaluate({"default": @default_text}))
+    @container = if @is_multiple then new Element('div', container_props).update( @multi_temp.evaluate({ "default": @default_text}) ) else new Element('div', container_props).update( @single_temp.evaluate({ "default":@default_text }) )
 
-    @form_field.hide().insert({after: @container})
+    @form_field.hide().insert({ after: @container })
     @dropdown = @container.down('div.chosen-drop')
 
     @search_field = @container.down('input')
@@ -190,7 +190,7 @@ class @Chosen extends AbstractChosen
         @search_field.readOnly = false
         @container.removeClassName "chosen-container-single-nosearch"
 
-    this.update_results_content this.results_option_build({first: true})
+    this.update_results_content this.results_option_build({first:true})
 
     this.search_field_disabled()
     this.show_search_field_default()
@@ -199,22 +199,22 @@ class @Chosen extends AbstractChosen
     @parsing = false
 
   result_do_highlight: (el) ->
-    this.result_clear_highlight()
+      this.result_clear_highlight()
 
-    @result_highlight = el
-    @result_highlight.addClassName "highlighted"
+      @result_highlight = el
+      @result_highlight.addClassName "highlighted"
 
-    maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
-    visible_top = @search_results.scrollTop
-    visible_bottom = maxHeight + visible_top
+      maxHeight = parseInt @search_results.getStyle('maxHeight'), 10
+      visible_top = @search_results.scrollTop
+      visible_bottom = maxHeight + visible_top
 
-    high_top = @result_highlight.positionedOffset().top
-    high_bottom = high_top + @result_highlight.getHeight()
+      high_top = @result_highlight.positionedOffset().top
+      high_bottom = high_top + @result_highlight.getHeight()
 
-    if high_bottom >= visible_bottom
-      @search_results.scrollTop = if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
-    else if high_top < visible_top
-      @search_results.scrollTop = high_top
+      if high_bottom >= visible_bottom
+        @search_results.scrollTop = if (high_bottom - maxHeight) > 0 then (high_bottom - maxHeight) else 0
+      else if high_top < visible_top
+        @search_results.scrollTop = high_top
 
   result_clear_highlight: ->
     @result_highlight.removeClassName('highlighted') if @result_highlight
@@ -278,22 +278,22 @@ class @Chosen extends AbstractChosen
 
   search_results_mouseover: (evt) ->
     target = if evt.target.hasClassName("active-result") then evt.target else evt.target.up(".active-result")
-    this.result_do_highlight(target) if target
+    this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if evt.target.hasClassName('active-result') or evt.target.up('.active-result')
 
   choice_build: (item) ->
-    choice = new Element('li', {class: "search-choice"}).update("<span>#{this.choice_label(item)}</span>")
+    choice = new Element('li', { class: "search-choice" }).update("<span>#{this.choice_label(item)}</span>")
 
     if item.disabled
       choice.addClassName 'search-choice-disabled'
     else
-      close_link = new Element('a', {href: '#', class: 'search-choice-close', rel: item.array_index})
+      close_link = new Element('a', { href: '#', class: 'search-choice-close', rel: item.array_index })
       close_link.observe "click", (evt) => this.choice_destroy_link_click(evt)
       choice.insert close_link
 
-    @search_container.insert {before: choice}
+    @search_container.insert { before: choice }
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
@@ -340,7 +340,7 @@ class @Chosen extends AbstractChosen
 
       high.addClassName("result-selected")
 
-      item = @results_data[high.getAttribute("data-option-array-index")]
+      item = @results_data[ high.getAttribute("data-option-array-index") ]
       item.selected = true
 
       @form_field.options[item.options_index].selected = true
@@ -361,7 +361,7 @@ class @Chosen extends AbstractChosen
 
       this.search_field_scale()
 
-  single_set_selected_text: (text = @default_text) ->
+  single_set_selected_text: (text=@default_text) ->
     if text is @default_text
       @selected_item.addClassName("chosen-default")
     else
@@ -390,7 +390,7 @@ class @Chosen extends AbstractChosen
 
   single_deselect_control_build: ->
     return unless @allow_single_deselect
-    @selected_item.down("span").insert {after: "<abbr class=\"search-choice-close\"></abbr>"} unless @selected_item.down("abbr")
+    @selected_item.down("span").insert { after: "<abbr class=\"search-choice-close\"></abbr>" } unless @selected_item.down("abbr")
     @selected_item.addClassName("chosen-single-with-deselect")
 
   get_search_text: ->
@@ -406,7 +406,7 @@ class @Chosen extends AbstractChosen
     this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
-    @search_results.insert @no_results_temp.evaluate(terms: terms)
+    @search_results.insert @no_results_temp.evaluate( terms: terms )
     @form_field.fire("chosen:no_results", {chosen: this})
 
   no_results_clear: ->
@@ -488,13 +488,12 @@ class @Chosen extends AbstractChosen
       w = 0
 
       style_block = "position:absolute; left: -1000px; top: -1000px; display:none;"
-      styles = ['font-size', 'font-style', 'font-weight', 'font-family', 'line-height', 'text-transform',
-        'letter-spacing']
+      styles = ['font-size','font-style', 'font-weight', 'font-family','line-height', 'text-transform', 'letter-spacing']
 
       for style in styles
         style_block += style + ":" + @search_field.getStyle(style) + ";"
 
-      div = new Element('div', {'style': style_block}).update(@search_field.value.escapeHTML())
+      div = new Element('div', { 'style' : style_block }).update(@search_field.value.escapeHTML())
       document.body.appendChild(div)
 
       w = Element.measure(div, 'width') + 25
@@ -502,7 +501,7 @@ class @Chosen extends AbstractChosen
 
       f_width = @container.getWidth()
 
-      if( w > f_width - 10 )
+      if( w > f_width-10 )
         w = f_width - 10
 
       @search_field.setStyle({'width': w + 'px'})

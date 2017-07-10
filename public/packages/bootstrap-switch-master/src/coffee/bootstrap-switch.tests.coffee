@@ -1,4 +1,5 @@
 describe "Bootstrap Switch:", ->
+
   beforeEach ->
     $.support.transition = false
     $.fx.off = true
@@ -50,11 +51,11 @@ describe "Bootstrap Switch:", ->
   describe "The Checkbox Bootstrap Switch", ->
     it "should conserve its state if onSwitchChange returns false", ->
       $switch = createCheckbox().bootstrapSwitch
-        onSwitchChange: (e, s) ->
+        onSwitchChange:(e, s) ->
           expect(s).toEqual true
           false
       $indeterminateSwitch = createCheckbox().data("indeterminate", true).bootstrapSwitch
-        onSwitchChange: (e, s) ->
+        onSwitchChange:(e, s) ->
           expect(s).toEqual true
           false
 
@@ -66,7 +67,7 @@ describe "Bootstrap Switch:", ->
 
     it "should change its state if onSwitchChange not returns false", ->
       $switch = createCheckbox().bootstrapSwitch
-        onSwitchChange: (e, s) -> expect(s).toEqual true
+        onSwitchChange:(e, s) -> expect(s).toEqual true
 
       $switch.click()
 
@@ -79,7 +80,7 @@ describe "Bootstrap Switch:", ->
       $radio3 = createRadio().prop("checked", false)
 
       $('[name="name"]').bootstrapSwitch
-        onSwitchChange: (e, s) ->
+        onSwitchChange:(e, s) ->
           expect(s).toEqual true
           false
 
@@ -95,7 +96,7 @@ describe "Bootstrap Switch:", ->
       $radio3 = createRadio().prop("checked", false)
 
       $('[name="name"]').bootstrapSwitch
-        onSwitchChange: (e, s) -> expect(s).toEqual true
+        onSwitchChange:(e, s) -> expect(s).toEqual true
 
       $radio2.click()
 

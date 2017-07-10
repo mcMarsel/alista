@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 
-class user extends Command
-{
+class user extends Command {
 
 	/**
 	 * The console command name.
@@ -48,7 +47,9 @@ class user extends Command
 	 */
 	protected function getArguments()
 	{
-		return array(array('example', InputArgument::REQUIRED, 'An example argument.'),);
+		return array(
+			array('example', InputArgument::REQUIRED, 'An example argument.'),
+		);
 	}
 
 	/**
@@ -58,7 +59,9 @@ class user extends Command
 	 */
 	protected function getOptions()
 	{
-		return array(array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),);
+		return array(
+			array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
+		);
 	}
 
 }

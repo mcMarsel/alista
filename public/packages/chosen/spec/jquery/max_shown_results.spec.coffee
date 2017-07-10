@@ -39,7 +39,7 @@ describe "search", ->
         "
     div = $("<div>").html(tmpl)
     select = div.find("select")
-    select.chosen({max_shown_results: 1})
+    select.chosen({max_shown_results: 1 })
 
     container = div.find(".chosen-container")
     container.trigger("mousedown") # open the drop

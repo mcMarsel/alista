@@ -1,6 +1,6 @@
-$(document).ready(function () {
-
-    $('editAddress').on('click', function () {
+$(document).ready(function()
+{
+    $('editAddress').on('click', function(){
         var tr = $(this).parent().parent();
         var valueAdd = tr.children().children('.addressEdit').val();
         var idAdd = tr.children().children('.addressEdit').prop('id');
@@ -12,12 +12,12 @@ $(document).ready(function () {
                 value: valueAdd,
                 id: idAdd,
                 compID: compID
-            }, success: function (resp) {
+            }, success: function(resp) {
                 console.log(resp);
             }
         });
     });
-    $('editContact').on('click', function () {
+    $('editContact').on('click', function(){
         var tr = $(this).parent().parent();
         var valContact = tr.children().children('.contactEdit').val();
         var id = tr.children().children('.contactEdit').prop('id');
@@ -31,13 +31,13 @@ $(document).ready(function () {
                 valueP: valPhone,
                 id: id,
                 compID: compID
-            }, success: function (resp) {
+            }, success: function(resp) {
                 console.log(resp);
             }
         });
     });
 
-    $('.delAddress').on('click', function () {
+    $('.delAddress').on('click', function(){
         var idAdd = $(this).prop('id');
         var compID = $('#CompID').text();
         $.ajax({
@@ -46,12 +46,12 @@ $(document).ready(function () {
             data: {
                 id: idAdd,
                 compID: compID
-            }, success: function (resp) {
+            }, success: function(resp) {
                 console.log(resp);
             }
         });
     });
-    $('.delContact').on('click', function () {
+    $('.delContact').on('click', function(){
         var idContact = $(this).prop('id');
         var compID = $('#CompID').text();
         $.ajax({
@@ -60,17 +60,18 @@ $(document).ready(function () {
             data: {
                 id: idContact,
                 compID: compID
-            }, success: function (resp) {
+            }, success: function(resp) {
                 console.log(resp);
             }
         });
     });
-    $('#addContact').on('click', function () {
+
+    $('#addContact').on('click', function(){
         $($($(this).parent().parent())).before('<tr class="cont">' +
-            '<td><input type="text" name="contact" class="contactEdit"></td>' +
-            '<td><input type="text" name="phone" class="phoneEdit"></td>' +
-            '<td><input type="button" value="Сохранить" class="saveContact btn-primary"></td></tr>');
-        $('.saveContact').on('click', function () {
+        '<td><input type="text" name="contact" class="contactEdit"></td>' +
+        '<td><input type="text" name="phone" class="phoneEdit"></td>' +
+        '<td><input type="button" value="Сохранить" class="saveContact btn-primary"></td></tr>');
+        $('.saveContact').on('click', function() {
             var tr = $(this).parent().parent();
             var valContact = tr.children().children('.contactEdit').val();
             var id = tr.children().children('.contactEdit').prop('id');
@@ -84,17 +85,18 @@ $(document).ready(function () {
                     valueP: valPhone,
                     id: id,
                     compID: compID
-                }, success: function (resp) {
+                }, success: function(resp) {
                     console.log(resp);
                 }
             });
         });
     });
-    $('#addAddress').on('click', function () {
+
+    $('#addAddress').on('click', function(){
         $($($(this).parent().parent())).before('<tr class="add">' +
-            '<td><input type="text" name="address" class="addressEdit"></td>' +
-            '<td><input type="button" value="Сохранить" class="saveAddress btn-primary"></td></tr>');
-        $('.saveAddress').on('click', function () {
+        '<td><input type="text" name="address" class="addressEdit"></td>' +
+        '<td><input type="button" value="Сохранить" class="saveAddress btn-primary"></td></tr>');
+        $('.saveAddress').on('click', function() {
             var tr = $(this).parent().parent();
             var valueAdd = tr.children().children('.addressEdit').val();
             var idAdd = tr.children().children('.addressEdit').prop('id');
@@ -106,7 +108,7 @@ $(document).ready(function () {
                     value: valueAdd,
                     id: idAdd,
                     compID: compID
-                }, success: function (resp) {
+                }, success: function(resp) {
                     console.log(resp);
                 }
             });

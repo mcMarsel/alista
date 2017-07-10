@@ -1,6 +1,6 @@
 class AbstractChosen
 
-  constructor: (@form_field, @options = {}) ->
+  constructor: (@form_field, @options={}) ->
     return unless AbstractChosen.browser_is_supported()
     @is_multiple = @form_field.multiple
     this.set_default_text()
@@ -208,7 +208,7 @@ class AbstractChosen
     if regex.test search_string
       return true
     else if @enable_split_word_search and (search_string.indexOf(" ") >= 0 or search_string.indexOf("[") == 0)
-#TODO: replace this substitution of /\[\]/ with a list of characters to skip.
+      #TODO: replace this substitution of /\[\]/ with a list of characters to skip.
       parts = search_string.replace(/\[|\]/g, "").split(" ")
       if parts.length
         for part in parts
@@ -246,9 +246,8 @@ class AbstractChosen
         this.results_hide() if @results_showing
         return true
       when 9, 38, 40, 16, 91, 17, 18
-# don't do anything on these keys
-      else
-        this.results_search()
+        # don't do anything on these keys
+      else this.results_search()
 
   clipboard_event_checker: (evt) ->
     setTimeout (=> this.results_search()), 50
@@ -280,7 +279,7 @@ class AbstractChosen
     tmp.appendChild(element)
     tmp.innerHTML
 
-# class methods and variables ============================================================
+  # class methods and variables ============================================================
 
   @browser_is_supported: ->
     if /iP(od|hone)/i.test(window.navigator.userAgent)

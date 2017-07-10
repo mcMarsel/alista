@@ -35,7 +35,7 @@
       "url": "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
     }
   ],
-  "bowerJSON": {
+  "bowerJSON":{
     "main": [
       "chosen.jquery.js",
       "chosen.css",

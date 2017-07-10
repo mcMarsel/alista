@@ -2,7 +2,7 @@
 
 module.exports = (grunt) ->
 
-# load all grunt tasks
+  # load all grunt tasks
   require("matchdep").filterDev("grunt-*").forEach grunt.loadNpmTasks
 
   grunt.initConfig

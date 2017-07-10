@@ -16,7 +16,7 @@ return array(
 	|
 	*/
 
-	'driver' => 'database',
+	'driver' => 'cookie',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ return array(
 	|
 	*/
 
-	'files' => storage_path() . '/sessions',
+	'files' => storage_path().'/sessions',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -57,7 +57,7 @@ return array(
 	|
 	*/
 
-	'connection' => "database",
+	'connection' => null,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -122,7 +122,7 @@ return array(
 	|
 	*/
 
-	'domain' => 'metiz.alista.com.ua',
+	'domain' => null,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -135,6 +135,6 @@ return array(
 	|
 	*/
 
-	'secure' => true,
+	'secure' => false,
 
 );

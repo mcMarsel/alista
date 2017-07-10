@@ -1,30 +1,15 @@
-<link type="text/css" href="./res/exemple06.css" rel="stylesheet">
+<link type="text/css" href="./res/exemple06.css" rel="stylesheet" >
 <style type="text/css">
-    <!--
-    /* commentaire dans un css */
-    table, td {
-        border: solid 1px #000000;
-        color: #0000AA;
-    }
+<!--
+/* commentaire dans un css */
+table, td { border: solid 1px #000000; color: #0000AA; }
+td.col1   { color: #00AA00; }
 
-    td.col1 {
-        color: #00AA00;
-    }
-
-    /* autre commentaire */
-    table.liste {
-        border: solid 2px #FF0000;
-    }
-
-    table.liste td {
-        background: #DDDDDD;
-    }
-
-    table.liste td.col1 {
-        color: #FF0000;
-    }
-
-    -->
+/* autre commentaire */
+table.liste         { border: solid 2px #FF0000; }
+table.liste td      { background: #DDDDDD; }
+table.liste td.col1 { color: #FF0000; }
+-->
 </style>
 <page>
     <table>

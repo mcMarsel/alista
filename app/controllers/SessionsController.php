@@ -12,19 +12,25 @@ class SessionsController extends BaseController
 
     public function create()
     {
-		if (Auth::guest()) {
-			return View::make('sessions.create');
-		} else {
+        if ( Auth::guest() )
+        {
+            return View::make( 'sessions.create' );
+        }
+        else
+        {
             return Redirect::home();
         }
     }
 
     public function store()
     {
-		if (Auth::attempt(Input::only('username', 'password'), true)) {
+        if ( Auth::attempt( Input::only( 'username', 'password' ), true ) )
+        {
             return View::make('default');
-		} else {
-			Flash::error('Увы и ах, явки и пароли не подходят.');
+        }
+        else
+        {
+            Flash::error( 'Увы и ах, явки и пароли не подходят.' );
             return Redirect::back()->withInput();
         }
     }
@@ -32,6 +38,6 @@ class SessionsController extends BaseController
     public function destroy()
     {
         Auth::logout();
-		return Redirect::route('sessions.create');
+        return Redirect::route( 'sessions.create' );
     }
 }

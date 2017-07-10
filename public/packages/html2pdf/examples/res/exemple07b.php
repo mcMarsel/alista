@@ -1,10 +1,10 @@
-<page orientation="paysage">
-    <bookmark title="Document" level="0"></bookmark>
+<page orientation="paysage" >
+    <bookmark title="Document" level="0" ></bookmark>
     <a name="document_reprise"></a>
     <table cellspacing="0" style="width: 100%;">
         <tr>
             <td style="width: 10%;">
-                <img style="width: 100%" src="./res/logo.gif" alt="Logo HTML2PDF">
+                <img style="width: 100%" src="./res/logo.gif" alt="Logo HTML2PDF" >
             </td>
             <td style="width: 80%; text-align: center; text-decoration: underline; font-weight: bold; font-size: 20pt;">
                 <span style="font-size: 10pt"><br></span>
@@ -38,30 +38,12 @@
             <td style="width: 4%"></td>
             <td style="width: 37% ">
                 <table cellspacing="0" style="width: 100%; border: solid 2px #000000; font-size: 12pt;">
-                    <tr>
-                        <td style="width: 40%;">Référence :</td>
-                        <td style="width: 60%;">71326</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;">Client :</td>
-                        <td style="width: 60%;">M. Albert Dupont</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;">Adresse :</td>
-                        <td style="width: 60%;">Résidence perdue<br>1, rue sans nom<br>00 000 - Pas de Ville</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;">TEL :</td>
-                        <td style="width: 60%;">33 (0) 1 00 00 00 00</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;">FAX :</td>
-                        <td style="width: 60%;">33 (0) 1 00 00 00 01</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;">Code Client :</td>
-                        <td style="width: 60%;">00C4520100A</td>
-                    </tr>
+                    <tr><td style="width: 40%;">Référence :        </td><td style="width: 60%;">71326</td></tr>
+                    <tr><td style="width: 40%;">Client :        </td><td style="width: 60%;">M. Albert Dupont</td></tr>
+                    <tr><td style="width: 40%;">Adresse :        </td><td style="width: 60%;">Résidence perdue<br>1, rue sans nom<br>00 000 - Pas de Ville</td></tr>
+                    <tr><td style="width: 40%;">TEL :             </td><td style="width: 60%;">33 (0) 1 00 00 00 00</td></tr>
+                    <tr><td style="width: 40%;">FAX :            </td><td style="width: 60%;">33 (0) 1 00 00 00 01</td></tr>
+                    <tr><td style="width: 40%;">Code Client    :    </td><td style="width: 60%;">00C4520100A</td></tr>
                 </table>
                 <table cellspacing="0" style="width: 100%; border: solid 2px #000000">
                     <tr>
@@ -92,31 +74,31 @@
                         <th style="width: 15%; border: solid 1px #000000;">Neuf</th>
                         <th style="width: 15%; border: solid 1px #000000;">Abîmé</th>
                     </tr>
-					<?php
-					$i = 0;
-					foreach ($produits as $produit) {
-						$i++;
-						?>
-                        <tr>
-                            <td style="width: 15%; border: solid 1px #000000;"><?php echo $produit[0]; ?></td>
-                            <td style="width: 55%; border: solid 1px #000000;text-align: left;"><?php echo $produit[1]; ?></td>
-                            <td style="width: 15%; border: solid 1px #000000;"><?php echo $produit[4]; ?></td>
-                            <td style="width: 15%; border: solid 1px #000000;"><?php echo $produit[2] - $produit[4]; ?></td>
-                        </tr>
+<?php
+$i=0;
+foreach ($produits as $produit) {
+    $i++;
+?>
+                    <tr>
+                        <td style="width: 15%; border: solid 1px #000000;"><?php echo $produit[0];        ?></td>
+                        <td style="width: 55%; border: solid 1px #000000;text-align: left;"><?php echo $produit[1];        ?></td>
+                        <td style="width: 15%; border: solid 1px #000000;"><?php echo $produit[4];        ?></td>
+                        <td style="width: 15%; border: solid 1px #000000;"><?php echo $produit[2]-$produit[4];        ?></td>
+                    </tr>
 
-						<?php
-					}
-					for ($i; $i < 12; $i++) {
-						?>
-                        <tr>
-                            <td style="width: 15%; border: solid 1px #000000;">&nbsp;</td>
-                            <td style="width: 55%; border: solid 1px #000000;">&nbsp;</td>
-                            <td style="width: 15%; border: solid 1px #000000;">&nbsp;</td>
-                            <td style="width: 15%; border: solid 1px #000000;">&nbsp;</td>
-                        </tr>
-						<?php
-					}
-					?>
+<?php
+}
+for ($i; $i<12; $i++) {
+?>
+                    <tr>
+                        <td style="width: 15%; border: solid 1px #000000;">&nbsp;</td>
+                        <td style="width: 55%; border: solid 1px #000000;">&nbsp;</td>
+                        <td style="width: 15%; border: solid 1px #000000;">&nbsp;</td>
+                        <td style="width: 15%; border: solid 1px #000000;">&nbsp;</td>
+                    </tr>
+<?php
+}
+?>
                 </table>
                 <br>
                 <table cellspacing="0" style="width: 100%; text-align: left; font-size: 8pt">
@@ -130,8 +112,7 @@
                     </tr>
                 </table>
                 <br>
-                <table cellspacing="0"
-                       style="width: 100%; border: solid 2px #000000; text-align: center; font-size: 10pt">
+                <table cellspacing="0" style="width: 100%; border: solid 2px #000000; text-align: center; font-size: 10pt">
                     <tr>
                         <td style="width: 30%"></td>
                         <td style="width: 40%">ACCORD SOCIETE</td>
@@ -158,23 +139,22 @@
                         </th>
                     </tr>
                     <tr>
-                        <th style="width: 50%; border: solid 1px #000000;">Produit neuf</th>
-                        <th style="width: 50%; border: solid 1px #000000;">Produit à reconditionner</th>
+                        <th style="width: 50%; border: solid 1px #000000;">Produit neuf                </th>
+                        <th style="width: 50%; border: solid 1px #000000;">Produit à reconditionner    </th>
                     </tr>
-					<?php
-					for ($i = 0; $i < 12; $i++) {
-						?>
-                        <tr>
-                            <td style="width: 50%; border: solid 1px #000000;">&nbsp;</td>
-                            <td style="width: 50%; border: solid 1px #000000;">&nbsp;</td>
-                        </tr>
-						<?php
-					}
-					?>
+<?php
+    for ($i=0; $i<12; $i++) {
+?>
+                    <tr>
+                        <td style="width: 50%; border: solid 1px #000000;">&nbsp;</td>
+                        <td style="width: 50%; border: solid 1px #000000;">&nbsp;</td>
+                    </tr>
+<?php
+    }
+?>
                 </table>
                 <br>
-                <table cellspacing="0"
-                       style="width: 100%; border: solid 2px #000000; text-align: left; font-size: 10pt">
+                <table cellspacing="0" style="width: 100%; border: solid 2px #000000; text-align: left; font-size: 10pt">
                     <tr>
                         <th style="width: 30%;">
                             Commentaire<br>

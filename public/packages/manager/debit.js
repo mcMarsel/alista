@@ -1,5 +1,6 @@
-$(document).ready(function () {
-    //$('#table-debit').footable();
+$(document).ready(function()
+{
+	//$('#table-debit').footable();
 
     $('#table-debit').footable({
         "paging": {

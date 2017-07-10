@@ -20,9 +20,27 @@ return array(
 
 	'connections' => array(
 
-		'mysql' => array('driver' => 'mysql', 'host' => 'dpmst.mysql.ukraine.com.ua', 'database' => 'dpmst_metiz', 'username' => 'dpmst_metiz', 'password' => 'k94u8h7q', 'charset' => 'utf8', 'prefix' => '',),
+		'mysql' => array(
+			'driver'    => 'mysql',
+			'host'      => 'localhost',
+			'database'  => 'homestead',
+			'username'  => 'homestead',
+			'password'  => 'secret',
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+		),
 
-		'pgsql' => array('driver' => 'pgsql', 'host' => 'localhost', 'database' => 'homestead', 'username' => 'homestead', 'password' => 'secret', 'charset' => 'utf8', 'prefix' => '', 'schema' => 'public',),
+		'pgsql' => array(
+			'driver'   => 'pgsql',
+			'host'     => 'localhost',
+			'database' => 'homestead',
+			'username' => 'homestead',
+			'password' => 'secret',
+			'charset'  => 'utf8',
+			'prefix'   => '',
+			'schema'   => 'public',
+		),
 
 	),
 

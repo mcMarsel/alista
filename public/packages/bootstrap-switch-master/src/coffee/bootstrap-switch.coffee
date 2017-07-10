@@ -54,7 +54,7 @@ do ($ = window.jQuery, window) ->
         if false == @options.onSwitchChange.apply element, arguments
           if @$element.is ":radio"
             $("[name='#{@$element.attr('name')}']")
-              .trigger "previousState.bootstrapSwitch", true
+            .trigger "previousState.bootstrapSwitch", true
           else
             @$element.trigger "previousState.bootstrapSwitch", true
 
@@ -64,9 +64,9 @@ do ($ = window.jQuery, window) ->
 
       # insert handles and label and trigger event
       @$element
-        .before(if @options.inverse then @$off else @$on)
-        .before(@$label)
-        .before(if @options.inverse then @$on else @$off)
+      .before(if @options.inverse then @$off else @$on)
+      .before(@$label)
+      .before(if @options.inverse then @$on else @$off)
 
       # indeterminate state
       @$element.prop "indeterminate", true  if @options.indeterminate
@@ -95,7 +95,7 @@ do ($ = window.jQuery, window) ->
 
       if @$element.is ":radio"
         $("[name='#{@$element.attr('name')}']")
-          .trigger "setPreviousOptions.bootstrapSwitch"
+        .trigger "setPreviousOptions.bootstrapSwitch"
       else
         @$element.trigger "setPreviousOptions.bootstrapSwitch"
 
@@ -341,7 +341,7 @@ do ($ = window.jQuery, window) ->
 
     _containerPosition: (state = @options.state, callback) ->
       @$container
-        .css "margin-left", =>
+      .css "margin-left", =>
         values = [0, "-#{@_handleWidth}px"]
 
         return "-#{@_handleWidth / 2}px"  if @options.indeterminate
@@ -398,9 +398,9 @@ do ($ = window.jQuery, window) ->
           unless skip
             if @$element.is ":radio"
               $("[name='#{@$element.attr('name')}']")
-                .not(@$element)
-                .prop("checked", false)
-                .trigger "change.bootstrapSwitch", true
+              .not(@$element)
+              .prop("checked", false)
+              .trigger "change.bootstrapSwitch", true
 
             @$element.trigger "switchChange.bootstrapSwitch", [state]
 
@@ -503,14 +503,14 @@ do ($ = window.jQuery, window) ->
       return  if $form.data "bootstrap-switch"
 
       $form
-        .on "reset.bootstrapSwitch", ->
+      .on "reset.bootstrapSwitch", ->
         window.setTimeout ->
           $form
-            .find("input")
-            .filter(-> $(@).data "bootstrap-switch")
-            .each -> $(@).bootstrapSwitch "state", @checked
+          .find("input")
+          .filter( -> $(@).data "bootstrap-switch")
+          .each -> $(@).bootstrapSwitch "state", @checked
         , 1
-        .data "bootstrap-switch", true
+      .data "bootstrap-switch", true
 
     _getClasses: (classes) ->
       return ["#{@options.baseClass}-#{classes}"]  unless $.isArray classes

@@ -2,8 +2,8 @@ $ = jQuery
 
 $.fn.extend({
   chosen: (options) ->
-# Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
-# Continue on if running IE document type but in compatibility mode
+    # Do no harm and return as soon as possible for unsupported browsers, namely IE6 and IE7
+    # Continue on if running IE document type but in compatibility mode
     return this unless AbstractChosen.browser_is_supported()
     this.each (input_field) ->
       $this = $ this
@@ -198,7 +198,7 @@ class Chosen extends AbstractChosen
         @search_field[0].readOnly = false
         @container.removeClass "chosen-container-single-nosearch"
 
-    this.update_results_content this.results_option_build({first: true})
+    this.update_results_content this.results_option_build({first:true})
 
     this.search_field_disabled()
     this.show_search_field_default()
@@ -287,22 +287,22 @@ class Chosen extends AbstractChosen
 
   search_results_mouseover: (evt) ->
     target = if $(evt.target).hasClass "active-result" then $(evt.target) else $(evt.target).parents(".active-result").first()
-    this.result_do_highlight(target) if target
+    this.result_do_highlight( target ) if target
 
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
   choice_build: (item) ->
-    choice = $('<li />', {class: "search-choice"}).html("<span>#{this.choice_label(item)}</span>")
+    choice = $('<li />', { class: "search-choice" }).html("<span>#{this.choice_label(item)}</span>")
 
     if item.disabled
       choice.addClass 'search-choice-disabled'
     else
-      close_link = $('<a />', {class: 'search-choice-close', 'data-option-array-index': item.array_index})
+      close_link = $('<a />', { class: 'search-choice-close', 'data-option-array-index': item.array_index })
       close_link.bind 'click.chosen', (evt) => this.choice_destroy_link_click(evt)
       choice.append close_link
 
-    @search_container.before choice
+    @search_container.before  choice
 
   choice_destroy_link_click: (evt) ->
     evt.preventDefault()
@@ -310,7 +310,7 @@ class Chosen extends AbstractChosen
     this.choice_destroy $(evt.target) unless @is_disabled
 
   choice_destroy: (link) ->
-    if this.result_deselect(link[0].getAttribute("data-option-array-index"))
+    if this.result_deselect( link[0].getAttribute("data-option-array-index") )
       this.show_search_field_default()
 
       this.results_hide() if @is_multiple and this.choices_count() > 0 and @search_field.val().length < 1
@@ -349,7 +349,7 @@ class Chosen extends AbstractChosen
 
       high.addClass("result-selected")
 
-      item = @results_data[high[0].getAttribute("data-option-array-index")]
+      item = @results_data[ high[0].getAttribute("data-option-array-index") ]
       item.selected = true
 
       @form_field.options[item.options_index].selected = true
@@ -370,7 +370,7 @@ class Chosen extends AbstractChosen
 
       this.search_field_scale()
 
-  single_set_selected_text: (text = @default_text) ->
+  single_set_selected_text: (text=@default_text) ->
     if text is @default_text
       @selected_item.addClass("chosen-default")
     else
@@ -417,7 +417,7 @@ class Chosen extends AbstractChosen
     no_results_html.find("span").first().html(terms)
 
     @search_results.append no_results_html
-    @form_field_jq.trigger("chosen:no_results", {chosen: this})
+    @form_field_jq.trigger("chosen:no_results", {chosen:this})
 
   no_results_clear: ->
     @search_results.find(".no-results").remove()
@@ -493,13 +493,12 @@ class Chosen extends AbstractChosen
       w = 0
 
       style_block = "position:absolute; left: -1000px; top: -1000px; display:none;"
-      styles = ['font-size', 'font-style', 'font-weight', 'font-family', 'line-height', 'text-transform',
-        'letter-spacing']
+      styles = ['font-size','font-style', 'font-weight', 'font-family','line-height', 'text-transform', 'letter-spacing']
 
       for style in styles
         style_block += style + ":" + @search_field.css(style) + ";"
 
-      div = $('<div />', {'style': style_block})
+      div = $('<div />', { 'style' : style_block })
       div.text @search_field.val()
       $('body').append div
 

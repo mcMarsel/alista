@@ -1,24 +1,21 @@
 @extends('master')
 
 @section('content')
-    <style>
-        td#int-test {
-            color: red;
-        }
-
-        td.td-t1 {
-            width: 200px;
-        }
-
-        h#hw {
-            color: red;
-        }
-
-        td.t2 {
-            width: 50px;
-        }
-
-    </style>
+	<style>
+		td#int-test{
+			color: red;
+		}
+		td.td-t1{
+			width: 200px;
+		}
+		h#hw{
+			color: red;
+		}
+		td.t2{
+			width: 50px;
+		}
+	
+	</style>
     {{--{{ Form::open(['route' => 'send_price', 'method' => 'post', 'enctype' => 'multipart/form-data']) }}
 
     {{ Form::file('price', ['method' => 'post', 'enctype' => 'multipart/form-data']) }}
@@ -67,7 +64,7 @@
         </tr>
         <tr>
             <td>Місто:</td>
-            <td colspan="3"> м. Одеса 65043</td>
+            <td colspan="3"> м. Одеса  65043</td>
         </tr>
     </table>
     <table class="">
@@ -81,40 +78,40 @@
     <br/>
     <table class="table table-hover table-bordered table-striped">
         <thead>
-        <tr>
-            <th>Код</th>
-            <th>Назва товарів, (робіт, послуг)</th>
-            <th>Од.Вим.</th>
-            <th>Кількість</th>
-            <th>Ціна без ПДВ</th>
-            <th>Сума без ПДВ</th>
-            <th>Ціна з ПДВ</th>
-            <th>Сума з ПДВ</th>
-        </tr>
+            <tr>
+                <th>Код</th>
+                <th>Назва товарів, (робіт, послуг)</th>
+                <th>Од.Вим.</th>
+                <th>Кількість</th>
+                <th>Ціна без ПДВ</th>
+                <th>Сума без ПДВ</th>
+                <th>Ціна з ПДВ</th>
+                <th>Сума з ПДВ</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach($res as $key => $value)
-            <tr>
-                <td>{{ $value[0] }}</td>
-                <td>{{ $value[1] }}</td>
-                <td></td>
-                <td>{{ $value[2] }}</td>
-                <td>{{ $value[3] * $currency }}</td>
-                <td>{{ $value[3] * $currency * $value[2] }}</td>
-                <td>{{ $value[3] * $currency * 1.12 }}</td>
-                <td>{{ $value[3] * $currency * 1.12 * $value[2] }}</td>
-            </tr>
-        @endforeach
+            @foreach($res as $key => $value)
+                <tr>
+                    <td>{{ $value[0] }}</td>
+                    <td>{{ $value[1] }}</td>
+                    <td></td>
+                    <td>{{ $value[2] }}</td>
+                    <td>{{ $value[3] * $currency }}</td>
+                    <td>{{ $value[3] * $currency * $value[2] }}</td>
+                    <td>{{ $value[3] * $currency * 1.12 }}</td>
+                    <td>{{ $value[3] * $currency * 1.12 * $value[2] }}</td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
     <table class="table table-hover table-bordered table-striped">
         <tr>
-            <td>Кількість:</td>
-            <td>Сума без НДС:</td>
+            <td>Кількість: </td>
+            <td>Сума без НДС: </td>
         </tr>
         <tr>
-            <td>Загальна вага:</td>
-            <td>Сума НДС:</td>
+            <td>Загальна вага: </td>
+            <td>Сума НДС: </td>
         </tr>
         <tr>
             <td>Сума з ПДВ:</td>
@@ -122,20 +119,18 @@
             <td>10 631,04</td>
         </tr>
     </table>
-    <style>
-        td#int-test {
-            color: red;
-        }
-
-        td.td-t1 {
-            width: 200px;
-        }
-
-        h#hw {
-            color: red;
-        }
-
-    </style>
+	<style>
+		td#int-test{
+			color: red;
+		}
+		td.td-t1{
+			width: 200px;
+		}
+		h#hw{
+			color: red;
+		}
+	
+	</style>
     {{ Form::close() }}
 
 @stop()

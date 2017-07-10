@@ -10,7 +10,7 @@
     <input type="text" hidden="hidden" name="filename" value="{{ $filename }}">
     @if($emailComp)
         <h1>
-            {{ Form::text('email', $emailComp, ['class' => 'form-control']) }}
+        {{ Form::text('email', $emailComp, ['class' => 'form-control']) }}
         </h1>
         <br/>
     @else

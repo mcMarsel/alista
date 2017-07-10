@@ -30,7 +30,7 @@
 	{{ Form::label($curCompID, $curCompName, ['class' => 'mylabel', 'hidden' => 'hidden' , 'id' => 'curComp']) }}
 	</br>Предприятие: {{ Form::select('e-comps', $comps,  null, ['id' => 'e-comps', "disabled" => "true", 'class' => 'form-control btn btn-primary', "style" => "align-content: center;"]) }}
     </br>
-    <!--{{ Form::button('Сформировать',['id' => 'send','class' => 'form-control  btn btn-primary']) }} -->
+    {{ Form::button('Сформировать',['id' => 'send','class' => 'form-control  btn btn-primary']) }}
     </br>
     <table class="table table-hover table-responsive" style="width:100%;">
         <thead>
@@ -43,7 +43,7 @@
                 <th>Цена</th>
                 <th>Сумма грн</th>
                 <th>Сумма $</th>
-                <!--<th>Удалить</th>-->
+                <th>Удалить</th>
             </tr>
         </thead>
         <tbody id="tbody-g">
@@ -57,8 +57,8 @@
                     <th><span style="width: 100%; height: 100%" class="btn m-price PriceMC" name="{{ $value['PLID'] }}" id="m-price{{$key}}">{{ ceil(($value['PriceMC'] / 6) * 100) / 100 * 6 }}</span></th>
                     <th class="totalPCC">{{ ceil(($value['totalPricePosCC'] / 6) * 100) / 100 * 6 }}</th>
                     <th class="totalPMC">{{ ceil(($value['totalPricePosMC'] / 6) * 100) / 100 * 6 }}</th>
-                    <!--<th class="">{{ Form::button('Удалить', ['class' => 'posDel btn btn-primary']) }}</th> -->
-                    <? var_dump($value); ?>
+                    <th class="">{{ Form::button('Удалить', ['class' => 'posDel btn btn-primary']) }}</th>
+
                     @if(count($value['pl']) == 10)
                         <th class="pl1" id="pl0" name="{{ $value['pl'][0]['PLID'] }}" hidden="hidden">{{ ceil(($value['pl'][0]['PriceMC'] * $currency / 6) * 100) / 100 * 6 }}</th>
                         <th class="pl2" id="pl1" name="{{ $value['pl'][1]['PLID'] }}" hidden="hidden">{{ ceil(($value['pl'][1]['PriceMC'] * $currency / 6) * 100) / 100 * 6 }}</th>
@@ -90,7 +90,8 @@
             <tr id="tbody-pos"></tr>
         </tbody>
     </table>
-    <!--{{ Form::button('Добавить позицию', ['class' => 'btn btn-default', 'id' => 'add']) }} -->
+
+    {{ Form::button('Добавить позицию', ['class' => 'btn btn-default', 'id' => 'add']) }}
     </br>
     <div id="addpos">
     </div>

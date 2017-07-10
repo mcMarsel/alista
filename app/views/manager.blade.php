@@ -76,8 +76,11 @@
         <br/>
         <br/>
         <div id="comps">
-        {{ Form::select('comp', $comps,  null, ['id' => 'comp',
-        'class' => 'form-control btn btn-primary btn-lg', "style" => "height: 10%; width: 100%; align-content: center;"]) }}
+        {{ Form::select('comp', $comps,  null, [
+            'id' => 'comp',
+            'class' => 'form-control btn btn-primary btn-lg',
+            "style" => "height: 10%; width: 100%; align-content: center;"])
+         }}
         </div>
         <br/>
         <br/>
@@ -100,12 +103,12 @@
         </div>
         <br/>
         <br/>
-        {{ Form::select("category", $pgr3Obj, null, 
+        {{ Form::select("category", $pgr3Obj, null,
         ["disabled" => true, "class" => "form-control  btn btn-primary btn-lg", "id" => "category", "style" => "height: 10%; width: 100%; align-content: center;"]) }}
         <br/>
         <br/>
         {{ Form::button('Сформировать',["disabled" => true, 'id' => 'sender','class' => 'form-control  btn btn-primary btn-lg', 'style' => 'width: 100%; display: inline-block', 'style' => 'height: 10%;']) }}
-        
+
         <a href="manager" id="a-createOrder">{{ Form::button('Новый счет',['id' => 'createOrder','class' => 'form-control  btn btn-primary btn-lg',  'style' => 'display: none; width: 100%;']) }}</a>
         <br/>
         <br/>

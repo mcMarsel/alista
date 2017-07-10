@@ -328,7 +328,13 @@ class SettingController extends BaseController
                 ->update(['password' => $obj['password']]);
         }
         \User::where('id', '=', $obj['id'])
-            ->update(['username' => $obj['username'], 'status' => 0, 'email' => $obj['EMail'], 'EmpID' => $obj['EmpID']]);
+            ->update([
+            	'username' => $obj['username'],
+				'status' => 0,
+				'email' => $obj['EMail'],
+				'EmpID' => $obj['EmpID']]
+			);
+
         \Emps::where('EmpID', '=', $userOld->EmpID)
             ->update(
                 [

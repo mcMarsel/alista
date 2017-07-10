@@ -143,7 +143,7 @@ Route::get('getCity{q?}', function($q=0)
             ->where('at_city.RegionID', '!=', 0)
             ->get()->toArray();
     }
-    $res = [];
+    $res = array();
     $count = count($compObj);
     foreach($compObj as $key => $value)
     {
@@ -187,7 +187,7 @@ Route::get('getRows',
 
 
 //============PriceController ROUTE
-Route::get('rew', 
+Route::get('rew',
 	[
         	'as' => 'rew',
         	'uses' => 'PriceListController@rew'
@@ -196,7 +196,7 @@ Route::get('rew',
 
 Route::any('tracker/{latitude}/{longitude}/{trackid}', 'SettingController@index');
 
-Route::post('req', 
+Route::post('req',
 	[
         	'as' => 'req',
         	'uses' => 'PriceListController@req'
@@ -216,7 +216,6 @@ Route::post('load',
         'uses' => 'PriceListController@load'
     ]
 )->before('auth');
-
 
 Route::get('price-list',
     [
